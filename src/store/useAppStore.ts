@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { config } from '../config';
+import { DEFAULT_VISUALIZATION_STYLE } from '../utils/falai';
+import type { VisualizationStyle } from '../utils/falai';
 
 interface PoseRotation {
   x: number;
@@ -71,18 +73,38 @@ interface AppState {
   lipSyncClosedThreshold: number;
   setLipSyncSettings: (settings: Partial<{ sensitivity: number; smoothing: number; noiseFloor: number; sibilantThreshold: number; closedThreshold: number }>) => void;
   // Conversation History
-  conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>;
-  addToConversationHistory: (role: 'user' | 'assistant', content: string) => void;
+  conversationHistory: Array<{ role: 'user' | 'assistant'; content: string; emotions?: Array<{ name: string; score: number }> }>;
+  addToConversationHistory: (role: 'user' | 'assistant', content: string, emotions?: Array<{ name: string; score: number }>) => void;
   clearConversationHistory: () => void;
 
   showPoseControls: boolean;
   setShowPoseControls: (show: boolean) => void;
   showConversation: boolean;
   setShowConversation: (show: boolean) => void;
+  showUserEmotions: boolean;
+  setShowUserEmotions: (show: boolean) => void;
   lastAudioBuffer: ArrayBuffer | null;
   setLastAudioBuffer: (buffer: ArrayBuffer | null) => void;
   useDeepgram: boolean;
   setUseDeepgram: (use: boolean) => void;
+  // Inner Visualization
+  falApiKey: string;
+  visualizationEnabled: boolean;
+  currentVisualization: string | null;
+  visualizationStyle: VisualizationStyle;
+  isGeneratingVisualization: boolean;
+  isVisualizationSettingsOpen: boolean;
+  setFalApiKey: (key: string) => void;
+  setVisualizationEnabled: (enabled: boolean) => void;
+  setCurrentVisualization: (url: string | null) => void;
+  setVisualizationStyle: (style: Partial<VisualizationStyle>) => void;
+  setIsGeneratingVisualization: (generating: boolean) => void;
+  setIsVisualizationSettingsOpen: (open: boolean) => void;
+  // Visualization position and scale (for drag/resize)
+  visualizationPosition: { x: number; y: number };
+  visualizationScale: number;
+  setVisualizationPosition: (pos: { x: number; y: number }) => void;
+  setVisualizationScale: (scale: number) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -125,6 +147,17 @@ export const useAppStore = create<AppState>((set) => ({
 
   showPoseControls: localStorage.getItem('laura_show_pose_controls') !== 'false',
   showConversation: localStorage.getItem('laura_show_conversation') !== 'false',
+  showUserEmotions: localStorage.getItem('laura_show_user_emotions') !== 'false',
+
+  // Inner Visualization State
+  falApiKey: localStorage.getItem('laura_fal_api_key') || config.falApiKey || '',
+  visualizationEnabled: localStorage.getItem('laura_visualization_enabled') === 'true',
+  currentVisualization: null,
+  visualizationStyle: JSON.parse(localStorage.getItem('laura_visualization_style') || 'null') || DEFAULT_VISUALIZATION_STYLE,
+  isGeneratingVisualization: false,
+  isVisualizationSettingsOpen: false,
+  visualizationPosition: { x: 50, y: 5 }, // Default: Percentage (above head)
+  visualizationScale: 1,
 
   poseControls: {
     shoulder: { x: 0, y: 0, z: 0 },
@@ -193,8 +226,8 @@ export const useAppStore = create<AppState>((set) => ({
     lipSyncSibilantThreshold: settings.sibilantThreshold ?? state.lipSyncSibilantThreshold,
     lipSyncClosedThreshold: settings.closedThreshold ?? state.lipSyncClosedThreshold
   })),
-  addToConversationHistory: (role, content) => set((state) => ({
-    conversationHistory: [...state.conversationHistory, { role, content }]
+  addToConversationHistory: (role, content, emotions) => set((state) => ({
+    conversationHistory: [...state.conversationHistory, { role, content, emotions }]
   })),
   clearConversationHistory: () => set({ conversationHistory: [] }),
   setLastAudioBuffer: (lastAudioBuffer) => set({ lastAudioBuffer }),
@@ -210,4 +243,27 @@ export const useAppStore = create<AppState>((set) => ({
     localStorage.setItem('laura_show_conversation', String(showConversation));
     set({ showConversation });
   },
+  setShowUserEmotions: (showUserEmotions) => {
+    localStorage.setItem('laura_show_user_emotions', String(showUserEmotions));
+    set({ showUserEmotions });
+  },
+  // Inner Visualization Functions
+  setFalApiKey: (falApiKey) => {
+    localStorage.setItem('laura_fal_api_key', falApiKey);
+    set({ falApiKey });
+  },
+  setVisualizationEnabled: (visualizationEnabled) => {
+    localStorage.setItem('laura_visualization_enabled', String(visualizationEnabled));
+    set({ visualizationEnabled });
+  },
+  setCurrentVisualization: (currentVisualization) => set({ currentVisualization }),
+  setVisualizationStyle: (style) => set((state) => {
+    const newStyle = { ...state.visualizationStyle, ...style };
+    localStorage.setItem('laura_visualization_style', JSON.stringify(newStyle));
+    return { visualizationStyle: newStyle };
+  }),
+  setIsGeneratingVisualization: (isGeneratingVisualization) => set({ isGeneratingVisualization }),
+  setIsVisualizationSettingsOpen: (isVisualizationSettingsOpen) => set({ isVisualizationSettingsOpen }),
+  setVisualizationPosition: (visualizationPosition) => set({ visualizationPosition }),
+  setVisualizationScale: (visualizationScale) => set({ visualizationScale }),
 }));

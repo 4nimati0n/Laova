@@ -1,4 +1,4 @@
-import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize } from 'lucide-react';
+import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize, Image, Expand } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useState, useEffect } from 'react';
 
@@ -13,11 +13,21 @@ export const UI = () => {
         userMessage,
         aiResponse,
         lastAudioBuffer,
-        showConversation
+        showConversation,
+        visualizationEnabled,
+        visualizationStyle,
+        setVisualizationStyle
     } = useAppStore();
 
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isUIVisible, setIsUIVisible] = useState(true);
+
+    const displayMode = visualizationStyle?.displayMode || 'above_head';
+
+    const toggleDisplayMode = () => {
+        const newMode = displayMode === 'above_head' ? 'fullscreen' : 'above_head';
+        setVisualizationStyle({ displayMode: newMode });
+    };
 
     useEffect(() => {
         let timeoutId: ReturnType<typeof setTimeout>;
@@ -82,6 +92,20 @@ export const UI = () => {
                 </div>
 
                 <div className="top-right-buttons">
+                    {/* Visualization mode toggle - only show if visualization is enabled */}
+                    {visualizationEnabled && (
+                        <button
+                            className="icon-button"
+                            onClick={toggleDisplayMode}
+                            title={displayMode === 'above_head' ? "Passer en plein écran" : "Passer en bulle"}
+                            style={{
+                                background: 'rgba(255, 182, 193, 0.2)',
+                                borderColor: 'rgba(255, 182, 193, 0.4)'
+                            }}
+                        >
+                            {displayMode === 'above_head' ? <Expand size={20} /> : <Image size={20} />}
+                        </button>
+                    )}
                     <button
                         className="icon-button"
                         onClick={toggleFullscreen}

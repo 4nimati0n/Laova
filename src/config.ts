@@ -22,4 +22,9 @@ export const config = {
     // - Arnold: 'VR6AewLTigWG4xSOukaG'
     // - Adam: 'pNInz6obpgDQGcFmaJgB'
     // - Sam: 'yoZ06aMxZJJ28mfd3POQ'
+
+    // Fal AI Configuration (for visualization generation)
+    // Get your key from: https://fal.ai/
+    falApiKey: '86d7293e-2c51-400a-a4ba-df7f20efefdd:364f456badd3ae27e2b96b27b179eedf', // Add your Fal AI API key here
 };
+

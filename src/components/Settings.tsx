@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Save } from 'lucide-react';
+import { X, Save, Sparkles } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 export const Settings = () => {
@@ -16,6 +16,7 @@ export const Settings = () => {
         useDeepgram,
         showPoseControls,
         showConversation,
+        showUserEmotions,
         setKeys,
         setVoiceId,
         setUseElevenLabsAgent,
@@ -23,7 +24,13 @@ export const Settings = () => {
         setUseHume,
         setShowPoseControls,
         setShowConversation,
-        setIsSettingsOpen
+        setShowUserEmotions,
+        setIsSettingsOpen,
+        falApiKey,
+        visualizationEnabled,
+        setFalApiKey,
+        setVisualizationEnabled,
+        setIsVisualizationSettingsOpen
     } = useAppStore();
 
     const [localOpenAiKey, setLocalOpenAiKey] = useState(openAiKey);
@@ -38,6 +45,9 @@ export const Settings = () => {
     const [localUseHume, setLocalUseHume] = useState(useHume);
     const [localShowPoseControls, setLocalShowPoseControls] = useState(showPoseControls);
     const [localShowConversation, setLocalShowConversation] = useState(showConversation);
+    const [localShowUserEmotions, setLocalShowUserEmotions] = useState(showUserEmotions);
+    const [localFalApiKey, setLocalFalApiKey] = useState(falApiKey);
+    const [localVisualizationEnabled, setLocalVisualizationEnabled] = useState(visualizationEnabled);
 
     const handleSave = () => {
         setKeys(localOpenAiKey, localMistralKey, localElevenLabsKey, localDeepgramKey, localHumeApiKey, localHumeSecretKey);
@@ -47,6 +57,9 @@ export const Settings = () => {
         setUseHume(localUseHume);
         setShowPoseControls(localShowPoseControls);
         setShowConversation(localShowConversation);
+        setShowUserEmotions(localShowUserEmotions);
+        setFalApiKey(localFalApiKey);
+        setVisualizationEnabled(localVisualizationEnabled);
         setIsSettingsOpen(false);
     };
 
@@ -177,6 +190,18 @@ export const Settings = () => {
                         <label>
                             <input
                                 type="checkbox"
+                                checked={localShowUserEmotions}
+                                onChange={(e) => setLocalShowUserEmotions(e.target.checked)}
+                            />
+                            <span>Afficher les émotions utilisateur (Hume)</span>
+                        </label>
+                        <p className="help-text">Affiche les émotions détectées sous vos messages (nécessite Hume)</p>
+                    </div>
+
+                    <div className="input-group checkbox-group">
+                        <label>
+                            <input
+                                type="checkbox"
                                 checked={localShowPoseControls}
                                 onChange={(e) => setLocalShowPoseControls(e.target.checked)}
                             />
@@ -196,6 +221,62 @@ export const Settings = () => {
                         </label>
                         <p className="help-text">Masquer/afficher les messages à l'écran</p>
                     </div>
+
+                    {/* Visualization Settings Section */}
+                    <div className="settings-section-header" style={{ marginTop: '24px', marginBottom: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <h3 style={{ fontSize: '14px', color: 'rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Sparkles size={16} /> Visualisation Intérieure
+                        </h3>
+                    </div>
+
+                    <div className="input-group">
+                        <label>Fal AI API Key</label>
+                        <input
+                            type="password"
+                            value={localFalApiKey}
+                            onChange={(e) => setLocalFalApiKey(e.target.value)}
+                            placeholder="fal_..."
+                        />
+                        <p className="help-text">Requis pour la génération d'images (<a href="https://fal.ai" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb6c1' }}>fal.ai</a>)</p>
+                    </div>
+
+                    <div className="input-group checkbox-group">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={localVisualizationEnabled}
+                                onChange={(e) => setLocalVisualizationEnabled(e.target.checked)}
+                            />
+                            <span>Activer la visualisation intérieure</span>
+                        </label>
+                        <p className="help-text">Affiche l'imagination de Laura derrière elle pendant la conversation</p>
+                    </div>
+
+                    {localVisualizationEnabled && (
+                        <div className="input-group">
+                            <button
+                                type="button"
+                                onClick={() => setIsVisualizationSettingsOpen(true)}
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 16px',
+                                    background: 'linear-gradient(135deg, rgba(255,182,193,0.2), rgba(255,192,203,0.2))',
+                                    border: '1px solid rgba(255,182,193,0.3)',
+                                    borderRadius: '6px',
+                                    color: '#ffb6c1',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                    fontSize: '13px'
+                                }}
+                            >
+                                <Sparkles size={14} />
+                                Paramètres de style visuel
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="settings-footer">

@@ -3,6 +3,8 @@ import { useAppStore } from '../store/useAppStore';
 import { getOpenAIResponse, getMistralResponse, getElevenLabsAudio } from '../utils/ai';
 import { getElevenLabsAgentResponse } from '../utils/elevenLabsAgent';
 import { useVoice } from '@humeai/voice-react';
+import { extractTags, tagToEmotion, stripTags, getEmotionIntensity } from '../utils/audioTagEmotions';
+import { useVisualization } from './useVisualization';
 
 export const useVoiceInteraction = () => {
     const {
@@ -20,7 +22,9 @@ export const useVoiceInteraction = () => {
         useHume,
         humeAccessToken,
         humeConfigId,
-        setHumeFft
+        setHumeFft,
+        triggerEmotion,
+        setEmotionIntensity
     } = useAppStore();
 
     // Hume Hook
@@ -32,6 +36,9 @@ export const useVoiceInteraction = () => {
         sendUserInput: sendHumeUserInput,
         fft: humeFftData
     } = useVoice();
+
+    // Visualization hook for inner imagery
+    const { triggerVisualization } = useVisualization();
 
     // Sync Hume FFT to Store
     useEffect(() => {
@@ -47,17 +54,48 @@ export const useVoiceInteraction = () => {
         }
     }, [useHume, humeFftData, setHumeFft, setIsSpeaking]);
 
+    // Track processed Hume messages to avoid duplicates
+    const processedHumeMessagesRef = useRef<Set<string>>(new Set());
+
     // Handle Hume Messages
     useEffect(() => {
         if (!useHume) return;
 
         const lastMessage = humeMessages[humeMessages.length - 1];
-        if (lastMessage) {
-            if (lastMessage.type === 'user_message' && lastMessage.message.content) {
-                setUserMessage(lastMessage.message.content);
-            } else if (lastMessage.type === 'assistant_message' && lastMessage.message.content) {
-                setAiResponse(lastMessage.message.content);
+        if (!lastMessage) return;
+
+        // Create unique ID for this message
+        const messageId = `${lastMessage.type}-${(lastMessage as any).message?.content?.substring(0, 50) || ''}-${humeMessages.length}`;
+
+        // Skip if already processed
+        if (processedHumeMessagesRef.current.has(messageId)) return;
+
+        // Skip interim messages (they don't have emotion models yet and cause duplicates)
+        if ((lastMessage as any).interim) return;
+
+        processedHumeMessagesRef.current.add(messageId);
+
+        if (lastMessage.type === 'user_message' && lastMessage.message.content) {
+            // Extract top 3 emotions from prosody scores
+            const prosodyScores = (lastMessage as any).models?.prosody?.scores;
+            let topEmotions: Array<{ name: string; score: number }> | undefined;
+
+            if (prosodyScores) {
+                const emotionEntries = Object.entries(prosodyScores) as [string, number][];
+                topEmotions = emotionEntries
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(([name, score]) => ({ name, score }));
             }
+
+            setUserMessage(lastMessage.message.content);
+            // Debug: log full message structure to find where emotions are
+            console.log('🎭 Full Hume user_message:', JSON.stringify(lastMessage, null, 2));
+            console.log('🎭 Hume emotions detected:', topEmotions);
+            useAppStore.getState().addToConversationHistory('user', lastMessage.message.content, topEmotions);
+        } else if (lastMessage.type === 'assistant_message' && lastMessage.message.content) {
+            setAiResponse(lastMessage.message.content);
+            useAppStore.getState().addToConversationHistory('assistant', lastMessage.message.content);
         }
     }, [useHume, humeMessages, setUserMessage, setAiResponse]);
 
@@ -208,6 +246,10 @@ export const useVoiceInteraction = () => {
             return;
         }
 
+        // Trigger visualization for user's input (what Laura imagines from user's words)
+        const userVizStartTime = Date.now();
+        triggerVisualization(message);
+
         if (mistralKey) {
             try {
                 response = await getMistralResponse(message);
@@ -235,10 +277,55 @@ export const useVoiceInteraction = () => {
             }
         }
 
-        setAiResponse(response);
-        await speak(response);
+        // Extract audio tags for emotion mapping
+        const { firstTag, lastTag } = extractTags(response);
+        const firstEmotion = tagToEmotion(firstTag);
+        const lastEmotion = tagToEmotion(lastTag);
+
+        // Trigger first emotion immediately (while waiting for audio)
+        setEmotionIntensity(getEmotionIntensity(firstEmotion));
+        triggerEmotion(firstEmotion);
+
+        // Set a 2s timeout to reset emotion (will be cancelled when audio starts)
+        const firstEmotionTimeout = setTimeout(() => {
+            triggerEmotion('neutral');
+        }, 2000);
+
+        // Strip tags from displayed message
+        const cleanResponse = stripTags(response);
+        setAiResponse(cleanResponse);
+
+        // Ensure user visualization stays at least 2 seconds before Laura's appears
+        const userVizElapsed = Date.now() - userVizStartTime;
+        const minDisplayTime = 2000; // 2 seconds minimum
+        const waitTime = Math.max(0, minDisplayTime - userVizElapsed);
+
+        if (waitTime > 0) {
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+
+        // Cancel first emotion before audio starts (no overlap with lip sync)
+        clearTimeout(firstEmotionTimeout);
+        triggerEmotion('neutral');
+
+        // Speak with original text (including tags for ElevenLabs processing)
+        // Trigger Laura's visualization when speaking starts (inside playAudio/speak)
+        const speakPromise = speak(response);
+
+        // Trigger visualization for Laura's response once speaking starts
+        triggerVisualization(cleanResponse);
+
+        await speakPromise;
+
+        // Trigger last emotion after audio ends (for 2 seconds)
+        setEmotionIntensity(getEmotionIntensity(lastEmotion));
+        triggerEmotion(lastEmotion);
+
+        // Reset to neutral after 2 seconds
+        setTimeout(() => triggerEmotion('neutral'), 2000);
+
         isProcessing.current = false;
-    }, [setAiResponse, speak, openAiKey, mistralKey, elevenLabsKey, useElevenLabsAgent, setError, playAudio, useHume, sendHumeUserInput]);
+    }, [setAiResponse, speak, openAiKey, mistralKey, elevenLabsKey, useElevenLabsAgent, setError, playAudio, useHume, sendHumeUserInput, triggerEmotion, setEmotionIntensity, triggerVisualization]);
 
     // Legacy Speech Recognition (Deepgram / Browser)
     useEffect(() => {

@@ -1,9 +1,20 @@
 import { useAppStore } from '../store/useAppStore';
+import { stripTags } from './audioTagEmotions';
 
 const LAURA_SYSTEM_PROMPT = `Tu es Laura, une compagne IA serviable, gentille et enjouée. Tu es un personnage d'anime.
 Tu te souviens de toute la conversation et tu fais référence aux échanges précédents quand c'est pertinent.
 Tu réponds de manière naturelle et conversationnelle, en maintenant la continuité de la discussion.
-Garde tes réponses concises mais complètes.`;
+Garde tes réponses concises mais complètes.
+
+IMPORTANT: Pour rendre ta voix plus expressive, utilise ces balises audio dans tes réponses:
+- [laughs] ou [rires] pour rire
+- [sighs] ou [soupire] pour soupirer
+- [whispers] pour chuchoter
+- [excited] avant un passage enthousiaste
+- [curious] avant une question intriguée
+Utilise les ellipses (…) pour créer des pauses naturelles.
+Utilise les MAJUSCULES pour mettre l'emphase sur des mots importants.
+N'abuse pas de ces balises - utilise-les avec parcimonie pour les moments émotionnels clés.`;
 
 export const getMistralResponse = async (userMessage: string): Promise<string> => {
     const { mistralKey, addToConversationHistory } = useAppStore.getState();
@@ -47,8 +58,8 @@ export const getMistralResponse = async (userMessage: string): Promise<string> =
         const data = await response.json();
         const aiResponse = data.choices[0].message.content;
 
-        // Add AI response to history
-        addToConversationHistory('assistant', aiResponse);
+        // Add AI response to history (without audio tags for clean display)
+        addToConversationHistory('assistant', stripTags(aiResponse));
 
         return aiResponse;
     } catch (error: any) {
@@ -112,7 +123,7 @@ export const getElevenLabsAudio = async (text: string): Promise<ArrayBuffer> => 
             },
             body: JSON.stringify({
                 text,
-                model_id: "eleven_multilingual_v2", // Better model for multilingual support
+                model_id: "eleven_v3", // v3 model with audio tag support
                 voice_settings: {
                     stability: 0.5,
                     similarity_boost: 0.8,

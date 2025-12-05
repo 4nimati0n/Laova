@@ -2,8 +2,13 @@ import { useAppStore } from '../store/useAppStore';
 import { useEffect, useRef } from 'react';
 import '../styles/ConversationPanel.css';
 
+// Helper to format emotion name (camelCase to readable)
+const formatEmotionName = (name: string): string => {
+    return name.replace(/([A-Z])/g, ' $1').toLowerCase().trim();
+};
+
 export const ConversationPanel = () => {
-    const { conversationHistory, clearConversationHistory } = useAppStore();
+    const { conversationHistory, clearConversationHistory, showUserEmotions } = useAppStore();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom when new messages arrive
@@ -42,6 +47,15 @@ export const ConversationPanel = () => {
                                 {msg.role === 'user' ? 'You' : 'Laura'}
                             </div>
                             <div className="message-content">{msg.content}</div>
+                            {showUserEmotions && msg.role === 'user' && msg.emotions && msg.emotions.length > 0 && (
+                                <div className="emotion-badges">
+                                    {msg.emotions.map((emotion, i) => (
+                                        <span key={i} className="emotion-badge">
+                                            {formatEmotionName(emotion.name)}: {(emotion.score * 100).toFixed(0)}%
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ))
                 )}
