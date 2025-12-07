@@ -9,7 +9,11 @@ export const PoseControls = () => {
         lipSyncSibilantThreshold,
         lipSyncClosedThreshold,
         setLipSyncSettings,
-        showPoseControls
+        showPoseControls,
+        breathingRate,
+        breathingEnabled,
+        setBreathingRate,
+        setBreathingEnabled
     } = useAppStore();
 
     const [showArmControls, setShowArmControls] = useState(false);
@@ -22,6 +26,9 @@ export const PoseControls = () => {
         surprised: 2.5,
         extra: 1.0,
         blink: 1.0,
+        fun: 1.5,
+        joy: 1.5,
+        sorrow: 2.0,
     });
 
     const emotions = [
@@ -31,6 +38,9 @@ export const PoseControls = () => {
         { name: 'sad', label: 'Triste', color: '#4488ff' },
         { name: 'relaxed', label: 'Détendu', color: '#88ff88' },
         { name: 'surprised', label: 'Surpris', color: '#ff88ff' },
+        { name: 'fun', label: 'Fun', color: '#ffaa00' },
+        { name: 'joy', label: 'Joie', color: '#ffdd00' },
+        { name: 'sorrow', label: 'Chagrin', color: '#6677ff' },
         { name: 'extra', label: 'Extra', color: '#ff00ff' },
         { name: 'blink', label: 'Blink', color: '#00ffff' },
     ];
@@ -112,6 +122,36 @@ export const PoseControls = () => {
                     </div>
                 </div>
             )}
+
+            <div className="emotion-section">
+                <h3>Respiration</h3>
+                <div className="slider-row">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={breathingEnabled}
+                            onChange={(e) => setBreathingEnabled(e.target.checked)}
+                            style={{ marginRight: '8px' }}
+                        />
+                        Respiration activée
+                    </label>
+                </div>
+                <div className="slider-row">
+                    <label>Rythme ({breathingRate.toFixed(0)} resp/min)</label>
+                    <input
+                        type="range"
+                        min="8"
+                        max="30"
+                        step="1"
+                        value={breathingRate}
+                        onChange={(e) => setBreathingRate(parseFloat(e.target.value))}
+                        disabled={!breathingEnabled}
+                    />
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '4px' }}>
+                    💡 Le rythme s'adapte aux émotions automatiquement
+                </div>
+            </div>
 
             <div className="emotion-section">
                 <h3>Lip Sync Tuning</h3>

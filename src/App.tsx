@@ -29,25 +29,23 @@ function App() {
       <InnerVisualization />
 
       {/* Main Content */}
-      <div className="main-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div className="main-content">
+        <div className="avatar-container">
+          <Scene />
+        </div>
 
-        {/* Chat Overlay - zIndex: 1 */}
-        <div className="chat-overlay" style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+        {/* Chat Overlay */}
+        <div className="chat-overlay">
           {userMessage && (
-            <div className="message user-message" style={{ pointerEvents: 'auto' }}>
+            <div className="message user-message">
               <p>{userMessage}</p>
             </div>
           )}
           {aiResponse && (
-            <div className="message ai-message" style={{ pointerEvents: 'auto' }}>
+            <div className="message ai-message">
               <p>{aiResponse}</p>
             </div>
           )}
-        </div>
-
-        {/* Scene - zIndex: 2 */}
-        <div className="avatar-container" style={{ position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none' }}>
-          <Scene />
         </div>
       </div>
       <PoseControls />

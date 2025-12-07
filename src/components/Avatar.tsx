@@ -264,66 +264,203 @@ export const Avatar = () => {
                 vrm.expressionManager?.setValue('blink', 0);
             }
 
-            // Subtle breathing
-            const breath = Math.sin(state.clock.elapsedTime * 0.8) * 0.015;
-            const chest = vrm.humanoid.getNormalizedBoneNode('chest');
-            if (chest) {
-                chest.rotation.x = breath;
+            // ═══════════════════════════════════════════════════════════════
+            // BREATHING SYSTEM - Emotional modulation with smooth transitions
+            // ═══════════════════════════════════════════════════════════════
+            const { breathingRate, breathingEnabled } = useAppStore.getState();
+
+            if (breathingEnabled) {
+                // Breathing profiles per emotion (based on psychological research)
+                const breathingProfiles: Record<string, { rateMultiplier: number; amplitudeMultiplier: number; irregularity: number }> = {
+                    neutral: { rateMultiplier: 1.0, amplitudeMultiplier: 1.0, irregularity: 0 },
+                    relaxed: { rateMultiplier: 0.85, amplitudeMultiplier: 1.1, irregularity: 0 },
+                    happy: { rateMultiplier: 1.15, amplitudeMultiplier: 1.1, irregularity: 0.1 },
+                    angry: { rateMultiplier: 1.7, amplitudeMultiplier: 1.4, irregularity: 0.15 },
+                    sad: { rateMultiplier: 0.75, amplitudeMultiplier: 0.85, irregularity: 0.25 },
+                    surprised: { rateMultiplier: 2.0, amplitudeMultiplier: 1.6, irregularity: 0 },
+                    extra: { rateMultiplier: 1.2, amplitudeMultiplier: 1.2, irregularity: 0.1 },
+                    blink: { rateMultiplier: 1.0, amplitudeMultiplier: 1.0, irregularity: 0 },
+                    fun: { rateMultiplier: 1.2, amplitudeMultiplier: 1.15, irregularity: 0.1 },
+                    joy: { rateMultiplier: 1.25, amplitudeMultiplier: 1.2, irregularity: 0.15 },
+                    sorrow: { rateMultiplier: 0.7, amplitudeMultiplier: 0.8, irregularity: 0.3 },
+                };
+
+                // Get current emotion profile (default to neutral)
+                const currentEmotionKey = triggeredEmotion || 'neutral';
+                const profile = breathingProfiles[currentEmotionKey] || breathingProfiles.neutral;
+
+                // Calculate target breathing rate and amplitude
+                const targetBreathRate = breathingRate * profile.rateMultiplier;
+                const targetAmplitude = 0.015 * profile.amplitudeMultiplier;
+
+                // Use window for persistent state across frames (smoother than useState)
+                const breathState = (window as any).__breathingState || {
+                    currentRate: targetBreathRate,
+                    currentAmplitude: targetAmplitude,
+                    phase: 0,
+                };
+
+                // Smooth transition to target values (2-3 second transition)
+                const transitionSpeed = 0.5 * delta; // ~2 seconds to full transition
+                breathState.currentRate = MathUtils.lerp(breathState.currentRate, targetBreathRate, transitionSpeed);
+                breathState.currentAmplitude = MathUtils.lerp(breathState.currentAmplitude, targetAmplitude, transitionSpeed);
+
+                // Calculate breathing frequency (Hz) from BPM
+                const breathFrequency = breathState.currentRate / 60;
+
+                // Update phase
+                breathState.phase += breathFrequency * delta;
+                if (breathState.phase > 1) breathState.phase -= 1;
+
+                // Add irregularity for sad/emotional states
+                const irregularityOffset = profile.irregularity > 0
+                    ? Math.sin(state.clock.elapsedTime * 0.3) * profile.irregularity * 0.1
+                    : 0;
+
+                // Realistic breathing curve: inhale (40%) faster than exhale (60%)
+                let breathValue: number;
+                const phase = breathState.phase;
+                if (phase < 0.4) {
+                    // Inhale phase (0-40%) - slightly faster rise
+                    breathValue = Math.sin((phase / 0.4) * (Math.PI / 2));
+                } else {
+                    // Exhale phase (40-100%) - slower, smoother fall
+                    breathValue = Math.cos(((phase - 0.4) / 0.6) * (Math.PI / 2));
+                }
+
+                // Apply breathing to chest with amplitude and irregularity
+                const chest = vrm.humanoid.getNormalizedBoneNode('chest');
+                if (chest) {
+                    chest.rotation.x = breathValue * breathState.currentAmplitude + irregularityOffset;
+                }
+
+                // Store state for next frame
+                (window as any).__breathingState = breathState;
             }
 
-            // Gaze tracking - head and eyes
+            // ═══════════════════════════════════════════════════════════════
+            // IDLE MICRO-MOVEMENTS - Natural subtle body animation
+            // ═══════════════════════════════════════════════════════════════
+            const time = state.clock.elapsedTime;
+
+            // === BODY SWAY (hips/spine) ===
+            // Use multiple sine waves with incommensurate frequencies for organic feel
+            const swayX = Math.sin(time * 0.23) * 0.003 + Math.sin(time * 0.37) * 0.002;
+            const swayZ = Math.sin(time * 0.19) * 0.002 + Math.cos(time * 0.31) * 0.0015;
+
+            const hips = vrm.humanoid.getNormalizedBoneNode('hips');
+            const spine = vrm.humanoid.getNormalizedBoneNode('spine');
+
+            if (hips) {
+                hips.rotation.x = MathUtils.lerp(hips.rotation.x, swayX, 0.02);
+                hips.rotation.z = MathUtils.lerp(hips.rotation.z, swayZ, 0.02);
+            }
+
+            if (spine) {
+                // Spine follows hips slightly delayed (natural body mechanics)
+                spine.rotation.x = MathUtils.lerp(spine.rotation.x, swayX * 0.5, 0.015);
+                spine.rotation.z = MathUtils.lerp(spine.rotation.z, -swayZ * 0.3, 0.015);
+            }
+
+            // === SHOULDER MICRO-MOVEMENT ===
+            // One shoulder slightly higher than the other, alternating slowly
+            const shoulderOffset = Math.sin(time * 0.13) * 0.008;
+            const leftShoulder = vrm.humanoid.getNormalizedBoneNode('leftShoulder');
+            const rightShoulder = vrm.humanoid.getNormalizedBoneNode('rightShoulder');
+
+            if (leftShoulder) {
+                leftShoulder.rotation.z = MathUtils.lerp(leftShoulder.rotation.z, shoulderOffset, 0.01);
+            }
+            if (rightShoulder) {
+                rightShoulder.rotation.z = MathUtils.lerp(rightShoulder.rotation.z, -shoulderOffset * 0.8, 0.01);
+            }
+
+            // === UPPER ARM SUBTLE DRIFT ===
+            // Very subtle natural arm position adjustment
+            const armDrift = Math.sin(time * 0.17) * 0.005;
+            const leftUpperArm = vrm.humanoid.getNormalizedBoneNode('leftUpperArm');
+            const rightUpperArm = vrm.humanoid.getNormalizedBoneNode('rightUpperArm');
+
+            if (leftUpperArm) {
+                leftUpperArm.rotation.x = MathUtils.lerp(leftUpperArm.rotation.x, armDrift, 0.008);
+            }
+            if (rightUpperArm) {
+                rightUpperArm.rotation.x = MathUtils.lerp(rightUpperArm.rotation.x, -armDrift * 0.7, 0.008);
+            }
+
+            // === HEAD MICRO-MOVEMENTS ===
+            // Very subtle head tilts (in addition to gaze tracking)
+            // This gets added to the gaze tracking rotation below
+            const headMicroTilt = Math.sin(time * 0.29) * 0.004 + Math.sin(time * 0.47) * 0.002;
+            (window as any).__headMicroTilt = headMicroTilt;
+
+            // Gaze tracking - head follows camera (viewer)
+            // Uses quaternion lookAt to correctly orient head toward camera regardless of body pose
             const head = vrm.humanoid.getNormalizedBoneNode('head');
-            if (head) {
-                // Get camera position in world space
+            const neck = vrm.humanoid.getNormalizedBoneNode('neck');
+
+            if (head && neck) {
+                // Get camera position and head world position
                 const cameraPos = state.camera.position.clone();
-                const headWorldPos = head.getWorldPosition(new Vector3());
+                const headWorldPos = new Vector3();
+                head.getWorldPosition(headWorldPos);
 
-                // Direction from head to camera
-                const dirToCamera = cameraPos.clone().sub(headWorldPos).normalize();
+                // Direction from head to camera in WORLD space
+                const dirToCameraWorld = cameraPos.clone().sub(headWorldPos).normalize();
 
-                // Laura is rotated 180° on Y, so her forward is world +Z
-                // When camera is at positive X (our right), she should turn her head to HER left
-                // Her local left = positive rotation.y (counterclockwise from above)
-                // atan2(x, z) gives angle where +X is positive angle
-                // Since she faces +Z, positive X camera = positive angle = should be positive head.rotation.y
-                const angleToCamera = Math.atan2(dirToCamera.x, dirToCamera.z);
+                // Get neck's world quaternion (includes all parent transforms)
+                const neckWorldQuat = new Quaternion();
+                neck.getWorldQuaternion(neckWorldQuat);
 
-                // Comfortable field of view: ~70° each side
-                const comfortableAngle = Math.PI * 0.4;
-                const absAngle = Math.abs(angleToCamera);
-                const isInFOV = absAngle < comfortableAngle;
+                // Transform camera direction from WORLD space to NECK's LOCAL space
+                const invNeckQuat = neckWorldQuat.clone().invert();
+                const dirToCameraLocal = dirToCameraWorld.clone().applyQuaternion(invNeckQuat);
 
-                if (isInFOV) {
-                    // === HEAD GAZE TRACKING ===
-                    // Calculate vertical angle to camera
-                    const verticalAngle = Math.atan2(dirToCamera.y, Math.sqrt(dirToCamera.x ** 2 + dirToCamera.z ** 2));
+                // VRM scene is rotated 180° on Y - flip direction to match model's perspective
+                const targetDir = new Vector3(-dirToCameraLocal.x, dirToCameraLocal.y, -dirToCameraLocal.z).normalize();
 
-                    // HEAD: Full tracking toward camera
-                    const headYawTarget = angleToCamera * 0.7; // 70% compensation for natural look
-                    const headPitchTarget = verticalAngle * 0.5;
+                // Create quaternion that rotates from forward (+Z) to target direction
+                const forward = new Vector3(0, 0, 1);
+                const lookAtQuat = new Quaternion().setFromUnitVectors(forward, targetDir);
 
-                    // Smoother movement (lerp 0.08) to avoid abruptness
-                    head.rotation.y = MathUtils.lerp(head.rotation.y, headYawTarget, 0.08);
-                    head.rotation.x = MathUtils.lerp(head.rotation.x, headPitchTarget, 0.08);
-                    head.rotation.z = MathUtils.lerp(head.rotation.z, 0, 0.08);
+                // Extract euler angles (YXZ order matches head bone rotation order)
+                const lookAtEuler = new Euler().setFromQuaternion(lookAtQuat, 'YXZ');
 
-                    /* NOTE: Eye tracking disabled - model VRM doesn't support it properly
-                     * The model has eye bones but mesh doesn't follow them.
-                     * Expressions lookLeft/lookRight/lookUp/lookDown don't exist.
-                     * Morph targets are numbered (0-40) without descriptive names.
-                     * Future implementation would require:
-                     * 1. Modifying VRM model to add proper eye controls
-                     * 2. Or manually mapping numbered morphs to eye movements
-                     * See eyeControls in store for slider implementation reference.
-                     */
+                // Get raw rotation values (negate pitch for correct direction)
+                const rawYaw = lookAtEuler.y;
+                const rawPitch = -lookAtEuler.x; // NEGATED to fix Y inversion
+
+                // NATURAL HEAD MOVEMENT LIMITS
+                const maxYaw = Math.PI * 0.4;  // ~72° left/right
+                const maxPitch = Math.PI * 0.25; // ~45° up/down
+                const maxCombinedAngle = Math.PI * 0.35; // ~63° total
+
+                // Calculate total angular distance from forward
+                const totalAngle = Math.acos(MathUtils.clamp(targetDir.z, -1, 1));
+
+                let finalYaw: number, finalPitch: number;
+
+                if (totalAngle <= maxCombinedAngle) {
+                    // Within comfortable range
+                    finalYaw = MathUtils.clamp(rawYaw, -maxYaw, maxYaw);
+                    finalPitch = MathUtils.clamp(rawPitch, -maxPitch, maxPitch);
                 } else {
-                    // Outside FOV: subtle idle movements
-                    const sway = Math.sin(state.clock.elapsedTime * 0.3) * 0.02;
-                    const tilt = Math.cos(state.clock.elapsedTime * 0.25) * 0.015;
-                    head.rotation.y = MathUtils.lerp(head.rotation.y, sway, 0.05);
-                    head.rotation.x = MathUtils.lerp(head.rotation.x, 0, 0.05);
-                    head.rotation.z = MathUtils.lerp(head.rotation.z, tilt, 0.05);
+                    // Scale back proportionally
+                    const scale = maxCombinedAngle / totalAngle;
+                    finalYaw = MathUtils.clamp(rawYaw * scale, -maxYaw, maxYaw);
+                    finalPitch = MathUtils.clamp(rawPitch * scale, -maxPitch, maxPitch);
                 }
+
+                // Natural head roll + idle micro-tilt
+                const headMicroTilt = (window as any).__headMicroTilt || 0;
+                const naturalRoll = finalYaw * 0.08 + headMicroTilt;
+
+                // Smooth lerp
+                const lerpFactor = 0.06;
+
+                head.rotation.y = MathUtils.lerp(head.rotation.y, finalYaw, lerpFactor);
+                head.rotation.x = MathUtils.lerp(head.rotation.x, finalPitch, lerpFactor);
+                head.rotation.z = MathUtils.lerp(head.rotation.z, naturalRoll, lerpFactor);
             }
         }
     });

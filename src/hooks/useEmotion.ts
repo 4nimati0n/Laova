@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { VRM } from '@pixiv/three-vrm';
 
-export type Emotion = 'neutral' | 'happy' | 'angry' | 'sad' | 'relaxed' | 'surprised' | 'extra' | 'blink';
+export type Emotion = 'neutral' | 'happy' | 'angry' | 'sad' | 'relaxed' | 'surprised' | 'extra' | 'blink' | 'fun' | 'joy' | 'sorrow';
 
 export const useEmotion = () => {
     const [currentEmotion, setCurrentEmotion] = useState<Emotion>('neutral');
@@ -22,6 +22,9 @@ export const useEmotion = () => {
             surprised: ['Surprised'],
             extra: ['Extra'],
             blink: ['blink', 'blinkLeft', 'blinkRight'],
+            fun: ['fun', 'Fun'],
+            joy: ['joy', 'Joy', 'happy'], // Fallback to happy if joy not available
+            sorrow: ['sorrow', 'Sorrow', 'sad'], // Fallback to sad if sorrow not available
         };
 
         // List of viseme blend shapes used by lip sync - DON'T override these

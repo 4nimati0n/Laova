@@ -1,0 +1,405 @@
+/* Energy Display Button */
+.energy-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.energy-display:hover {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.2));
+    border-color: rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.energy-icon {
+    font-size: 16px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.energy-value {
+    font-family: 'SF Mono', 'Monaco', monospace;
+}
+
+.energy-warning {
+    background: #ff4444;
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: blink 1s ease-in-out infinite;
+}
+
+/* Energy Status Colors */
+.energy-full {
+    border-color: rgba(50, 205, 50, 0.5);
+    color: #90EE90;
+    background: linear-gradient(135deg, rgba(50, 205, 50, 0.15), rgba(34, 139, 34, 0.1));
+}
+
+.energy-good {
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+}
+
+.energy-hungry {
+    border-color: rgba(255, 165, 0, 0.5);
+    color: #FFA500;
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.15), rgba(255, 140, 0, 0.1));
+}
+
+.energy-very-hungry {
+    border-color: rgba(255, 100, 100, 0.5);
+    color: #ff6b6b;
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.15), rgba(255, 70, 70, 0.1));
+    animation: urgentPulse 1.5s ease-in-out infinite;
+}
+
+.energy-exhausted,
+.energy-empty {
+    border-color: rgba(255, 50, 50, 0.6);
+    color: #ff4444;
+    background: linear-gradient(135deg, rgba(255, 50, 50, 0.2), rgba(200, 0, 0, 0.15));
+    animation: urgentPulse 1s ease-in-out infinite;
+}
+
+/* Modal Overlay */
+.energy-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Modal Container */
+.energy-modal {
+    position: relative;
+    width: 90%;
+    max-width: 480px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(30, 30, 40, 0.98) 0%, rgba(20, 20, 30, 0.98) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.1);
+    animation: slideUp 0.3s ease-out;
+}
+
+.energy-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.energy-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.energy-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.energy-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.energy-status-emoji {
+    font-size: 28px;
+}
+
+/* Progress Bar */
+.energy-progress-container {
+    margin-bottom: 12px;
+}
+
+.energy-progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.energy-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ffaa00, #ff8c00);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.energy-progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.energy-current {
+    font-family: 'SF Mono', 'Monaco', monospace;
+}
+
+.energy-percentage {
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.energy-status-message {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.energy-time-remaining {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    color: #ffd700;
+    font-size: 14px;
+    margin: 12px 0;
+}
+
+.time-icon {
+    font-size: 16px;
+}
+
+.energy-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+    margin: 20px 0;
+}
+
+.energy-section-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    margin: 0 0 16px 0;
+    text-align: center;
+}
+
+/* Food Store Grid */
+.food-store-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.food-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(255, 218, 185, 0.1));
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.food-item:hover {
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(255, 218, 185, 0.2));
+    border-color: rgba(255, 182, 193, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.2);
+}
+
+.food-emoji {
+    font-size: 32px;
+    margin-bottom: 4px;
+}
+
+.food-name {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+}
+
+.food-energy {
+    font-size: 10px;
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.food-price {
+    font-size: 12px;
+    color: #90EE90;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Subscription Grid */
+.subscription-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.subscription-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(147, 112, 219, 0.1));
+    border: 1px solid rgba(100, 149, 237, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.subscription-item:hover {
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.2), rgba(147, 112, 219, 0.2));
+    border-color: rgba(100, 149, 237, 0.5);
+    transform: translateY(-2px);
+}
+
+.subscription-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6495ED;
+    margin-bottom: 4px;
+}
+
+.subscription-energy {
+    font-size: 11px;
+    color: #ffd700;
+}
+
+.subscription-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #90EE90;
+    margin: 4px 0;
+}
+
+.subscription-desc {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes urgentPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 50, 50, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(255, 50, 50, 0.6);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Scrollbar Styling */
+.energy-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.energy-modal::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.energy-modal::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 3px;
+}
+
+.energy-modal::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.5);
+}

@@ -2,6 +2,18 @@ import { create } from 'zustand';
 import { config } from '../config';
 import { DEFAULT_VISUALIZATION_STYLE } from '../utils/falai';
 import type { VisualizationStyle } from '../utils/falai';
+import type { EnergyStatus } from '../utils/costTracker';
+import { getEnergyStatus } from '../utils/costTracker';
+
+// Energy transaction history entry
+export interface EnergyTransaction {
+  id: string;
+  type: 'consume' | 'add';
+  amount: number;
+  reason: string;
+  timestamp: Date;
+  balanceAfter: number;
+}
 
 interface PoseRotation {
   x: number;
@@ -65,6 +77,11 @@ interface AppState {
   triggerEmotion: (emotion: string) => void;
   setEmotionIntensity: (intensity: number) => void;
   setAudioAnalyser: (analyser: AnalyserNode | null) => void;
+  // Breathing Settings
+  breathingRate: number; // Breaths per minute (default: 12 for relaxed)
+  breathingEnabled: boolean;
+  setBreathingRate: (rate: number) => void;
+  setBreathingEnabled: (enabled: boolean) => void;
   // Lip Sync Settings
   lipSyncSensitivity: number;
   lipSyncSmoothing: number;
@@ -105,6 +122,18 @@ interface AppState {
   visualizationScale: number;
   setVisualizationPosition: (pos: { x: number; y: number }) => void;
   setVisualizationScale: (scale: number) => void;
+
+  // Energy System
+  energy: number;
+  maxEnergy: number;
+  isEnergyModalOpen: boolean;
+  energyHistory: EnergyTransaction[];
+  energyStatus: EnergyStatus;
+  setEnergy: (energy: number) => void;
+  consumeEnergy: (amount: number, reason: string) => void;
+  addEnergy: (amount: number, source: string) => void;
+  setIsEnergyModalOpen: (open: boolean) => void;
+  clearEnergyHistory: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -130,6 +159,10 @@ export const useAppStore = create<AppState>((set) => ({
   triggeredEmotion: null,
   emotionIntensity: 1.0,
   audioAnalyser: null,
+
+  // Breathing Settings (default: 12 BPM for relaxed Laura)
+  breathingRate: parseFloat(localStorage.getItem('laura_breathing_rate') || '12'),
+  breathingEnabled: localStorage.getItem('laura_breathing_enabled') !== 'false',
 
   // Default Lip Sync Settings
   lipSyncSensitivity: 0.3,
@@ -158,6 +191,16 @@ export const useAppStore = create<AppState>((set) => ({
   isVisualizationSettingsOpen: false,
   visualizationPosition: { x: 50, y: 5 }, // Default: Percentage (above head)
   visualizationScale: 1,
+
+  // Energy System State
+  energy: parseInt(localStorage.getItem('laura_energy') || '1000'),
+  maxEnergy: 10000,
+  isEnergyModalOpen: false,
+  energyHistory: JSON.parse(localStorage.getItem('laura_energy_history') || '[]'),
+  energyStatus: getEnergyStatus(
+    parseInt(localStorage.getItem('laura_energy') || '1000'),
+    10000
+  ),
 
   poseControls: {
     shoulder: { x: 0, y: 0, z: 0 },
@@ -219,6 +262,14 @@ export const useAppStore = create<AppState>((set) => ({
   triggerEmotion: (emotion) => set({ triggeredEmotion: emotion }),
   setEmotionIntensity: (intensity) => set({ emotionIntensity: intensity }),
   setAudioAnalyser: (audioAnalyser) => set({ audioAnalyser }),
+  setBreathingRate: (breathingRate) => {
+    localStorage.setItem('laura_breathing_rate', String(breathingRate));
+    set({ breathingRate });
+  },
+  setBreathingEnabled: (breathingEnabled) => {
+    localStorage.setItem('laura_breathing_enabled', String(breathingEnabled));
+    set({ breathingEnabled });
+  },
   setLipSyncSettings: (settings) => set((state) => ({
     lipSyncSensitivity: settings.sensitivity ?? state.lipSyncSensitivity,
     lipSyncSmoothing: settings.smoothing ?? state.lipSyncSmoothing,
@@ -266,4 +317,57 @@ export const useAppStore = create<AppState>((set) => ({
   setIsVisualizationSettingsOpen: (isVisualizationSettingsOpen) => set({ isVisualizationSettingsOpen }),
   setVisualizationPosition: (visualizationPosition) => set({ visualizationPosition }),
   setVisualizationScale: (visualizationScale) => set({ visualizationScale }),
+
+  // Energy System Actions
+  setEnergy: (energy) => {
+    const clampedEnergy = Math.max(0, Math.min(energy, 10000));
+    localStorage.setItem('laura_energy', String(clampedEnergy));
+    set((state) => ({
+      energy: clampedEnergy,
+      energyStatus: getEnergyStatus(clampedEnergy, state.maxEnergy)
+    }));
+  },
+  consumeEnergy: (amount, reason) => set((state) => {
+    const newEnergy = Math.max(0, state.energy - amount);
+    const transaction: EnergyTransaction = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type: 'consume',
+      amount,
+      reason,
+      timestamp: new Date(),
+      balanceAfter: newEnergy,
+    };
+    const newHistory = [...state.energyHistory.slice(-99), transaction]; // Keep last 100
+    localStorage.setItem('laura_energy', String(newEnergy));
+    localStorage.setItem('laura_energy_history', JSON.stringify(newHistory));
+    return {
+      energy: newEnergy,
+      energyHistory: newHistory,
+      energyStatus: getEnergyStatus(newEnergy, state.maxEnergy)
+    };
+  }),
+  addEnergy: (amount, source) => set((state) => {
+    const newEnergy = Math.min(state.maxEnergy, state.energy + amount);
+    const transaction: EnergyTransaction = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type: 'add',
+      amount,
+      reason: source,
+      timestamp: new Date(),
+      balanceAfter: newEnergy,
+    };
+    const newHistory = [...state.energyHistory.slice(-99), transaction];
+    localStorage.setItem('laura_energy', String(newEnergy));
+    localStorage.setItem('laura_energy_history', JSON.stringify(newHistory));
+    return {
+      energy: newEnergy,
+      energyHistory: newHistory,
+      energyStatus: getEnergyStatus(newEnergy, state.maxEnergy)
+    };
+  }),
+  setIsEnergyModalOpen: (isEnergyModalOpen) => set({ isEnergyModalOpen }),
+  clearEnergyHistory: () => {
+    localStorage.removeItem('laura_energy_history');
+    set({ energyHistory: [] });
+  },
 }));

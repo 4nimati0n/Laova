@@ -1,6 +1,8 @@
 import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize, Image, Expand } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useState, useEffect } from 'react';
+import { EnergyDisplay } from './EnergyDisplay';
+import { EnergyModal } from './EnergyModal';
 
 export const UI = () => {
     const {
@@ -79,91 +81,99 @@ export const UI = () => {
     };
 
     return (
-        <div
-            className="ui-overlay"
-            style={{
-                opacity: isUIVisible ? 1 : 0,
-                transition: 'opacity 0.5s ease-in-out'
-            }}
-        >
-            <div className="status-bar">
-                <div className={`status-indicator ${isListening ? 'listening' : ''} ${isSpeaking ? 'speaking' : ''}`}>
-                    {isListening ? 'Listening...' : isSpeaking ? 'Speaking...' : 'Ready'}
-                </div>
+        <>
+            <div
+                className="ui-overlay"
+                style={{
+                    opacity: isUIVisible ? 1 : 0,
+                    transition: 'opacity 0.5s ease-in-out'
+                }}
+            >
+                <div className="status-bar">
+                    <div className={`status-indicator ${isListening ? 'listening' : ''} ${isSpeaking ? 'speaking' : ''}`}>
+                        {isListening ? 'Listening...' : isSpeaking ? 'Speaking...' : 'Ready'}
+                    </div>
 
-                <div className="top-right-buttons">
-                    {/* Visualization mode toggle - only show if visualization is enabled */}
-                    {visualizationEnabled && (
+                    {/* Energy Display - Centered */}
+                    <EnergyDisplay />
+
+                    <div className="top-right-buttons">
+                        {/* Visualization mode toggle - only show if visualization is enabled */}
+                        {visualizationEnabled && (
+                            <button
+                                className="icon-button"
+                                onClick={toggleDisplayMode}
+                                title={displayMode === 'above_head' ? "Passer en plein écran" : "Passer en bulle"}
+                                style={{
+                                    background: 'rgba(255, 182, 193, 0.2)',
+                                    borderColor: 'rgba(255, 182, 193, 0.4)'
+                                }}
+                            >
+                                {displayMode === 'above_head' ? <Expand size={20} /> : <Image size={20} />}
+                            </button>
+                        )}
                         <button
                             className="icon-button"
-                            onClick={toggleDisplayMode}
-                            title={displayMode === 'above_head' ? "Passer en plein écran" : "Passer en bulle"}
-                            style={{
-                                background: 'rgba(255, 182, 193, 0.2)',
-                                borderColor: 'rgba(255, 182, 193, 0.4)'
-                            }}
+                            onClick={toggleFullscreen}
+                            title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                         >
-                            {displayMode === 'above_head' ? <Expand size={20} /> : <Image size={20} />}
+                            {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
                         </button>
-                    )}
+                        <button
+                            className="settings-trigger"
+                            onClick={() => setIsSettingsOpen(true)}
+                            title="Settings"
+                        >
+                            <SettingsIcon size={20} />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Conversation text under buttons */}
+                {showConversation && (
+                    <div className="conversation-overlay">
+                        {userMessage && (
+                            <div className="message-bubble user-bubble">
+                                <span className="message-label">You</span>
+                                <p>{userMessage}</p>
+                            </div>
+                        )}
+                        {aiResponse && (
+                            <div className="message-bubble ai-bubble">
+                                <span className="message-label">Laura</span>
+                                <p>{aiResponse}</p>
+                                {lastAudioBuffer && !isSpeaking && (
+                                    <button
+                                        className="replay-button"
+                                        onClick={() => window.dispatchEvent(new CustomEvent('replay-audio'))}
+                                        title="Rejouer le message"
+                                    >
+                                        ↺ Replay
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {error && (
+                    <div className="error-banner">
+                        {error}
+                    </div>
+                )}
+
+                <div className="controls">
                     <button
-                        className="icon-button"
-                        onClick={toggleFullscreen}
-                        title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                        className={`play-button ${isPlaying ? 'playing' : ''}`}
+                        onClick={() => setIsPlaying(!isPlaying)}
                     >
-                        {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
-                    </button>
-                    <button
-                        className="settings-trigger"
-                        onClick={() => setIsSettingsOpen(true)}
-                        title="Settings"
-                    >
-                        <SettingsIcon size={20} />
+                        {isPlaying ? <Pause size={32} /> : <Play size={32} />}
                     </button>
                 </div>
             </div>
 
-            {/* Conversation text under buttons */}
-            {showConversation && (
-                <div className="conversation-overlay">
-                    {userMessage && (
-                        <div className="message-bubble user-bubble">
-                            <span className="message-label">You</span>
-                            <p>{userMessage}</p>
-                        </div>
-                    )}
-                    {aiResponse && (
-                        <div className="message-bubble ai-bubble">
-                            <span className="message-label">Laura</span>
-                            <p>{aiResponse}</p>
-                            {lastAudioBuffer && !isSpeaking && (
-                                <button
-                                    className="replay-button"
-                                    onClick={() => window.dispatchEvent(new CustomEvent('replay-audio'))}
-                                    title="Rejouer le message"
-                                >
-                                    ↺ Replay
-                                </button>
-                            )}
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {error && (
-                <div className="error-banner">
-                    {error}
-                </div>
-            )}
-
-            <div className="controls">
-                <button
-                    className={`play-button ${isPlaying ? 'playing' : ''}`}
-                    onClick={() => setIsPlaying(!isPlaying)}
-                >
-                    {isPlaying ? <Pause size={32} /> : <Play size={32} />}
-                </button>
-            </div>
-        </div>
+            {/* Energy Modal - rendered outside ui-overlay for proper z-index */}
+            <EnergyModal />
+        </>
     );
 };
