@@ -50,10 +50,11 @@ export const HumeProvider = ({ children }: HumeProviderProps) => {
         : undefined;
 
     return (
-        // @ts-ignore - Hume API signature change workaround
         <VoiceProvider
-            auth={authConfig}
-            configId={humeConfigId || undefined}
+            {...({
+                auth: authConfig,
+                configId: humeConfigId || undefined
+            } as any)}
         >
             {children}
         </VoiceProvider>
