@@ -2,7 +2,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
-export async function createCheckoutSession() {
+export async function createCheckoutSession(priceId?: string, mode: 'subscription' | 'payment' = 'subscription') {
     const stripe = await stripePromise;
     if (!stripe) throw new Error('Stripe failed to load');
 
@@ -10,6 +10,7 @@ export async function createCheckoutSession() {
         const response = await fetch('/.netlify/functions/create-checkout-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ priceId, mode }),
         });
 
         if (!response.ok) {

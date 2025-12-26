@@ -4,9 +4,10 @@ import { createCheckoutSession } from '../utils/stripe';
 interface CheckoutModalProps {
     isOpen: boolean;
     onClose: () => void;
+    selectedTier: { priceId?: string; mode: 'subscription' | 'payment' };
 }
 
-export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
+export default function CheckoutModal({ isOpen, onClose, selectedTier }: CheckoutModalProps) {
     const [agreed18, setAgreed18] = useState(false);
     const [agreedAI, setAgreedAI] = useState(false);
     const [agreedTerms, setAgreedTerms] = useState(false);
@@ -20,7 +21,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
         setIsLoading(true);
         try {
-            await createCheckoutSession();
+            await createCheckoutSession(selectedTier.priceId, selectedTier.mode);
         } catch (error) {
             console.error(error);
             alert('Failed to start checkout. Please try again.');

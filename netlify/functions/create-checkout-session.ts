@@ -8,30 +8,57 @@ export const handler = async (event: any) => {
     }
 
     try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-                {
-                    price: process.env.STRIPE_PRICE_ID_FOUNDING,
-                    quantity: 1,
-                },
-            ],
-            mode: 'subscription',
-            success_url: `${process.env.URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.URL}/`,
-            allow_promotion_codes: true,
-            billing_address_collection: 'required',
-            customer_email: event.queryStringParameters?.email, // Optional pre-fill
-        });
+        const { priceId, mode, email } = JSON.parse(event.body || '{}');
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ id: session.id }),
-        };
-    } catch (error: any) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: error.message }),
-        };
-    }
-};
+        // Resolve Price ID
+        // Resolve Price ID
+        let finalPriceId = priceId;
+
+        // Handle aliases
+        if (priceId === 'visionary') {
+            finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY || 'price_1SifwBCzq6pJOi14DUbFs9Nr';
+        } else if (priceId === 'explorer') {
+            finalPriceId = process.env.STRIPE_PRICE_ID_EXPLORER;
+        }
+
+        if (!finalPriceId) {
+            // Fallback old logic
+            if (event.queryStringParameters?.price === 'visionary') {
+                finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY || 'price_1SifwBCzq6pJOi14DUbFs9Nr';
+            } else {
+                finalPriceId = process.env.STRIPE_PRICE_ID_FOUNDING || process.env.STRIPE_PRICE_ID_EXPLORER;
+            }
+        }
+
+        if (!finalPriceId) {
+            return { statusCode: 400, body: JSON.stringify({ error: 'Missing Price ID' }) };
+        }
+
+        try {
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [
+                    {
+                        price: finalPriceId,
+                        quantity: 1,
+                    },
+                ],
+                mode: mode || 'subscription',
+                success_url: `${process.env.APP_URL || process.env.URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${process.env.APP_URL || process.env.URL}/`,
+                allow_promotion_codes: true,
+                billing_address_collection: 'required',
+                customer_email: email || event.queryStringParameters?.email,
+            });
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ id: session.id }),
+            };
+        } catch (error: any) {
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: error.message }),
+            };
+        }
+    };

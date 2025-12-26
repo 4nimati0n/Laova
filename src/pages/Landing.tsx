@@ -26,7 +26,7 @@ const INITIAL_BANNER_CONFIG: Record<string, HeroElementConfig> = {
     landing6_bottom: {
         id: 'landing6_bottom',
         name: 'Spacer AFTER L6',
-        offset: 0 // vh
+        offset: 3 // vh
     },
     pricing_buttons: {
         id: 'pricing_buttons',
@@ -40,6 +40,7 @@ const INITIAL_BANNER_CONFIG: Record<string, HeroElementConfig> = {
 export default function Landing() {
     // ... existing state ...
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedTier, setSelectedTier] = useState<{ priceId?: string; mode: 'subscription' | 'payment' }>({ mode: 'subscription' });
     const [config, setConfig] = useState({ ...INITIAL_HERO_CONFIG, ...INITIAL_BANNER_CONFIG });
     const [heroClipBottom, setHeroClipBottom] = useState(0);
     const [landing3ClipBottom, setLanding3ClipBottom] = useState(0);
@@ -184,7 +185,10 @@ export default function Landing() {
                             <img
                                 src="/images/explorer.png"
                                 alt="Become Explorer"
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={() => {
+                                    setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
+                                    setIsModalOpen(true);
+                                }}
                                 className="cta-image-trigger cta-heartbeat"
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
@@ -232,7 +236,10 @@ export default function Landing() {
                             <img
                                 src="/images/visionary.png"
                                 alt="Become Visionary"
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={() => {
+                                    setSelectedTier({ priceId: 'visionary', mode: 'payment' });
+                                    setIsModalOpen(true);
+                                }}
                                 className="cta-image-trigger cta-heartbeat"
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
@@ -338,6 +345,7 @@ export default function Landing() {
             <CheckoutModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+                selectedTier={selectedTier}
             />
         </div>
     );

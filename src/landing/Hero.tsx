@@ -57,7 +57,7 @@ interface HeroProps {
     config?: Record<string, HeroElementConfig>; // Optional to fallback to default
 }
 
-export const Hero = ({ onOpenModal, config: externalConfig }: HeroProps) => {
+export const Hero = ({ config: externalConfig }: HeroProps) => {
     const [spotsLeft, setSpotsLeft] = useState(12);
     // Use external config or fallback (though parent should drive this now)
     const config = externalConfig || INITIAL_HERO_CONFIG;

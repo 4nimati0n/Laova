@@ -118,11 +118,10 @@ export const useVoiceInteraction = () => {
                 console.log('🚀 Connecting to Hume EVI with custom systemPrompt...');
 
                 connectHume(
+                    // @ts-ignore - Hume API signature change workaround
                     {
                         auth: { type: 'accessToken', value: humeAccessToken },
-                        configId: humeConfigId
-                    },
-                    {
+                        configId: humeConfigId,
                         systemPrompt: fullSystemPrompt
                     }
                 ).then(() => {
