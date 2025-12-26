@@ -551,38 +551,236 @@ section {
 }
 
 /* Modal */
+/* Modal - Dark Glassmorphism Design */
 .modal-overlay {
-    background: rgba(10, 8, 6, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(5, 4, 3, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 2000;
-    /* Ensure it's above everything including Hero (z-100) and banners (z-20) */
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
-    background: var(--bg-surface);
-    padding: 3rem;
-    border: 1px solid var(--gold-dim);
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-    color: var(--text-primary);
-    border-radius: 4px;
+    /* Glassmorphism Configuration */
+    background: rgba(20, 16, 14, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* Delicate Gold Border & Glow */
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(212, 175, 55, 0.1) inset,
+        0 0 20px rgba(212, 175, 55, 0.1);
+    /* Size & Layout */
+    width: 90%;
+    max-width: 500px;
+    padding: 3.5rem 3rem;
+    border-radius: 16px;
+    text-align: center;
+    position: relative;
+    /* Animation */
+    transform: scale(1);
+    animation: modalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPopIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--gold-light);
+    margin-bottom: 2.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.01em;
+}
+
+/* Custom Checkbox Styling */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: left;
+    margin-bottom: 2.5rem;
 }
 
 .checkbox-group label {
     color: var(--text-secondary);
+    font-size: 1.05rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: color 0.2s;
+    user-select: none;
 }
 
+.checkbox-group label:hover {
+    color: var(--text-primary);
+}
+
+.checkbox-group label a {
+    color: var(--gold-text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.checkbox-group label a:hover {
+    border-bottom-color: var(--gold-text);
+}
+
+/* Hide default checkbox */
+.checkbox-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--text-muted);
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    display: inline-grid;
+    place-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"]::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    transform: scale(0);
+    transition: 0.15s transform ease-in-out;
+    box-shadow: inset 1em 1em var(--bg-premium);
+    /* Checkmark color (inverted) */
+    background-color: var(--bg-premium);
+    transform-origin: center;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+/* Checked State */
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: var(--gold-primary);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.checkbox-group input[type="checkbox"]:checked::before {
+    transform: scale(1);
+    background-color: #1a1614;
+    /* Checkmark matches dark bg */
+}
+
+
+/* Crisis Warning Note */
 .crisis-note {
-    background: rgba(80, 20, 20, 0.3);
-    color: #ffcccc;
-    border: 1px solid #501414;
+    background: rgba(80, 20, 20, 0.15);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    border-left: 3px solid rgba(139, 0, 0, 0.6);
+    color: #e0bcbc;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    backdrop-filter: blur(5px);
+}
+
+/* Modal Buttons */
+.modal-content .cta-primary {
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dim) 100%);
+    color: #1a1614;
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    border-radius: 30px;
+    /* Pill shape */
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    width: 100%;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-content .cta-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.modal-content .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+}
+
+.modal-content .cta-primary:hover::after {
+    opacity: 1;
+}
+
+.modal-content .cta-primary:disabled {
+    background: #333;
+    color: #666;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.modal-content .cta-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+}
+
+.modal-content .cta-secondary:hover {
+    color: var(--text-primary);
+    text-decoration-color: var(--text-muted);
 }
 
 /* Footer */
