@@ -1,8 +1,9 @@
-import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize, Image, Expand } from 'lucide-react';
+import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize, Image, Expand, Users, Eye } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useState, useEffect } from 'react';
 import { EnergyDisplay } from './EnergyDisplay';
 import { EnergyModal } from './EnergyModal';
+import { GazeDebugPanel } from './GazeDebugPanel';
 
 export const UI = () => {
     const {
@@ -18,7 +19,12 @@ export const UI = () => {
         showConversation,
         visualizationEnabled,
         visualizationStyle,
-        setVisualizationStyle
+        setVisualizationStyle,
+        gazeDebugEnabled,
+        setGazeDebugEnabled,
+        currentModel,
+        setCurrentModel,
+        setCurrentPage
     } = useAppStore();
 
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -98,6 +104,33 @@ export const UI = () => {
                     <EnergyDisplay />
 
                     <div className="top-right-buttons">
+                        {/* Expression Measurement Test Button */}
+                        <button
+                            className="icon-button"
+                            onClick={() => setCurrentPage('expression-measurement')}
+                            title="Test Expression Measurement"
+                            style={{
+                                background: 'rgba(100, 200, 150, 0.2)',
+                                borderColor: 'rgba(100, 200, 150, 0.4)'
+                            }}
+                        >
+                            <Eye size={20} />
+                        </button>
+
+                        {/* Model Switcher Button */}
+                        <button
+                            className="icon-button model-switcher"
+                            onClick={() => setCurrentModel(currentModel === 'laura' ? 'lea' : 'laura')}
+                            title={`Changer vers ${currentModel === 'laura' ? 'Lea' : 'Laura'}`}
+                            style={{
+                                background: currentModel === 'lea' ? 'rgba(147, 112, 219, 0.3)' : 'rgba(255, 182, 193, 0.2)',
+                                borderColor: currentModel === 'lea' ? 'rgba(147, 112, 219, 0.5)' : 'rgba(255, 182, 193, 0.4)'
+                            }}
+                        >
+                            <Users size={20} />
+                            <span className="model-name">{currentModel === 'laura' ? 'Laura' : 'Lea'}</span>
+                        </button>
+
                         {/* Visualization mode toggle - only show if visualization is enabled */}
                         {visualizationEnabled && (
                             <button
@@ -174,6 +207,30 @@ export const UI = () => {
 
             {/* Energy Modal - rendered outside ui-overlay for proper z-index */}
             <EnergyModal />
+
+            {/* Gaze Debug Panel */}
+            <GazeDebugPanel />
+
+            {/* Debug Toggle Button (bottom-left) */}
+            <button
+                onClick={() => setGazeDebugEnabled(!gazeDebugEnabled)}
+                style={{
+                    position: 'fixed',
+                    bottom: '10px',
+                    left: '10px',
+                    padding: '8px 12px',
+                    background: gazeDebugEnabled ? '#0f0' : 'rgba(0,0,0,0.7)',
+                    color: gazeDebugEnabled ? '#000' : '#fff',
+                    border: '1px solid #333',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    cursor: 'pointer',
+                    zIndex: 9998,
+                    fontFamily: 'monospace'
+                }}
+            >
+                🎯 {gazeDebugEnabled ? 'Debug ON' : 'Debug'}
+            </button>
         </>
     );
 };

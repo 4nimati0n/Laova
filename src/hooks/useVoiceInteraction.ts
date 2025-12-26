@@ -1,10 +1,12 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { getOpenAIResponse, getMistralResponse, getElevenLabsAudio } from '../utils/ai';
+import { getOpenAIResponse, getMistralResponse, getElevenLabsAudio, LAURA_SYSTEM_PROMPT } from '../utils/ai';
 import { getElevenLabsAgentResponse } from '../utils/elevenLabsAgent';
 import { useVoice } from '@humeai/voice-react';
 import { extractTags, tagToEmotion, stripTags, getEmotionIntensity } from '../utils/audioTagEmotions';
 import { useVisualization } from './useVisualization';
+import { calculateResonanceState, getResonanceModifiers } from '../utils/resonanceSystem';
+import type { ResonanceModifiers } from '../utils/resonanceSystem';
 
 export const useVoiceInteraction = () => {
     const {
@@ -89,23 +91,42 @@ export const useVoiceInteraction = () => {
             }
 
             setUserMessage(lastMessage.message.content);
-            // Debug: log full message structure to find where emotions are
-            console.log('🎭 Full Hume user_message:', JSON.stringify(lastMessage, null, 2));
+            console.log('🎭 Hume user_message received');
             console.log('🎭 Hume emotions detected:', topEmotions);
             useAppStore.getState().addToConversationHistory('user', lastMessage.message.content, topEmotions);
+
+            // === AUREA INTEGRATION: Log Resonance State (for debugging) ===
+            const resonanceState = calculateResonanceState(topEmotions || []);
+            console.log('🔮 AUREA Resonance State:', resonanceState);
+            // Note: Hume STS handles the AI response, no need to call Mistral
+
         } else if (lastMessage.type === 'assistant_message' && lastMessage.message.content) {
+            // Display Hume's assistant response
+            console.log('💬 Hume Assistant Response:', lastMessage.message.content);
             setAiResponse(lastMessage.message.content);
             useAppStore.getState().addToConversationHistory('assistant', lastMessage.message.content);
         }
     }, [useHume, humeMessages, setUserMessage, setAiResponse]);
 
-    // Hume Connection Management
+    // Hume Connection Management - Pass systemPrompt via sessionSettings
     useEffect(() => {
         if (useHume) {
             if (isPlaying && humeAccessToken && humeReadyState === 'idle') {
-                connectHume({
-                    auth: { type: 'accessToken', value: humeAccessToken },
-                    configId: humeConfigId
+                // Build the complete system prompt with emotional intelligence
+                const fullSystemPrompt = LAURA_SYSTEM_PROMPT;
+
+                console.log('🚀 Connecting to Hume EVI with custom systemPrompt...');
+
+                connectHume(
+                    {
+                        auth: { type: 'accessToken', value: humeAccessToken },
+                        configId: humeConfigId
+                    },
+                    {
+                        systemPrompt: fullSystemPrompt
+                    }
+                ).then(() => {
+                    console.log('✅ Hume EVI connected with Laura\'s personality!');
                 }).catch(e => {
                     console.error("Hume Connection Failed:", e);
                     setError("Failed to connect to Hume AI");
@@ -209,8 +230,8 @@ export const useVoiceInteraction = () => {
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
 
-    const processUserMessage = useCallback(async (message: string) => {
-        if (useHume) {
+    const processUserMessage = useCallback(async (message: string, modifiers?: ResonanceModifiers) => {
+        if (useHume && !modifiers) {
             sendHumeUserInput(message);
             return;
         }
@@ -252,7 +273,8 @@ export const useVoiceInteraction = () => {
 
         if (mistralKey) {
             try {
-                response = await getMistralResponse(message);
+                if (modifiers?.delayMs) await new Promise(r => setTimeout(r, modifiers.delayMs));
+                response = await getMistralResponse(message, modifiers);
             } catch (e: any) {
                 console.error("Mistral failed", e);
                 setError(`Mistral Error: ${e.message}`);
@@ -400,7 +422,19 @@ export const useVoiceInteraction = () => {
         };
 
         recognitionRef.current.onresult = async (event: any) => {
-            const { deepgramKey, useDeepgram } = useAppStore.getState();
+            const { deepgramKey, useDeepgram, userDetectedEmotions } = useAppStore.getState();
+
+            // Build ResonanceModifiers from face-api emotions
+            const buildModifiersFromFaceEmotions = () => {
+                if (userDetectedEmotions && userDetectedEmotions.length > 0) {
+                    const resonanceState = calculateResonanceState(userDetectedEmotions);
+                    const modifiers = getResonanceModifiers(resonanceState, userDetectedEmotions);
+                    console.log('🎭 Face-api emotions detected:', userDetectedEmotions.slice(0, 3));
+                    console.log('🔮 AUREA Resonance State:', resonanceState);
+                    return modifiers;
+                }
+                return undefined;
+            };
 
             if (useDeepgram && deepgramKey && mediaRecorderRef.current) {
                 if (mediaRecorderRef.current.state === 'recording') {
@@ -426,7 +460,8 @@ export const useVoiceInteraction = () => {
                         if (transcript && transcript.trim().length > 0) {
                             console.log("Deepgram Heard:", transcript);
                             setUserMessage(transcript);
-                            processUserMessage(transcript);
+                            const modifiers = buildModifiersFromFaceEmotions();
+                            processUserMessage(transcript, modifiers);
                         } else {
                             console.log("Deepgram: No speech detected");
                         }
@@ -440,7 +475,8 @@ export const useVoiceInteraction = () => {
                         console.error("Deepgram API failed", e);
                         const transcript = event.results[event.results.length - 1][0].transcript;
                         setUserMessage(transcript);
-                        processUserMessage(transcript);
+                        const modifiers = buildModifiersFromFaceEmotions();
+                        processUserMessage(transcript, modifiers);
                     }
                 }, 100);
 
@@ -448,7 +484,8 @@ export const useVoiceInteraction = () => {
                 const transcript = event.results[event.results.length - 1][0].transcript;
                 console.log("Browser Heard:", transcript);
                 setUserMessage(transcript);
-                processUserMessage(transcript);
+                const modifiers = buildModifiersFromFaceEmotions();
+                processUserMessage(transcript, modifiers);
             }
         };
 

@@ -6,8 +6,7 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Group, Vector3, Raycaster, Vector2 } from 'three';
 import { useAppStore } from '../store/useAppStore';
 
-// Laura's center of gravity - hara (lower abdomen, around navel height)
-const LAURA_CENTER = new Vector3(0, 0, 0);
+
 
 // Unified interaction controller
 // - Click on Laura + Drag → Pan (move camera parallel to screen)
@@ -22,7 +21,7 @@ const InteractionController = ({
 
     // Drag state
     const dragStart = useRef({ x: 0, y: 0 });
-    const cameraStart = useRef(new Vector3());
+    const pivotStart = useRef(new Vector3());
     const raycaster = useRef(new Raycaster());
     const pointer = useRef(new Vector2());
 
@@ -51,7 +50,7 @@ const InteractionController = ({
             if (onLaura) {
                 setMode('drag');
                 dragStart.current = { x: e.clientX, y: e.clientY };
-                cameraStart.current.copy(camera.position);
+                pivotStart.current.copy(pivotRef.current?.position || new Vector3());
                 canvas.style.cursor = 'grabbing';
             } else {
                 setMode('rotate');
@@ -67,8 +66,8 @@ const InteractionController = ({
         const handlePointerMove = (e: PointerEvent) => {
             if (mode === 'none') return;
 
-            if (mode === 'drag') {
-                // Pan: move camera along its local right and up vectors (screen-parallel)
+            if (mode === 'drag' && pivotRef.current) {
+                // Pan: move Laura along screen-parallel plane
                 const deltaX = (e.clientX - dragStart.current.x) * 0.005;
                 const deltaY = (e.clientY - dragStart.current.y) * 0.005;
 
@@ -79,10 +78,10 @@ const InteractionController = ({
                 right.setFromMatrixColumn(camera.matrix, 0); // Right vector
                 up.setFromMatrixColumn(camera.matrix, 1); // Up vector
 
-                // Move camera along screen-parallel plane
-                camera.position.copy(cameraStart.current)
-                    .addScaledVector(right, -deltaX)
-                    .addScaledVector(up, deltaY);
+                // Move Laura along screen-parallel plane (positive deltaX = move right)
+                pivotRef.current.position.copy(pivotStart.current)
+                    .addScaledVector(right, deltaX)
+                    .addScaledVector(up, -deltaY);
 
             } else if (mode === 'rotate' && pivotRef.current) {
                 const deltaX = e.clientX - rotateStart.current.x;
@@ -114,29 +113,31 @@ const InteractionController = ({
         };
     }, [mode, camera, gl, pivotRef, scene]);
 
-    // Zoom: dolly towards Laura's center (not just camera Z)
+    // Zoom with mouse wheel - scale Laura around her center of gravity
     useEffect(() => {
         const canvas = gl.domElement;
 
         const handleWheel = (e: WheelEvent) => {
             e.preventDefault();
-            const zoomSpeed = 0.05; // Even faster zoom
+            if (!pivotRef.current) return;
 
-            // Vector from camera to Laura's center
-            const toCenter = new Vector3().subVectors(LAURA_CENTER, camera.position);
-            const distance = toCenter.length();
+            const zoomSpeed = 0.001;
+            const currentScale = pivotRef.current.scale.x;
 
-            // New distance (clamped)
-            const newDistance = Math.max(0.8, Math.min(6, distance + e.deltaY * zoomSpeed));
+            // Calculate new scale (inverse delta so scroll up = bigger)
+            const newScale = currentScale - e.deltaY * zoomSpeed;
+            const clampedScale = Math.max(0.5, Math.min(3, newScale));
 
-            // Move camera along the line to Laura's center
-            toCenter.normalize().multiplyScalar(newDistance);
-            camera.position.copy(LAURA_CENTER).sub(toCenter);
+            // Apply uniform scale to Laura - centered on pivot (her hara)
+            pivotRef.current.scale.setScalar(clampedScale);
+
+            // Save zoom level for debug panel
+            (window as any).__lauraZoom = clampedScale;
         };
 
         canvas.addEventListener('wheel', handleWheel, { passive: false });
         return () => canvas.removeEventListener('wheel', handleWheel);
-    }, [camera, gl]);
+    }, [gl, pivotRef]);
 
     return null;
 };

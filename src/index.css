@@ -222,6 +222,25 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Model Switcher Button - Pill shape with name */
+.icon-button.model-switcher {
+  border-radius: 20px;
+  padding: 0.4rem 0.75rem;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.icon-button.model-switcher .model-name {
+  text-transform: capitalize;
+}
+
+.icon-button.model-switcher:hover {
+  transform: scale(1.05);
+}
+
 .status-indicator {
   display: flex;
   align-items: center;

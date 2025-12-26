@@ -7,7 +7,7 @@ interface HumeProviderProps {
 }
 
 export const HumeProvider = ({ children }: HumeProviderProps) => {
-    const { humeApiKey, humeSecretKey, useHume, setHumeAccessToken } = useAppStore();
+    const { humeApiKey, humeSecretKey, useHume, setHumeAccessToken, humeAccessToken, humeConfigId } = useAppStore();
 
     useEffect(() => {
         const fetchAccessToken = async () => {
@@ -34,6 +34,7 @@ export const HumeProvider = ({ children }: HumeProviderProps) => {
 
                 const data = await response.json();
                 setHumeAccessToken(data.access_token);
+                console.log('✅ Hume AI access token obtained successfully');
             } catch (error) {
                 console.error('Error fetching Hume access token:', error);
                 setHumeAccessToken(null);
@@ -43,8 +44,16 @@ export const HumeProvider = ({ children }: HumeProviderProps) => {
         fetchAccessToken();
     }, [humeApiKey, humeSecretKey, useHume, setHumeAccessToken]);
 
+    // Only provide auth when we have a valid access token
+    const authConfig = humeAccessToken
+        ? { type: 'accessToken' as const, value: humeAccessToken }
+        : undefined;
+
     return (
-        <VoiceProvider>
+        <VoiceProvider
+            auth={authConfig}
+            configId={humeConfigId || undefined}
+        >
             {children}
         </VoiceProvider>
     );

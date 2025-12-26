@@ -318,7 +318,7 @@ Créer une **présence numérique** qui :
 
 ## 🎯 Vision & Objectifs Futurs
 
-> **Note** : Développement accéléré grâce aux outils IA de coding (Antigravity, Cursor, etc.)  
+> **Note** : Développement accéléré grâce aux outils IA de coding (Antigravity)  
 > Timeline agressive avec lancement public prévu dans **2 semaines**.
 
 ### Court Terme (2 semaines) - **LANCEMENT PUBLIC**

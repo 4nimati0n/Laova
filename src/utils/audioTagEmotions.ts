@@ -110,6 +110,9 @@ export const getEmotionIntensity = (emotion: Emotion): number => {
         surprised: 2.5,
         extra: 1.0,
         blink: 1.0,
+        fun: 1.0,
+        joy: 1.0,
+        sorrow: 2.0,
     };
     return intensities[emotion];
 };

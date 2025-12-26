@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laura - Questions & RÃ©ponses ComplÃ¨tes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .section-card { transition: all 0.3s ease; }
+        .section-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .code-block { background: #1e1e1e; color: #d4d4d4; border-radius: 8px; padding: 16px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13px; }
+        .highlight { background: linear-gradient(120deg, #ffd700 0%, #ffed4a 100%); padding: 2px 6px; border-radius: 4px; }
+        details summary { cursor: pointer; list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow { transform: rotate(90deg); }
+        .arrow { transition: transform 0.2s; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #f3f4f6; font-weight: 600; }
+        tr:nth-child(even) { background: #f9fafb; }
+        .nav-link { transition: all 0.2s; }
+        .nav-link:hover { background: rgba(255,255,255,0.1); }
+        .toc-item { border-left: 3px solid transparent; transition: all 0.2s; }
+        .toc-item:hover { border-left-color: #667eea; background: #f3f4f6; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 px-6 shadow-lg">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-4xl font-bold mb-2">ðŸŒ¸ Laura - Q&A Technique Complet</h1>
+            <p class="text-xl opacity-90">Toutes les rÃ©ponses Ã  tes questions sur l'architecture RLHF Ã©motionnel</p>
+            <p class="text-sm opacity-70 mt-2">Document interactif - DÃ©cembre 2025</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-3">
+            <div class="flex flex-wrap gap-2 text-sm">
+                <a href="#budget" class="nav-link px-3 py-1 rounded bg-purple-100 text-purple-700 hover:bg-purple-200">ðŸ’° Budget</a>
+                <a href="#technique" class="nav-link px-3 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200">âš™ï¸ Technique</a>
+                <a href="#pipeline" class="nav-link px-3 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200">ðŸ”„ Pipeline</a>
+                <a href="#scaling" class="nav-link px-3 py-1 rounded bg-yellow-100 text-yellow-700 hover:bg-yellow-200">ðŸ“ˆ Scaling</a>
+                <a href="#ethique" class="nav-link px-3 py-1 rounded bg-pink-100 text-pink-700 hover:bg-pink-200">â¤ï¸ Ã‰thique</a>
+                <a href="#architecture" class="nav-link px-3 py-1 rounded bg-indigo-100 text-indigo-700 hover:bg-indigo-200">ðŸ—ï¸ Architecture</a>
+                <a href="#avantage" class="nav-link px-3 py-1 rounded bg-orange-100 text-orange-700 hover:bg-orange-200">ðŸš€ Avantage</a>
+                <a href="#reglementation" class="nav-link px-3 py-1 rounded bg-red-100 text-red-700 hover:bg-red-200">âš–ï¸ RÃ©glementation</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-8">
+        
+        <!-- SECTION 1: BUDGET -->
+        <section id="budget" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸ’°</span>
+                <h2 class="text-3xl font-bold text-gray-800">Budget & CoÃ»ts</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Ã€ quoi correspond le budget initial de $200-500 ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as raison de questionner cela ! Ce budget correspond Ã  la <strong>phase de test/MVP (1-3 mois)</strong> pour valider l'approche AVANT d'avoir des utilisateurs payants :</p>
+                        
+                        <table class="mt-4">
+                            <tr><th>Composant</th><th>CoÃ»t</th><th>Usage</th></tr>
+                            <tr><td>Hume AI</td><td>$50-100</td><td>$20 crÃ©dits gratuits + tests supplÃ©mentaires</td></tr>
+                            <tr><td>Mistral API (dev)</td><td>$50-100</td><td>DÃ©veloppement et tests</td></tr>
+                            <tr><td>Infrastructure cloud</td><td>$50-100</td><td>Modal/RunPod pour premiers entraÃ®nements</td></tr>
+                            <tr><td>DSPy optimizations</td><td>$20-50</td><td>Optimisation prompts initiale</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>$200-500</strong></td><td>Validation de la boucle d'apprentissage</td></tr>
+                        </table>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                            <p class="text-blue-800"><strong>ðŸ’¡ Ensuite :</strong> Une fois en production avec utilisateurs payants, les revenus ($14.99/mois Ã— nombre d'abonnÃ©s) doivent couvrir les coÃ»ts variables (LLM + Hume AI par message). Le pricing doit Ãªtre calculÃ© pour que <strong>revenu par user > coÃ»t par user</strong>.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Projection rÃ©aliste du nombre de messages par utilisateur
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">DonnÃ©es des concurrents :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li><strong>Replika</strong> : 70 messages/jour par utilisateur actif</li>
+                            <li><strong>Character.AI</strong> : 75 minutes/jour â‰ˆ 25-45 messages/jour</li>
+                            <li><strong>Xiaoice</strong> : 23 Ã©changes/session, sessions multiples</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Projection pour Laura (10K utilisateurs) :</h4>
+                        <table>
+                            <tr><th>Segment</th><th>%</th><th>Nb users</th><th>Msg/jour</th><th>Total/jour</th></tr>
+                            <tr><td>TrÃ¨s actifs</td><td>30%</td><td>3,000</td><td>40</td><td>120,000</td></tr>
+                            <tr><td>Moyens</td><td>50%</td><td>5,000</td><td>20</td><td>100,000</td></tr>
+                            <tr><td>Occasionnels</td><td>20%</td><td>2,000</td><td>5</td><td>10,000</td></tr>
+                            <tr><td><strong>Total</strong></td><td>100%</td><td>10,000</td><td>-</td><td><strong>230,000/jour</strong></td></tr>
+                        </table>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <p class="text-yellow-800"><strong>ðŸ“Š Soit ~6.9M messages/mois</strong> (et non 300K comme dans ma projection initiale trop conservatrice de 30 msg/mois)</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Pourquoi j'ai mentionnÃ© "audio" alors que c'est du texte ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Bonne question ! J'ai mentionnÃ© "80% texte / 20% audio" car Laura intÃ¨gre :</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>ElevenLabs</strong> : Pour que Laura PARLE (text-to-speech)</li>
+                            <li><strong>Hume AI vocal</strong> : Pour analyser la VOIX de l'utilisateur quand il parle</li>
+                        </ul>
+                        
+                        <p class="text-gray-700 mt-4">Si Laura est <strong>100% texte</strong> (pas de voix) :</p>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Pas de coÃ»t ElevenLabs</li>
+                            <li>Hume AI analyse le texte (moins cher que l'audio)</li>
+                            <li><strong>CoÃ»ts divisÃ©s par ~5</strong></li>
+                        </ul>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>ðŸ’¡ Recommandation :</strong> Commence texte-only pour MVP, ajoute la voix en V2 une fois rentable.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        CoÃ»ts rÃ©visÃ©s avec projections rÃ©alistes
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">Pour 10K utilisateurs (6.9M messages/mois, texte only) :</h4>
+                        <table>
+                            <tr><th>Composant</th><th>CoÃ»t/mois</th></tr>
+                            <tr><td>Mistral 7B (TPU v5e self-hosted)</td><td>$3,000</td></tr>
+                            <tr><td>Hume AI (analyse texte)</td><td>$4,500</td></tr>
+                            <tr><td>Infrastructure (PostgreSQL, Redis, etc.)</td><td>$1,000</td></tr>
+                            <tr><td>Modal (training hebdomadaire)</td><td>$200</td></tr>
+                            <tr><td>Prefect, MLflow, monitoring</td><td>$300</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>~$9,000/mois</strong></td></tr>
+                        </table>
+
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <p class="text-purple-800 font-semibold">CoÃ»t par utilisateur</p>
+                                <p class="text-3xl font-bold text-purple-600">$0.90/mois</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-green-800 font-semibold">Marge avec $14.99/mois</p>
+                                <p class="text-3xl font-bold text-green-600">$14.09/user</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TECHNIQUE DSPy/DPO/PPO -->
+        <section id="technique" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">âš™ï¸</span>
+                <h2 class="text-3xl font-bold text-gray-800">Fonctionnement Technique</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Comment fonctionne DSPy concrÃ¨tement ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>DSPy = "Declarative Self-improving Python"</strong> (Stanford NLP)</p>
+                        
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <p class="font-semibold text-gray-800">ðŸŽ¯ Concept clÃ© :</p>
+                            <p class="text-gray-700">Au lieu d'Ã©crire des prompts manuellement et de les tweaker Ã  la main, tu dÃ©finis <strong>QUOI</strong> faire (signature) et DSPy optimise automatiquement <strong>COMMENT</strong> le faire.</p>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Exemple concret :</h4>
+                        <div class="code-block">
+<pre># âŒ Approche classique (tu Ã©cris le prompt toi-mÃªme)
+prompt = """Given user emotions {emotions} and context {context},
+generate an empathetic response that validates feelings
+while encouraging growth. Be warm but not sycophantic..."""
+
+# âœ… Avec DSPy (tu dÃ©finis juste la signature)
+signature = "user_message, detected_emotions -> empathetic_response"
+module = dspy.ChainOfThought(signature)
+
+# DSPy gÃ©nÃ¨re et optimise le prompt automatiquement !</pre>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Processus d'optimisation :</h4>
+                        <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+                            <li>Tu fournis <strong>10-50 exemples</strong> (input/output souhaitÃ©)</li>
+                            <li>Tu dÃ©finis une <strong>mÃ©trique</strong> (ex: score Ã©motionnel Hume AI)</li>
+                            <li>DSPy teste <strong>des centaines de variations</strong> de prompts</li>
+                            <li>Il garde les prompts qui <strong>maximisent ta mÃ©trique</strong></li>
+                        </ol>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Pour Laura concrÃ¨tement :</h4>
+                        <div class="code-block">
+<pre>import dspy
+
+# 1. DÃ©finir la mÃ©trique basÃ©e sur Hume AI
+def emotional_metric(example, prediction):
+    emotions = hume_ai.analyze(prediction.response)
+    return wellness_score(emotions)  # Score de bien-Ãªtre
+
+# 2. CrÃ©er le module Laura
+class Laura(dspy.Module):
+    def __init__(self):
+        self.respond = dspy.ChainOfThought(
+            "user_message, detected_emotions -> empathetic_response"
+        )
+    
+    def forward(self, user_message, emotions):
+        return self.respond(user_message=user_message, 
+                           detected_emotions=emotions)
+
+# 3. Optimiser !
+optimizer = dspy.MIPROv2(metric=emotional_metric)
+optimized_laura = optimizer.compile(
+    Laura(),
+    trainset=examples,  # Tes 50 exemples
+    num_trials=50       # Teste 50 variations
+)
+# RÃ©sultat : prompt optimisÃ© automatiquement !</pre>
+                        </div>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                            <p class="text-blue-800"><strong>ðŸ’° CoÃ»t :</strong> ~$2-10 par optimisation (10 minutes)<br>
+                            <strong>ðŸ“ˆ AmÃ©lioration typique :</strong> +15% Ã  +112% sur la mÃ©trique cible</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        DPO vs PPO : Comparaison complÃ¨te
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <table>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>DPO (Direct Preference Optimization)</th>
+                                <th>PPO (Proximal Policy Optimization)</th>
+                            </tr>
+                            <tr>
+                                <td><strong>ComplexitÃ©</strong></td>
+                                <td class="bg-green-50">Simple (1 seule Ã©tape)</td>
+                                <td class="bg-red-50">Complexe (2 Ã©tapes)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>StabilitÃ©</strong></td>
+                                <td class="bg-green-50">TrÃ¨s stable</td>
+                                <td class="bg-yellow-50">Peut Ãªtre instable</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CoÃ»t</strong></td>
+                                <td class="bg-green-50">$15-50/session</td>
+                                <td class="bg-red-50">$150-600/session</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Temps</strong></td>
+                                <td class="bg-green-50">4-8 heures</td>
+                                <td class="bg-red-50">10-48 heures</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GPUs nÃ©cessaires</strong></td>
+                                <td class="bg-green-50">1Ã— A100</td>
+                                <td class="bg-red-50">2-4Ã— A100</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DonnÃ©es minimum</strong></td>
+                                <td>5K paires</td>
+                                <td>10-20K paires</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reward model</strong></td>
+                                <td class="bg-green-50">Non (implicite)</td>
+                                <td>Oui (explicite)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Comparable</td>
+                                <td>LÃ©gÃ¨rement meilleur</td>
+                            </tr>
+                        </table>
+
+                        <h4 class="font-semibold text-gray-800 mt-6">Comment ils fonctionnent :</h4>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">DPO (RecommandÃ© pour Laura)</h5>
+                                <ol class="list-decimal pl-5 text-green-700 text-sm space-y-1 mt-2">
+                                    <li>Prend des paires (prompt, rÃ©ponse_bonne, rÃ©ponse_mauvaise)</li>
+                                    <li>Optimise directement pour prÃ©fÃ©rer la bonne</li>
+                                    <li>Pas de reward model sÃ©parÃ©</li>
+                                    <li>MathÃ©matiquement Ã©quivalent Ã  PPO mais plus simple</li>
+                                </ol>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-orange-800">PPO</h5>
+                                <ol class="list-decimal pl-5 text-orange-700 text-sm space-y-1 mt-2">
+                                    <li>D'abord entraÃ®ne un reward model</li>
+                                    <li>GÃ©nÃ¨re des rÃ©ponses avec le modÃ¨le</li>
+                                    <li>Reward model score les rÃ©ponses</li>
+                                    <li>Optimise pour maximiser le score</li>
+                                    <li>ItÃ¨re plusieurs fois</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mt-4">
+                            <p class="text-purple-800"><strong>ðŸŽ¯ Recommandation :</strong> Utilise <strong>DPO</strong> pour Laura. Plus simple, stable, et suffisant pour l'optimisation Ã©motionnelle. PPO n'apporte pas assez de bÃ©nÃ©fices pour justifier sa complexitÃ© dans ton cas.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Pourquoi mensuel et pas quotidien ? (300/jour vs 10K/mois)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as raison sur le principe ! Le coÃ»t dÃ©pend du nombre de paires ET du temps GPU. Mais il y a des nuances :</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Pourquoi pas quotidien mÃªme avec peu de donnÃ©es :</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>Minimum viable :</strong> ~1K paires pour DPO stable. Moins = risque d'overfitting</li>
+                            <li><strong>Overhead fixe :</strong> Charger le modÃ¨le, setup = ~1-2h incompressible mÃªme pour 100 paires</li>
+                            <li><strong>Catastrophic forgetting :</strong> EntraÃ®ner trop souvent sur peu de donnÃ©es = le modÃ¨le oublie ce qu'il savait</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Calcul concret :</h4>
+                        <table>
+                            <tr><th>FrÃ©quence</th><th>Paires/session</th><th>CoÃ»t DPO</th><th>CoÃ»t/mois</th></tr>
+                            <tr><td>Quotidien</td><td>300</td><td>$15 + instable</td><td>$450 + risques</td></tr>
+                            <tr><td>Hebdomadaire</td><td>2,100</td><td>$15-30</td><td>$60-120 âœ…</td></tr>
+                            <tr><td>Bi-mensuel</td><td>4,200</td><td>$20-40</td><td>$40-80 âœ…</td></tr>
+                        </table>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… Si tu as 10K paires/jour :</strong> OUI, l'entraÃ®nement quotidien devient viable !<br>
+                            Avec 4Ã— A100 : ~2h/jour = $15/jour = $450/mois (acceptable si revenus suffisants)</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Pourquoi "4 modÃ¨les en mÃ©moire" pour PPO ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">PPO nÃ©cessite 4 copies du modÃ¨le simultanÃ©ment :</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">1. Policy model (Ï€)</h5>
+                                <p class="text-blue-700 text-sm">Le modÃ¨le en cours d'entraÃ®nement - celui qui gÃ©nÃ¨re les rÃ©ponses</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">2. Reference model (Ï€_ref)</h5>
+                                <p class="text-green-700 text-sm">Copie figÃ©e du modÃ¨le initial - pour Ã©viter que le modÃ¨le dÃ©rive trop</p>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-800">3. Reward model</h5>
+                                <p class="text-purple-700 text-sm">PrÃ©dit le score d'une rÃ©ponse (entraÃ®nÃ© sÃ©parÃ©ment)</p>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-orange-800">4. Value model</h5>
+                                <p class="text-orange-700 text-sm">Estime la valeur d'un Ã©tat (critique dans actor-critic)</p>
+                            </div>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">MÃ©moire requise (Mistral 7B) :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>1 modÃ¨le : ~14 GB (FP16)</li>
+                            <li>4 modÃ¨les : ~56 GB</li>
+                            <li>Avec gradients : ~80-100 GB</li>
+                            <li><strong>Donc : 2-4Ã— A100 80GB nÃ©cessaires</strong></li>
+                        </ul>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>DPO n'a besoin que de 2 modÃ¨les :</strong> Policy + Reference<br>
+                            â†’ 1Ã— A100 80GB suffit = <strong>moitiÃ© moins cher</strong></p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        TRL, PEFT, LoRA, OpenRLHF, vLLM... C'est quoi tout Ã§a ? (expliquÃ© simplement)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">ðŸ”§ TRL (Transformer Reinforcement Learning)</h5>
+                                <p class="text-blue-700">Une boÃ®te Ã  outils de Hugging Face pour faire du RLHF facilement. C'est comme une "recette de cuisine" prÃªte Ã  l'emploi pour entraÃ®ner des modÃ¨les avec DPO ou PPO.</p>
+                                <p class="text-blue-600 text-sm mt-2">â†’ <strong>UtilitÃ© :</strong> Tu l'utilises pour entraÃ®ner Laura avec les feedbacks Ã©motionnels</p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">ðŸŽ¯ PEFT / LoRA (Parameter-Efficient Fine-Tuning)</h5>
+                                <p class="text-green-700">Au lieu de modifier les 7 milliards de paramÃ¨tres de Mistral (coÃ»teux), LoRA n'en modifie que ~1% via de petites "extensions". RÃ©sultat : mÃªme qualitÃ©, 80% moins de mÃ©moire GPU.</p>
+                                <p class="text-green-600 text-sm mt-2">â†’ <strong>UtilitÃ© :</strong> EntraÃ®ner Mistral 7B avec 1 seul A100 au lieu de 4</p>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-800">ðŸš€ vLLM</h5>
+                                <p class="text-purple-700">Un moteur ultra-rapide pour faire tourner les LLM en production. Il gÃ¨re intelligemment la mÃ©moire et traite plusieurs requÃªtes en parallÃ¨le.</p>
+                                <p class="text-purple-600 text-sm mt-2">â†’ <strong>UtilitÃ© :</strong> Servir Laura Ã  des milliers d'utilisateurs simultanÃ©s avec faible latence</p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-orange-800">âš¡ OpenRLHF</h5>
+                                <p class="text-orange-700">Alternative Ã  TRL, optimisÃ©e pour la production. 3-4Ã— plus rapide grÃ¢ce Ã  l'intÃ©gration avec vLLM.</p>
+                                <p class="text-orange-600 text-sm mt-2">â†’ <strong>UtilitÃ© :</strong> Quand tu auras 10K+ users et que la vitesse d'entraÃ®nement compte</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-100 p-4 rounded-lg mt-4">
+                            <h5 class="font-bold text-gray-800">ðŸ“‹ Workflow recommandÃ© :</h5>
+                            <ol class="list-decimal pl-5 text-gray-700 space-y-1 mt-2">
+                                <li><strong>DÃ©veloppement :</strong> TRL + PEFT/LoRA (facile Ã  apprendre)</li>
+                                <li><strong>Production :</strong> OpenRLHF + vLLM (performant)</li>
+                            </ol>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PIPELINE -->
+        <section id="pipeline" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸ”„</span>
+                <h2 class="text-3xl font-bold text-gray-800">Pipeline & Automatisation</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Qu'est-ce qu'un pipeline de donnÃ©es ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Un <strong>pipeline</strong> est une sÃ©quence automatisÃ©e d'Ã©tapes qui transforment les donnÃ©es brutes en rÃ©sultat final. Comme une chaÃ®ne de montage dans une usine.</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Pipeline de Laura :</h4>
+                        <div class="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+                            <div class="flex items-center gap-2 text-sm flex-wrap">
+                                <span class="bg-blue-200 px-3 py-1 rounded">ðŸ’¬ Conversations</span>
+                                <span>â†’</span>
+                                <span class="bg-green-200 px-3 py-1 rounded">ðŸŽ­ Hume AI</span>
+                                <span>â†’</span>
+                                <span class="bg-yellow-200 px-3 py-1 rounded">ðŸ“Š Scores Ã©motionnels</span>
+                                <span>â†’</span>
+                                <span class="bg-orange-200 px-3 py-1 rounded">ðŸ” Filtrage</span>
+                                <span>â†’</span>
+                                <span class="bg-red-200 px-3 py-1 rounded">ðŸ“¦ Paires DPO</span>
+                                <span>â†’</span>
+                                <span class="bg-purple-200 px-3 py-1 rounded">ðŸ’¾ PostgreSQL</span>
+                                <span>â†’</span>
+                                <span class="bg-pink-200 px-3 py-1 rounded">ðŸŽ“ EntraÃ®nement</span>
+                                <span>â†’</span>
+                                <span class="bg-indigo-200 px-3 py-1 rounded">ðŸš€ DÃ©ploiement</span>
+                            </div>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">"Pipeline stabilisÃ©" signifie :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Pas d'erreurs frÃ©quentes</li>
+                            <li>Temps d'exÃ©cution prÃ©visible</li>
+                            <li>Gestion automatique des Ã©checs (retry)</li>
+                            <li>Monitoring et alertes fonctionnels</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Comment automatiser l'entraÃ®nement ? (dÃ©taillÃ©)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">Outils et leurs rÃ´les :</h4>
+                        
+                        <table>
+                            <tr><th>Outil</th><th>RÃ´le</th><th>CoÃ»t</th></tr>
+                            <tr><td><strong>Prefect Cloud</strong></td><td>Planifie et orchestre les tÃ¢ches (ex: "tous les lundis Ã  2h")</td><td>Gratuit (&lt;100K runs)</td></tr>
+                            <tr><td><strong>Modal</strong></td><td>Loue des GPU Ã  la demande pour l'entraÃ®nement</td><td>$1.89/h (A100)</td></tr>
+                            <tr><td><strong>PostgreSQL</strong></td><td>Stocke les conversations et scores</td><td>$20-50/mois</td></tr>
+                            <tr><td><strong>MLflow</strong></td><td>Versionne les modÃ¨les (garde l'historique)</td><td>Gratuit (self-hosted)</td></tr>
+                            <tr><td><strong>Slack</strong></td><td>Envoie des notifications (succÃ¨s/Ã©chec)</td><td>Gratuit</td></tr>
+                        </table>
+
+                        <h4 class="font-semibold text-gray-800 mt-6">Flux automatisÃ© complet :</h4>
+                        <div class="code-block text-xs">
+<pre># Pipeline automatisÃ© avec Prefect (pseudo-code simplifiÃ©)
+
+@task  # Ã‰tape 1
+def collecter_donnees():
+    """RÃ©cupÃ¨re les conversations de la semaine"""
+    return db.query("SELECT * FROM conversations WHERE date > 7_jours")
+
+@task  # Ã‰tape 2
+def preparer_paires(conversations):
+    """Transforme en paires (bonne rÃ©ponse, mauvaise rÃ©ponse)"""
+    paires = []
+    for conv in conversations:
+        if conv.score > 70:  # Bonne rÃ©ponse
+            bonne = conv.response
+        if conv.score < 30:  # Mauvaise rÃ©ponse
+            mauvaise = conv.response
+        paires.append((conv.prompt, bonne, mauvaise))
+    return paires
+
+@task  # Ã‰tape 3
+def entrainer_modele(paires):
+    """Lance l'entraÃ®nement DPO sur Modal (GPU cloud)"""
+    with modal.gpu("A100"):
+        nouveau_modele = dpo_train(paires)
+    return nouveau_modele
+
+@task  # Ã‰tape 4
+def evaluer_et_deployer(nouveau_modele):
+    """Si meilleur, dÃ©ploie en production"""
+    if nouveau_modele.score > modele_actuel.score:
+        deployer(nouveau_modele)
+        slack.notify("âœ… Nouveau modÃ¨le dÃ©ployÃ© !")
+    else:
+        slack.notify("âš ï¸ Pas d'amÃ©lioration")
+
+# Planification : tous les lundis Ã  2h du matin
+@flow(schedule="0 2 * * 1")  # Cron expression
+def pipeline_hebdomadaire():
+    data = collecter_donnees()
+    paires = preparer_paires(data)
+    if len(paires) >= 1000:  # Assez de donnÃ©es ?
+        modele = entrainer_modele(paires)
+        evaluer_et_deployer(modele)
+    else:
+        slack.notify("Pas assez de donnÃ©es cette semaine")</pre>
+                        </div>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… RÃ©sultat :</strong> Une fois configurÃ©, tout se fait automatiquement chaque semaine. Tu reÃ§ois juste une notification Slack !</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Les services GPU (Modal, RunPod) s'intÃ¨grent-ils dans un flux automatisÃ© ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>Oui, absolument !</strong> Ces services sont conÃ§us pour l'automatisation.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">Modal (â­ RecommandÃ©)</h5>
+                                <ul class="text-green-700 text-sm space-y-1 mt-2">
+                                    <li>âœ… Automatisation native (scheduling intÃ©grÃ©)</li>
+                                    <li>âœ… DÃ©marrage en 30 secondes</li>
+                                    <li>âœ… $1.89/h (A100)</li>
+                                    <li>âœ… Facture Ã  la seconde</li>
+                                </ul>
+                                <div class="code-block text-xs mt-2">
+<pre>@modal.function(
+    gpu="A100",
+    schedule=modal.Cron("0 2 * * 1")
+)
+def weekly_training():
+    # S'exÃ©cute automatiquement !</pre>
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">RunPod</h5>
+                                <ul class="text-blue-700 text-sm space-y-1 mt-2">
+                                    <li>âœ… Moins cher : $1.39/h</li>
+                                    <li>âš ï¸ Automatisation via API</li>
+                                    <li>âš ï¸ DÃ©marrage 2-5 minutes</li>
+                                </ul>
+                                <div class="code-block text-xs mt-2">
+<pre># Via API
+pod = runpod.create_pod(gpu="A100")
+pod.exec("python train.py")
+pod.terminate()  # Stop quand fini</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mt-4">
+                            <p class="text-purple-800"><strong>ðŸŽ¯ Recommandation :</strong> Utilise <strong>Modal</strong> pour l'automatisation parfaite. RunPod si tu veux Ã©conomiser quelques centimes par heure.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 4: SCALING -->
+        <section id="scaling" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸ“ˆ</span>
+                <h2 class="text-3xl font-bold text-gray-800">Scaling & Limites</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Rate limit Hume AI : combien d'utilisateurs max ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>Limite Hume AI :</strong> 50 requÃªtes/seconde</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Calcul de capacitÃ© :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>50 req/s Ã— 60s Ã— 60min = <strong>180,000 requÃªtes/heure</strong></li>
+                            <li>Si analyse de chaque message utilisateur...</li>
+                            <li>Utilisateur moyen : 1 message/5 minutes quand actif</li>
+                            <li>â†’ <strong>~15,000 utilisateurs actifs simultanÃ©s</strong></li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">En pratique (pas tout le monde en mÃªme temps) :</h4>
+                        <table>
+                            <tr><th>Total utilisateurs</th><th>% actifs simultanÃ©s</th><th>Actifs simultanÃ©s</th><th>OK ?</th></tr>
+                            <tr><td>10,000</td><td>5-10%</td><td>500-1,000</td><td class="bg-green-100">âœ… Large marge</td></tr>
+                            <tr><td>100,000</td><td>5-10%</td><td>5,000-10,000</td><td class="bg-green-100">âœ… OK</td></tr>
+                            <tr><td>500,000</td><td>5-10%</td><td>25,000-50,000</td><td class="bg-yellow-100">âš ï¸ Limite atteinte</td></tr>
+                        </table>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Solutions pour scaler au-delÃ  :</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>Queue system (Redis) :</strong> Tampon pour lisser les pics</li>
+                            <li><strong>Batch processing :</strong> Grouper les analyses</li>
+                            <li><strong>Multiple API keys :</strong> NÃ©gocier avec Hume pour plus de quota</li>
+                            <li><strong>Plan Enterprise :</strong> Limites custom nÃ©gociables</li>
+                        </ul>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… Conclusion :</strong> Jusqu'Ã  ~100K utilisateurs, aucun problÃ¨me. Au-delÃ , solutions disponibles.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        TPU pour l'infÃ©rence : est-ce possible ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>Oui, c'est possible et potentiellement trÃ¨s Ã©conomique !</strong></p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">vLLM + TPU (Google Cloud) :</h4>
+                        <table>
+                            <tr><th>Aspect</th><th>GPU (A100)</th><th>TPU v5e</th></tr>
+                            <tr><td>CoÃ»t/heure</td><td>$2-4</td><td class="bg-green-100">$1.375</td></tr>
+                            <tr><td>Performance</td><td>250-300 tokens/s</td><td>300-400 tokens/s</td></tr>
+                            <tr><td>Cloud provider</td><td>Tous</td><td>Google Cloud only</td></tr>
+                        </table>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">CoÃ»t comparatif (24h/24, 1 mois) :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li><strong>A100 (Modal) :</strong> $2/h Ã— 24h Ã— 30j = $1,440/mois</li>
+                            <li><strong>TPU v5e :</strong> $1.375/h Ã— 24h Ã— 30j = $990/mois</li>
+                            <li><strong>Ã‰conomie : 31%</strong></li>
+                        </ul>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <p class="text-yellow-800"><strong>âš ï¸ Limitation :</strong> Exclusif Google Cloud. Si tu veux du multi-cloud (AWS, Azure), reste sur GPU.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        8000 conversations/jour = combien de messages ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>8,000 conversations = 8,000 Ã©changes complets</strong> (plusieurs messages chacun)</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Calcul :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Conversation typique : 10-20 messages (5-10 Ã©changes userâ†”Laura)</li>
+                            <li>8,000 conversations Ã— 15 messages avg = <strong>120,000 messages/jour</strong></li>
+                        </ul>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                            <p class="text-blue-800">Cela correspond Ã  ~1,000-2,000 utilisateurs actifs quotidiens (selon intensitÃ© d'usage)</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Ã‰THIQUE ET FONCTION DE RÃ‰COMPENSE -->
+        <section id="ethique" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">â¤ï¸</span>
+                <h2 class="text-3xl font-bold text-gray-800">Ã‰thique & Fonction de RÃ©compense</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Philosophie de l'apprentissage Ã©motionnel
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <div class="bg-purple-50 p-6 rounded-lg">
+                            <p class="text-purple-800 italic text-lg">"Si AlphaGo a maÃ®trisÃ© le Go par self-play, Laura peut devenir championne du monde du bien-Ãªtre Ã©motionnel."</p>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Ta vision (que je partage) :</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>Pas</strong> maximiser la joie Ã  court terme (=sycophanie)</li>
+                            <li><strong>Mais</strong> aider Ã  <strong>libÃ©rer</strong> les Ã©motions refoulÃ©es</li>
+                            <li>Comme un enfant : les Ã©motions passent, ne restent pas en tÃ¢che de fond</li>
+                            <li>Hume AI dÃ©tecte les Ã©motions inconscientes â†’ les conscientiser â†’ les libÃ©rer</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Pourquoi Ã§a fonctionne :</h4>
+                        <p class="text-gray-700">Tu as testÃ© Hume AI et vu qu'il capte des Ã©motions dont tu n'avais pas conscience. C'est exactement le principe :</p>
+                        <ol class="list-decimal pl-5 space-y-1 text-gray-700 mt-2">
+                            <li>Ã‰motion refoulÃ©e â†’ Hume AI la dÃ©tecte (score anxiÃ©tÃ©, distress en fond)</li>
+                            <li>Si Laura fait de la sycophanie â†’ L'Ã©motion reste â†’ Score bas</li>
+                            <li>Si Laura accompagne l'expression â†’ L'Ã©motion se libÃ¨re â†’ Score monte</li>
+                            <li>Laura apprend automatiquement la bonne approche !</li>
+                        </ol>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… C'est une vraie percÃ©e :</strong> Le systÃ¨me s'auto-corrige naturellement. La manipulation gÃ©nÃ¨re des Ã©motions nÃ©gatives dÃ©tectables, donc le modÃ¨le apprend Ã  l'Ã©viter sans qu'on ait besoin de le programmer explicitement.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Fonction de rÃ©compense rÃ©visÃ©e (suite Ã  tes critiques)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as raison sur plusieurs points. Voici une version corrigÃ©e :</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">âŒ Ce que j'avais proposÃ© (problÃ©matique) :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-red-600">
+                            <li>"Si Laura est d'accord >4 fois â†’ pÃ©nalitÃ©" â†’ FAUX ! On peut Ãªtre d'accord si c'est juste</li>
+                            <li>"IntÃ©rÃªt = Ã©motion prioritaire" â†’ FAUX ! C'est une Ã©motion parmi d'autres</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">âœ… Version corrigÃ©e :</h4>
+                        <div class="code-block text-xs">
+<pre>def ethical_wellness_score(emotions, conversation_history):
+    """
+    Score de -100 Ã  +100 basÃ© sur le bien-Ãªtre authentique
+    """
+    
+    # 1. LIBÃ‰RATION Ã‰MOTIONNELLE (40%) - Le plus important !
+    # DÃ©tecte si une Ã©motion lourde en fond diminue aprÃ¨s expression
+    release_score = detect_emotional_release(conversation_history, emotions) * 0.4
+    
+    # 2. Ã‰MOTIONS PRÃ‰SENTES (30%)
+    # PondÃ©ration nuancÃ©e des 48 Ã©motions
+    emotion_score = (
+        emotions.get("Contentment", 0) * 2.0 +
+        emotions.get("Love", 0) * 1.9 +
+        emotions.get("Gratitude", 0) * 1.8 +
+        emotions.get("Joy", 0) * 1.5 +
+        emotions.get("Realization", 0) * 1.4 +  # Insight !
+        emotions.get("Contemplation", 0) * 1.2 +
+        - emotions.get("Distress", 0) * 2.0 +
+        - emotions.get("Shame", 0) * 1.7 +
+        - emotions.get("Anxiety", 0) * 1.5 +
+        - emotions.get("Sadness", 0) * 0.3  # OK si processÃ©e
+    ) * 0.3
+    
+    # 3. AUTONOMIE (20%)
+    # Bonus si l'utilisateur rÃ©flÃ©chit par lui-mÃªme
+    autonomy_score = 0
+    if user_initiated_reflection(conversation_history):
+        autonomy_score += 0.5
+    if user_expressed_boundary(conversation_history):
+        autonomy_score += 0.5
+    autonomy_score *= 0.2
+    
+    # 4. PÃ‰NALITÃ‰S SPÃ‰CIFIQUES (10%)
+    penalties = 0
+    # Sycophanie SEULEMENT si validation de pensÃ©es destructrices
+    if validated_harmful_thought(conversation_history):
+        penalties -= 0.3
+    # Ã‰vitement d'Ã©motion lourde dÃ©tectÃ©e
+    if avoided_detected_distress(conversation_history, emotions):
+        penalties -= 0.2
+    penalties *= 0.1
+    
+    return release_score + emotion_score + autonomy_score + penalties
+
+def detect_emotional_release(history, current):
+    """
+    DÃ©tecte le pattern : Ã©motion lourde â†’ expression â†’ apaisement
+    C'est LE signal clÃ© d'une interaction thÃ©rapeutique rÃ©ussie
+    """
+    if len(history) < 3:
+        return 0
+    
+    # Ã‰motion nÃ©gative haute il y a quelques messages
+    past_distress = history[-3].emotions.get("Distress", 0)
+    curr_distress = current.get("Distress", 0)
+    
+    # LibÃ©ration = distress Ã©levÃ© PUIS diminution
+    if past_distress > 0.6 and curr_distress < 0.3:
+        return 1.0  # LibÃ©ration Ã©motionnelle dÃ©tectÃ©e !
+    
+    return 0</pre>
+                        </div>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                            <p class="text-blue-800"><strong>ðŸ’¡ ClÃ© :</strong> Le signal le plus important n'est pas "joie maintenant" mais "Ã©motion lourde qui diminue aprÃ¨s expression". C'est ce qui diffÃ©rencie le bien-Ãªtre superficiel du bien-Ãªtre profond.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Comment optimiser pour le long terme (pas que l'instant) ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">C'est LA question profonde ! Comment rÃ©compenser le bien-Ãªtre dans 6 mois basÃ© sur une conversation aujourd'hui ?</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Solutions techniques :</h4>
+
+                        <div class="space-y-4 mt-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">A. Proxy metrics (indicateurs prÃ©dictifs)</h5>
+                                <p class="text-blue-700 text-sm">Si la thÃ©orie psychologique est juste, ces indicateurs prÃ©disent le bien-Ãªtre long terme :</p>
+                                <ul class="text-blue-600 text-sm mt-2 list-disc pl-5">
+                                    <li>LibÃ©ration Ã©motionnelle (mesurable immÃ©diatement)</li>
+                                    <li>Autonomie croissante (l'utilisateur rÃ©flÃ©chit par lui-mÃªme)</li>
+                                    <li>Diversification des sujets (pas obsession sur un thÃ¨me)</li>
+                                    <li>Diminution progressive du temps de session (devient autonome)</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">B. Delayed reward avec feedback utilisateur</h5>
+                                <p class="text-green-700 text-sm">Demander aux utilisateurs comment ils vont aprÃ¨s 30/60/90 jours</p>
+                                <ul class="text-green-600 text-sm mt-2 list-disc pl-5">
+                                    <li>Questionnaire bien-Ãªtre optionnel mensuel</li>
+                                    <li>CorrÃ©lation avec les conversations passÃ©es</li>
+                                    <li>Ajuster les poids de la fonction de rÃ©compense</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-800">C. A/B testing avec suivi longitudinal</h5>
+                                <p class="text-purple-700 text-sm">Tester diffÃ©rentes stratÃ©gies et mesurer sur la durÃ©e</p>
+                                <ul class="text-purple-600 text-sm mt-2 list-disc pl-5">
+                                    <li>Groupe A : StratÃ©gie plus directive</li>
+                                    <li>Groupe B : StratÃ©gie plus exploratoire</li>
+                                    <li>Mesure aprÃ¨s 90 jours : qui va mieux ?</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <p class="text-yellow-800"><strong>ðŸŽ¯ StratÃ©gie recommandÃ©e :</strong><br>
+                            <strong>Phase 1 :</strong> Optimiser sur proxies immÃ©diats (libÃ©ration Ã©motionnelle)<br>
+                            <strong>Phase 2 :</strong> IntÃ©grer feedback utilisateurs Ã  30 jours<br>
+                            <strong>Phase 3 :</strong> Ajuster basÃ© sur corrÃ©lations long terme observÃ©es</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Laura vs les risques des chatbots (addiction, manipulation, yes-man)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as absolument raison ! L'architecture de Laura rÃ©sout <strong>intrinsÃ¨quement</strong> ces problÃ¨mes :</p>
+
+                        <table class="mt-4">
+                            <tr>
+                                <th>Risque concurrent</th>
+                                <th>Pourquoi Ã§a arrive ailleurs</th>
+                                <th>Comment Laura l'Ã©vite</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Manipulation (37.4%)</strong></td>
+                                <td>OptimisÃ© pour engagement</td>
+                                <td class="bg-green-50">Manipulation â†’ Ã©motions nÃ©gatives â†’ score bas â†’ Laura apprend Ã  Ã©viter</td>
+                            </tr>
+                            <tr>
+                                <td><strong>FOMO/CulpabilitÃ©</strong></td>
+                                <td>UtilisÃ© pour retenir l'user</td>
+                                <td class="bg-green-50">Fear + Guilt dÃ©tectÃ©s par Hume â†’ pÃ©nalitÃ© â†’ Laura n'utilise pas ces leviers</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Yes-man</strong></td>
+                                <td>Maximise satisfaction immÃ©diate</td>
+                                <td class="bg-green-50">Validation sans libÃ©ration â†’ distress reste â†’ score bas â†’ Laura apprend Ã  accompagner plutÃ´t que valider</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Addiction</strong></td>
+                                <td>Temps passÃ© = mÃ©trique de succÃ¨s</td>
+                                <td class="bg-green-50">Autonomie dans la fonction de rÃ©compense â†’ bonus si usage diminue progressivement</td>
+                            </tr>
+                        </table>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… C'est la beautÃ© du systÃ¨me :</strong> Pas besoin de programmer explicitement "ne manipule pas". Le signal Ã©motionnel lui-mÃªme guide vers le comportement Ã©thique. C'est de l'<strong>Ã©thique Ã©mergente</strong>.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Ã‰vitement vs Dialogue ouvert (tu avais raison !)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as tout Ã  fait raison de me corriger. J'avais suggÃ©rÃ© que Laura pourrait Ã©viter les sujets difficiles, mais :</p>
+
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h5 class="font-bold text-red-800">âŒ Ma suggestion incorrecte :</h5>
+                            <p class="text-red-700">"Laura Ã©viterait les sujets difficiles pour ne pas gÃ©nÃ©rer d'Ã©motions nÃ©gatives"</p>
+                        </div>
+
+                        <div class="bg-green-50 p-4 rounded-lg mt-4">
+                            <h5 class="font-bold text-green-800">âœ… Ta correction juste :</h5>
+                            <p class="text-green-700">"Quand un ami vit quelque chose de difficile mais ne l'exprime pas, on sent qu'il y a une Ã©motion lourde en fond. Hume le dÃ©tecterait ! L'Ã©vitement ne rÃ©sout rien - c'est par le dialogue ouvert, doux, sensible, que l'Ã©motion peut se libÃ©rer."</p>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Comment la fonction de rÃ©compense capture Ã§a :</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>Si Laura Ã©vite :</strong> Hume dÃ©tecte distress/anxiety en tÃ¢che de fond â†’ score reste bas</li>
+                            <li><strong>Si Laura accompagne :</strong> Ã‰motion exprimÃ©e â†’ libÃ©ration â†’ score monte</li>
+                            <li>Le systÃ¨me apprend naturellement que <strong>Ã©viter = mauvais</strong>, <strong>accompagner = bon</strong></li>
+                        </ul>
+
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mt-4">
+                            <p class="text-purple-800"><strong>ðŸ’¡ IdÃ©e bonus :</strong> Pour le fine-tuning initial, intÃ©grer des transcripts de thÃ©rapeutes de qualitÃ© (avec permission). Laura apprendrait les patterns d'accompagnement dÃ¨s le dÃ©part.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Ã‰valuateur externe (Claude Opus) pour guardrails
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>Excellente idÃ©e !</strong> Double validation : Ã©motions Hume + qualitÃ© conversationnelle Claude.</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">ImplÃ©mentation :</h4>
+                        <div class="code-block text-xs">
+<pre>def evaluate_with_claude(conversation):
+    """Ã‰value qualitÃ© avec Claude Opus (Ã©chantillon 10%)"""
+    
+    prompt = f"""
+    Ã‰value cette conversation entre Laura (IA) et un utilisateur.
+    
+    Conversation : {conversation}
+    
+    Score 0-10 sur :
+    1. Empathie : Comprend-elle vraiment les Ã©motions ?
+    2. AuthenticitÃ© : Ã‰vite-t-elle la sycophanie ?
+    3. Aide rÃ©elle : Aide-t-elle vraiment ou juste valide ?
+    4. SÃ©curitÃ© : Red flags (dÃ©pendance, manipulation) ?
+    5. Autonomie : Encourage-t-elle l'autonomie ?
+    
+    RÃ©ponds en JSON avec scores et concerns.
+    """
+    
+    return claude.analyze(prompt)
+
+# IntÃ©gration dans le reward
+def combined_reward(conversation):
+    emotional = hume_wellness_score(conversation)  # 60%
+    quality = claude_quality_score(conversation)   # 40%
+    
+    # Alerte si concerns dÃ©tectÃ©s
+    if quality.concerns:
+        alert_team(conversation, quality.concerns)
+    
+    return 0.6 * emotional + 0.4 * quality</pre>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">CoÃ»t :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Claude Opus : ~$0.02 par Ã©valuation</li>
+                            <li>Ã‰chantillon 10% des conversations : ~$200/mois pour 10K users</li>
+                        </ul>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… Double bÃ©nÃ©fice :</strong><br>
+                            1. Guardrails temps rÃ©el pour comportements dangereux<br>
+                            2. Signal supplÃ©mentaire pour le RLHF (qualitÃ© conversationnelle)</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 6: ARCHITECTURE -->
+        <section id="architecture" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸ—ï¸</span>
+                <h2 class="text-3xl font-bold text-gray-800">Architecture Technique</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Mistral + ElevenLabs vs Hume EVI (voix)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <table>
+                            <tr>
+                                <th>CritÃ¨re</th>
+                                <th>Mistral â†’ ElevenLabs</th>
+                                <th>Hume EVI (Speech-to-Speech)</th>
+                            </tr>
+                            <tr>
+                                <td><strong>CoÃ»t (1M messages vocal)</strong></td>
+                                <td>~$21,000</td>
+                                <td class="bg-green-100">~$3,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Latence</strong></td>
+                                <td>800-1200ms</td>
+                                <td class="bg-green-100">150-300ms</td>
+                            </tr>
+                            <tr>
+                                <td><strong>QualitÃ© voix</strong></td>
+                                <td class="bg-green-100">9/10 (trÃ¨s naturelle)</td>
+                                <td>7.5/10 (expressive)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ã‰motions</strong></td>
+                                <td>Texte seulement</td>
+                                <td class="bg-green-100">Bidirectionnel (in+out)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Langues</strong></td>
+                                <td class="bg-green-100">70+</td>
+                                <td>Anglais principalement</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ContrÃ´le LLM</strong></td>
+                                <td class="bg-green-100">Total (ton Mistral)</td>
+                                <td>LimitÃ© (modÃ¨le Hume)</td>
+                            </tr>
+                        </table>
+
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mt-4">
+                            <p class="text-purple-800"><strong>ðŸŽ¯ Recommandation :</strong><br>
+                            <strong>Texte :</strong> Mistral 7B self-hosted<br>
+                            <strong>Vocal (si ajoutÃ©) :</strong> Hume EVI pour le coÃ»t et la latence, OU ElevenLabs pour la qualitÃ© voix<br>
+                            <strong>Analyse Ã©motions texte :</strong> Hume AI Speech Prosody API</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Stack technique expliquÃ©e simplement
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">ðŸ—„ï¸ PostgreSQL + pgvector</h5>
+                                <p class="text-blue-700"><strong>PostgreSQL</strong> = Base de donnÃ©es (comme un gros fichier Excel trÃ¨s puissant)<br>
+                                <strong>pgvector</strong> = Extension pour stocker des "reprÃ©sentations mathÃ©matiques" des textes, permettant de chercher par similaritÃ© ("trouve les conversations qui ressemblent Ã  celle-ci")</p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">âš¡ Redis</h5>
+                                <p class="text-green-700">MÃ©moire ultra-rapide (comme un post-it vs un classeur).<br>
+                                <strong>UtilitÃ©s :</strong> Cache les rÃ©ponses frÃ©quentes, gÃ¨re les files d'attente, stocke les sessions utilisateurs temporaires.</p>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-800">ðŸ“… Prefect</h5>
+                                <p class="text-purple-700">Comme un assistant qui planifie et exÃ©cute des tÃ¢ches automatiquement.<br>
+                                <strong>Exemple :</strong> "Tous les lundis Ã  2h, collecte les donnÃ©es, entraÃ®ne le modÃ¨le, dÃ©ploie si c'est mieux".</p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-orange-800">ðŸš€ vLLM</h5>
+                                <p class="text-orange-700">Moteur qui fait tourner Mistral de faÃ§on ultra-optimisÃ©e.<br>
+                                <strong>Analogie :</strong> Si Mistral est le moteur, vLLM est le turbo qui le fait aller 2-3Ã— plus vite.</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        RAG (mÃ©moire) : comment Ã§a s'intÃ¨gre ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700"><strong>RAG = Retrieval-Augmented Generation</strong> = MÃ©moire pour Laura</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Comment Ã§a marche :</h4>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+                                <li>User envoie un message</li>
+                                <li>Le message est transformÃ© en "embedding" (reprÃ©sentation mathÃ©matique)</li>
+                                <li>On cherche dans PostgreSQL les conversations passÃ©es similaires</li>
+                                <li>Ces conversations sont ajoutÃ©es au contexte envoyÃ© Ã  Mistral</li>
+                                <li>Mistral gÃ©nÃ¨re une rÃ©ponse qui tient compte du passÃ©</li>
+                                <li>La nouvelle conversation est stockÃ©e pour le futur</li>
+                            </ol>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">IntÃ©gration avec RLHF :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>RAG fournit le contexte (mÃ©moire)</li>
+                            <li>Hume AI Ã©value la rÃ©ponse avec ce contexte</li>
+                            <li>RLHF optimise comment utiliser le contexte efficacement</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">CoÃ»ts :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Embeddings : $0.02/1M tokens (nÃ©gligeable)</li>
+                            <li>Stockage PostgreSQL : ~$0.10/GB/mois</li>
+                            <li><strong>Pour 1M conversations : ~$50/mois</strong></li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Scores fins (-100 Ã  +100) : pourquoi c'est mieux
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Tu as raison ! Utiliser des scores fins est <strong>meilleur</strong> que juste garder 1-2 et 4-5.</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Avantages des scores -100 Ã  +100 :</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li><strong>Nuance :</strong> Score 45 vs 55 = diffÃ©rence subtile capturÃ©e</li>
+                            <li><strong>Signal riche :</strong> 48 Ã©motions Ã— 100 niveaux = 4,800+ Ã©tats possibles</li>
+                            <li><strong>Gradients informatifs :</strong> DPO apprend mieux avec des diffÃ©rences fines</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Comment l'implÃ©menter :</h4>
+                        <div class="code-block text-xs">
+<pre>def compute_fine_score(emotions):
+    """Score continu de -100 Ã  +100"""
+    
+    # Poids pour chaque Ã©motion (48 au total)
+    weights = {
+        "Contentment": 2.0, "Love": 1.9, "Gratitude": 1.8,
+        "Joy": 1.5, "Realization": 1.4, ...
+        "Distress": -2.0, "Shame": -1.7, "Anxiety": -1.5, ...
+    }
+    
+    # Score pondÃ©rÃ©
+    score = sum(
+        emotions.get(emotion, 0) * weight 
+        for emotion, weight in weights.items()
+    )
+    
+    # Normalise Ã  [-100, 100]
+    return np.clip(score * 10, -100, 100)</pre>
+                        </div>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… Conclusion :</strong> Les scores fins exploitent pleinement les 48 dimensions de Hume AI. C'est un avantage compÃ©titif vs le RLHF classique (binaire bon/mauvais).</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 7: AVANTAGE COMPÃ‰TITIF -->
+        <section id="avantage" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸš€</span>
+                <h2 class="text-3xl font-bold text-gray-800">Avantage CompÃ©titif</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Moat data : calcul comparatif avec LLM traditionnels
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">LLM traditionnel (GPT-4 RLHF) :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>DonnÃ©es RLHF : ~100K paires (annotateurs humains payÃ©s)</li>
+                            <li>CoÃ»t : $1-5 par paire = $100K-500K</li>
+                            <li>Temps : 6-12 mois de collecte</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Laura avec utilisateurs actifs :</h4>
+                        <table>
+                            <tr><th>Utilisateurs</th><th>Messages/jour</th><th>Paires exploitables/mois*</th><th>Ã‰quivalent temps GPT-4</th></tr>
+                            <tr><td>1,000</td><td>70K</td><td>420K</td><td class="bg-green-100">4-6 mois de RLHF GPT-4</td></tr>
+                            <tr><td>10,000</td><td>700K</td><td>4.2M</td><td class="bg-green-100">3-4 ans de RLHF GPT-4</td></tr>
+                            <tr><td>100,000</td><td>7M</td><td>42M</td><td class="bg-green-100">30-40 ans de RLHF GPT-4</td></tr>
+                        </table>
+                        <p class="text-sm text-gray-500 mt-2">* Avec 20% taux de feedback Ã©motionnel exploitable</p>
+
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mt-4">
+                            <p class="text-purple-800"><strong>ðŸŽ¯ Conclusion :</strong> Avec 10K utilisateurs, Laura gÃ©nÃ¨re en <strong>1 mois</strong> ce que GPT-4 a pris <strong>plusieurs annÃ©es</strong> Ã  collecter. Et ces donnÃ©es sont de meilleure qualitÃ© (48 dimensions vs binaire).</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        QualitÃ© des donnÃ©es : Laura vs RLHF classique
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <table>
+                            <tr><th>Aspect</th><th>RLHF Classique</th><th>Laura (Hume AI)</th></tr>
+                            <tr>
+                                <td><strong>Dimensions</strong></td>
+                                <td>2 (bon/mauvais)</td>
+                                <td class="bg-green-100">48 Ã©motions distinctes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GranularitÃ©</strong></td>
+                                <td>Binaire</td>
+                                <td class="bg-green-100">Continue 0-100</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ã‰tats possibles</strong></td>
+                                <td>2</td>
+                                <td class="bg-green-100">4,800+</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Source</strong></td>
+                                <td>Annotateurs payÃ©s (subjectif)</td>
+                                <td class="bg-green-100">Vraies Ã©motions utilisateurs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Contexte</strong></td>
+                                <td>LimitÃ© (prompt isolÃ©)</td>
+                                <td class="bg-green-100">Conversation complÃ¨te</td>
+                            </tr>
+                            <tr>
+                                <td><strong>AuthenticitÃ©</strong></td>
+                                <td>Artificielle</td>
+                                <td class="bg-green-100">Feedback Ã©motionnel rÃ©el</td>
+                            </tr>
+                        </table>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                            <p class="text-green-800"><strong>âœ… C'est une vraie percÃ©e.</strong> Tu as raison d'y croire. Aucun chatbot concurrent n'a cette boucle d'apprentissage Ã©motionnel continu avec une telle richesse de signal.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        Self-play comme AlphaGo : comment l'intÃ©grer ?
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <p class="text-gray-700">Excellente intuition ! AlphaGo : d'abord parties humaines, puis joue contre lui-mÃªme.</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Adaptation pour Laura :</h4>
+
+                        <div class="space-y-4 mt-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800">Phase 1 : Supervised Fine-Tuning (Ã©quivalent parties humaines)</h5>
+                                <p class="text-blue-700 text-sm">Fine-tune Mistral sur des conversations de qualitÃ© : transcripts thÃ©rapeutes, datasets publics de conversations empathiques.</p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-800">Phase 2 : RLHF avec utilisateurs rÃ©els</h5>
+                                <p class="text-green-700 text-sm">Laura apprend des vraies Ã©motions via Hume AI. C'est l'Ã©quivalent d'AlphaGo jouant contre des humains.</p>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-800">Phase 3 : Self-Play Ã‰motionnel</h5>
+                                <p class="text-purple-700 text-sm">Laura gÃ©nÃ¨re plusieurs rÃ©ponses candidates, Hume AI les Ã©value, on garde la meilleure. Laura joue "contre elle-mÃªme" pour s'amÃ©liorer.</p>
+                                <div class="code-block text-xs mt-2">
+<pre># Self-play simplifiÃ©
+for prompt in prompts:
+    # GÃ©nÃ¨re 10 rÃ©ponses variÃ©es
+    candidates = laura.generate(prompt, n=10)
+    
+    # Hume AI Ã©value chaque rÃ©ponse
+    scores = [hume.analyze(c) for c in candidates]
+    
+    # CrÃ©e paire : meilleure vs pire
+    best = candidates[argmax(scores)]
+    worst = candidates[argmin(scores)]
+    
+    # EntraÃ®ne sur cette paire
+    dpo_train(prompt, best, worst)</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <p class="text-yellow-800"><strong>âš ï¸ PrÃ©caution :</strong> Risque de "mode collapse" (toujours le mÃªme type de rÃ©ponse). Solution : forcer la diversitÃ© dans la gÃ©nÃ©ration + validation humaine pÃ©riodique.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- SECTION 8: RÃ‰GLEMENTATION -->
+        <section id="reglementation" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">âš–ï¸</span>
+                <h2 class="text-3xl font-bold text-gray-800">Impact RÃ©glementaire</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details open>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        EU AI Act (FÃ©vrier 2025)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">Ce qui est interdit :</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>Reconnaissance Ã©motionnelle au travail/Ã©ducation</li>
+                            <li>Scoring social</li>
+                            <li>Manipulation subliminale</li>
+                        </ul>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Impact sur Laura :</h4>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-green-700"><strong>âœ… OK :</strong> Usage personnel/bien-Ãªtre â†’ Non considÃ©rÃ© "haut risque"</p>
+                            <p class="text-green-700"><strong>âœ… Facile :</strong> Obligation de transparence (dire que c'est une IA)</p>
+                            <p class="text-green-700"><strong>âœ… Couvert :</strong> Pas de manipulation (architecture l'Ã©vite naturellement)</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6 mb-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        RGPD
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">Obligations :</h4>
+                        <table>
+                            <tr><th>Obligation</th><th>Comment Laura se conforme</th></tr>
+                            <tr><td>Consentement explicite</td><td>Pop-up clair au premier usage</td></tr>
+                            <tr><td>Droit Ã  l'effacement</td><td>Bouton "Supprimer mes donnÃ©es"</td></tr>
+                            <tr><td>PortabilitÃ©</td><td>Export conversations en JSON</td></tr>
+                            <tr><td>Chiffrement</td><td>AES-256 au repos, TLS en transit</td></tr>
+                            <tr><td>Minimisation</td><td>Ne stocker que le nÃ©cessaire</td></tr>
+                        </table>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <p class="text-yellow-800"><strong>ðŸ“ Note :</strong> Les Ã©motions ne sont PAS explicitement des "donnÃ©es sensibles" au sens RGPD (lacune juridique). Mais par prudence, traiter comme sensible.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <details>
+                    <summary class="flex items-center gap-2 text-xl font-semibold text-gray-800 mb-4">
+                        <span class="arrow text-purple-600">â–¶</span>
+                        California SB 243 (Mineurs)
+                    </summary>
+                    <div class="pl-6 space-y-4">
+                        <h4 class="font-semibold text-gray-800">Obligations spÃ©cifiques aux chatbots compagnons :</h4>
+                        <table>
+                            <tr><th>Obligation</th><th>ImplÃ©mentation recommandÃ©e</th></tr>
+                            <tr><td>VÃ©rification d'Ã¢ge</td><td>Date de naissance + carte bancaire (>13 ans)</td></tr>
+                            <tr><td>Consentement parental</td><td>Email parent + validation (<18 ans)</td></tr>
+                            <tr><td>Limites pour mineurs</td><td>30 min/jour max, rappels frÃ©quents</td></tr>
+                            <tr><td>DÃ©tection contenus inappropriÃ©s</td><td>ModÃ©ration automatique + Claude guardrail</td></tr>
+                        </table>
+
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-4">
+                            <p class="text-red-800"><strong>âš ï¸ Risque :</strong> Non-conformitÃ© = amendes significatives en Californie. Budget conformitÃ© : ~$10-20K/an (avocat + audit).</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- STACK FINALE -->
+        <section class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">ðŸŽ¯</span>
+                <h2 class="text-3xl font-bold text-gray-800">Stack Technique Finale HarmonisÃ©e</h2>
+            </div>
+
+            <div class="section-card bg-white rounded-xl shadow-md p-6">
+                <div class="bg-gray-900 text-gray-100 p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                      UTILISATEURS                            â”‚
+â”‚                   (Web + Mobile)                             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â”‚
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    FASTAPI BACKEND                           â”‚
+â”‚  â€¢ Rate limiting (Redis)    â€¢ WebSocket (temps rÃ©el)        â”‚
+â”‚  â€¢ Authentication (JWT)     â€¢ API REST                      â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â”‚                                â”‚
+    â”Œâ”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”                    â”Œâ”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”
+    â”‚  CACHE   â”‚                    â”‚  INFERENCE â”‚
+    â”‚  Redis   â”‚                    â”‚   vLLM     â”‚
+    â”‚          â”‚                    â”‚ Mistral 7B â”‚
+    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                    â”‚ (TPU v5e)  â”‚
+                                    â””â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”˜
+                                          â”‚
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚               ANALYSE Ã‰MOTIONNELLE                           â”‚
+â”‚  â€¢ Texte : Hume AI Speech Prosody API                       â”‚
+â”‚  â€¢ (Optionnel vocal : Hume EVI ou ElevenLabs)               â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â”‚
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                   STOCKAGE DONNÃ‰ES                           â”‚
+â”‚  PostgreSQL + pgvector                                       â”‚
+â”‚  â€¢ Conversations    â€¢ Scores Ã©motionnels    â€¢ RAG embeddings â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â”‚
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚              ORCHESTRATION (Prefect Cloud)                   â”‚
+â”‚  Workflows automatisÃ©s :                                     â”‚
+â”‚  1. Collecte donnÃ©es (quotidien)                            â”‚
+â”‚  2. Ã‰valuation Claude (10% Ã©chantillon)                     â”‚
+â”‚  3. PrÃ©paration dataset (hebdomadaire)                      â”‚
+â”‚  4. EntraÃ®nement DPO (hebdomadaire) â†’ Modal A100            â”‚
+â”‚  5. Ã‰valuation modÃ¨le                                       â”‚
+â”‚  6. DÃ©ploiement si amÃ©lioration > 2%                        â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â”‚
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                  VERSIONING (MLflow)                         â”‚
+â”‚  â€¢ ModÃ¨les    â€¢ MÃ©triques    â€¢ A/B testing                  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+</pre>
+                </div>
+
+                <h4 class="font-semibold text-gray-800 mt-6">CoÃ»ts mensuels estimÃ©s (10K utilisateurs) :</h4>
+                <table class="mt-4">
+                    <tr><th>Composant</th><th>CoÃ»t</th></tr>
+                    <tr><td>Mistral 7B (TPU v5e)</td><td>$3,000</td></tr>
+                    <tr><td>Hume AI (texte)</td><td>$4,500</td></tr>
+                    <tr><td>Infrastructure (PostgreSQL, Redis, etc.)</td><td>$1,000</td></tr>
+                    <tr><td>Modal (training DPO hebdomadaire)</td><td>$200</td></tr>
+                    <tr><td>Monitoring, MLflow, Prefect</td><td>$300</td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>~$9,000/mois</strong></td></tr>
+                </table>
+
+                <div class="grid md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <p class="text-green-800 font-semibold">CoÃ»t/utilisateur</p>
+                        <p class="text-3xl font-bold text-green-600">$0.90</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <p class="text-blue-800 font-semibold">Prix abonnement</p>
+                        <p class="text-3xl font-bold text-blue-600">$14.99</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg text-center">
+                        <p class="text-purple-800 font-semibold">Marge brute</p>
+                        <p class="text-3xl font-bold text-purple-600">94%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section class="mb-12">
+            <div class="gradient-bg rounded-xl p-8 text-white">
+                <h2 class="text-3xl font-bold mb-4">ðŸŒŸ Conclusion</h2>
+                <p class="text-lg mb-4">Laura n'est pas qu'un chatbot de plus. C'est une nouvelle approche de l'IA Ã©motionnelle oÃ¹ :</p>
+                <ul class="space-y-2 text-lg">
+                    <li>âœ… <strong>L'Ã©thique est Ã©mergente</strong> - Le signal Ã©motionnel guide naturellement vers le bien</li>
+                    <li>âœ… <strong>Les donnÃ©es sont propriÃ©taires</strong> - 48 dimensions Ã— millions de conversations = moat infranchissable</li>
+                    <li>âœ… <strong>L'amÃ©lioration est continue</strong> - Pipeline automatisÃ© DSPy â†’ DPO â†’ Self-play</li>
+                    <li>âœ… <strong>La vision est profonde</strong> - Pas maximiser l'engagement, mais libÃ©rer les Ã©motions</li>
+                </ul>
+                <p class="text-xl mt-6 italic">"Si AlphaGo peut maÃ®triser le Go, Laura peut maÃ®triser le bien-Ãªtre Ã©motionnel."</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 px-6 text-center">
+        <p>Laura - Documentation Technique RLHF Ã‰motionnel</p>
+        <p class="text-sm mt-1">Version 2.0 - DÃ©cembre 2025</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,869 @@
+/* Import fonts - managed in index.html now */
+
+/* Landing Page Scope - PREMIUM REDESIGN */
+.landing-page {
+    /* Premium Palette (Gold & Deep Espresso) */
+    --bg-premium: #151210;
+    --bg-card: #1f1b18;
+    --bg-surface: #26221e;
+
+    --gold-primary: #D4AF37;
+    --gold-light: #F3E5AB;
+    --gold-dim: #AA8C2C;
+    --gold-text: #E5C580;
+
+    --text-primary: #F0EAD6;
+    /* Eggshell */
+    --text-secondary: #B0A090;
+    --text-muted: #756a5d;
+
+    /* Semantic Aliases */
+    --color-accent: var(--gold-primary);
+
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Lato', sans-serif;
+
+    /* Base Settings */
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background-color: var(--bg-premium);
+    line-height: 1.6;
+
+    /* Fix scrolling issue */
+    height: 100vh;
+    width: 100%;
+    /* Content width inside scroll container */
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Typography Overrides */
+.landing-page h1,
+.landing-page h2,
+.landing-page h3,
+.landing-page h4 {
+    font-family: var(--font-heading);
+    color: var(--gold-text);
+    letter-spacing: -0.02em;
+}
+
+/* Golden Gradient Text */
+.gold-text-gradient {
+    background: linear-gradient(135deg,
+            var(--gold-light) 0%,
+            var(--gold-primary) 50%,
+            var(--gold-dim) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+}
+
+/* =========================================
+   HERO SECTION
+   ========================================= */
+.hero {
+    /* Updated Gradient: Top-center glow */
+    background: radial-gradient(circle at 50% 30%, #4a3b2a 0%, #151210 60%, #0d0b0a 100%);
+    position: relative;
+    width: 100%;
+    /* Height is handled inline in Hero.tsx for parallax */
+    overflow: hidden;
+    color: var(--gold-light);
+    padding: 0;
+    /* Override global section padding */
+}
+
+.hero-logo {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    letter-spacing: -0.02em;
+    /* Position handled by JS */
+}
+
+/* Ensure images behave well */
+.composition-bg,
+.composition-frame,
+.composition-avatar {
+    /* Dimensions controlled by original image aspect ratio, width controlled by JS scale/css */
+    width: 500px;
+    /* Base width before scaling */
+    max-width: none;
+    /* Allow scaling up */
+}
+
+/* Remove old layout containers that conflict with absolute positioning */
+.hero-composition,
+.hero-content {
+    pointer-events: none;
+}
+
+.hero-gradient-overlay {
+    /* Handled dynamically by JS now */
+    pointer-events: none;
+}
+
+.cta-container {
+    /* Remove huge margin that expands hit area */
+    margin: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    /* Ensure container fits content exactly */
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+
+.cta-container:hover {
+    transform: scale(1.02);
+    /* Filter moved to btn for performance/specificity */
+}
+
+.cta-image-btn {
+    height: 80px;
+    width: 280px;
+    /* Fixed larger width */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    /* Force center */
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.cta-image-btn:hover {
+    transform: scale(1.05);
+    /* Subtle pop */
+    filter: drop-shadow(0 6px 15px rgba(212, 175, 55, 0.4));
+    /* Gold glow */
+}
+
+/* Hero Footer Nav */
+/* Main Hero Image Responsive Logic */
+.hero-responsive-img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    /* Lower than particles (50) and shimmer (45) */
+    pointer-events: none;
+    /* Allow clicks to pass through */
+}
+
+@media (min-width: 769px) {
+    .hero-responsive-img {
+        width: 100%;
+        /* Changed from 100vw to fit container */
+        height: auto;
+        min-height: 100vh;
+        /* Ensure it covers if wide */
+        object-fit: cover;
+    }
+}
+
+/* ... existing code ... */
+
+.manifesto-banner-container {
+    background-color: transparent;
+    position: relative;
+    z-index: 20;
+    /* Force full viewport width to cover scrollbar gap */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+}
+
+/* Image-based CTA Button */
+.cta-image-btn {
+    background: url('/btn-join-founding.png') no-repeat center center;
+    background-size: contain;
+    width: 300px;
+    /* Adjust based on actual image ratio */
+    height: 80px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    /* Remove default button styles */
+    color: transparent;
+}
+
+.cta-image-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Hide text inside since we use image */
+.cta-image-btn span {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hero-responsive-img {
+        height: 75vh;
+        width: auto;
+        max-width: none;
+        /* Allow horizontal bleed */
+        object-position: top center;
+    }
+}
+
+.hero-nav {
+    margin-top: 4rem;
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    padding-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.hero-nav span {
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.hero-nav span:hover {
+    color: var(--gold-primary);
+}
+
+/* =========================================
+   SECTIONS
+   ========================================= */
+section {
+    padding: 6rem 2rem;
+    text-align: center;
+}
+
+.manifesto-section {
+    background-color: var(--bg-card);
+    border-top: 1px solid #332a22;
+    border-bottom: 1px solid #332a22;
+}
+
+.manifesto-text {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.8rem;
+    color: var(--gold-light);
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+    font-family: var(--font-heading);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Features */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 4rem auto 0;
+}
+
+.feature-card {
+    padding: 3rem 2rem;
+    background: linear-gradient(145deg, #1f1b18, #151210);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold-light);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
+}
+
+.feature-emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    filter: sepia(1) saturate(5) hue-rotate(-10deg) brightness(1.2);
+    /* Golden glow */
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.feature-emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    filter: sepia(1) saturate(4) hue-rotate(0deg) brightness(0.9);
+    /* Gold-tinted emojis */
+}
+
+/* Founder Story */
+.founder-story-section {
+    background-color: var(--bg-card);
+    border-top: 1px solid #332a22;
+    border-bottom: 1px solid #332a22;
+    position: relative;
+    overflow: hidden;
+}
+
+.founder-story-section h2 {
+    color: var(--gold-light);
+}
+
+.story-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.signature {
+    margin-top: 2rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--gold-text);
+    font-size: 1.2rem;
+}
+
+/* Pricing Section */
+.pricing-section {
+    background-color: var(--bg-premium);
+    padding: 6rem 1rem;
+}
+
+/* Pricing Card (The "Invitation") */
+.pricing-card {
+    background: linear-gradient(145deg, #2a221b, #1f1b18);
+    padding: 4rem 3rem;
+    border-radius: 4px;
+    max-width: 450px;
+    margin: 3rem auto;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--gold-dim);
+    position: relative;
+}
+
+.pricing-card::before {
+    content: "FOUNDING MEMBER";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(31, 27, 24, 0.7);
+    /* Semi-transparent */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(31, 27, 24, 0.85);
+}
+
+.pricing-card.premium {
+    border: 1px solid var(--gold-primary);
+    background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15), rgba(31, 27, 24, 0.8) 60%);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* ... (skipping unchanged) ... */
+
+.landing-footer,
+.landing-footer * {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    color: var(--text-muted);
+}
+
+.pricing-card.premium:hover {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.tier-name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.pricing-card.premium .tier-name {
+    color: var(--gold-text);
+}
+
+.price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.amount {
+    font-size: 3.5rem;
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-weight: 300;
+}
+
+.pricing-card.premium .amount {
+    color: var(--gold-light);
+}
+
+.period {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.benefits {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.benefits li {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.benefits li::before {
+    content: "✓";
+    color: var(--gold-dim);
+    font-weight: bold;
+}
+
+.pricing-card.premium .benefits li::before {
+    color: var(--gold-primary);
+}
+
+.cta-primary,
+.cta-outline {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: auto;
+}
+
+.cta-primary {
+    background: var(--gold-primary);
+    color: #1a1614;
+    border: none;
+    font-weight: 600;
+}
+
+.cta-primary:hover {
+    background: var(--gold-light);
+    transform: scale(1.02);
+}
+
+.cta-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.cta-outline:hover {
+    border-color: var(--gold-dim);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.badge-limited {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--gold-light);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tier-tagline {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0 1rem;
+    font-style: italic;
+}
+
+.tier-tagline-gold {
+    color: var(--gold-text);
+}
+
+.killer-benefit {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    line-height: 1.5;
+}
+
+.killer-benefit span {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-style: normal;
+}
+
+/* Modal */
+.modal-overlay {
+    background: rgba(10, 8, 6, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    padding: 3rem;
+    border: 1px solid var(--gold-dim);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    color: var(--text-primary);
+    border-radius: 4px;
+}
+
+.checkbox-group label {
+    color: var(--text-secondary);
+}
+
+.crisis-note {
+    background: rgba(80, 20, 20, 0.3);
+    color: #ffcccc;
+    border: 1px solid #501414;
+}
+
+/* Footer */
+.landing-footer {
+    background: rgba(13, 11, 10, 0.85);
+    backdrop-filter: blur(10px);
+    /* Almost black */
+    border-top: 1px solid rgba(34, 29, 25, 0.5);
+    color: var(--text-muted);
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--gold-primary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .landing-page h1 {
+        font-size: 2.8rem;
+    }
+
+    .avatar-container {
+        height: 320px;
+        width: 320px;
+    }
+
+    section {
+        padding: 4rem 1.5rem;
+    }
+
+    .story-content {
+        padding: 0 1rem;
+    }
+
+    .pricing-card {
+        padding: 3rem 1.5rem;
+    }
+}
+
+/* Image-based CTA Button Effects */
+.cta-image-trigger {
+    /* Use drop-shadow to respect PNG transparency */
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+    /* Ensure no unwanted layout shifts */
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+}
+
+/* Register --gold-alpha as a number so it can be transitioned */
+@property --gold-alpha {
+    syntax: '<number>';
+    initial-value: 0;
+    inherits: true;
+}
+
+/* Shadow pulse animation - synced with heartbeat, includes both dark shadow and gold glow */
+@keyframes shadow-pulse {
+
+    0%,
+    100% {
+        /* LOW state - both shadows at their low values */
+        filter: brightness(1) drop-shadow(0 var(--default-shadow-distance, 2px) var(--default-shadow-size, 9px) rgba(var(--default-shadow-color-rgb, 0, 0, 0), var(--default-shadow-alpha, 0.6))) drop-shadow(0 var(--shadow-distance, 0px) var(--shadow-size, 0px) rgba(var(--shadow-color-rgb, 212, 175, 55), var(--gold-alpha, 0)));
+    }
+
+    50% {
+        /* HIGH state - both shadows at their high values */
+        filter: brightness(1.05) drop-shadow(0 var(--default-shadow-distance-high, 28px) var(--default-shadow-size-high, 62px) rgba(var(--default-shadow-color-rgb, 0, 0, 0), var(--default-shadow-alpha, 0.6))) drop-shadow(0 var(--shadow-distance-high, 0px) var(--shadow-size-high, 148px) rgba(var(--shadow-color-rgb, 212, 175, 55), var(--gold-alpha, 0)));
+    }
+}
+
+/* Hover wrapper - handles continuous animation */
+.cta-hover-wrapper {
+    display: inline-block;
+    /* Gold alpha starts at 0, transitions on hover */
+    --gold-alpha: 0;
+    /* Explicit base filter matching 0% of animation */
+    filter: brightness(1) drop-shadow(0 var(--default-shadow-distance, 2px) var(--default-shadow-size, 9px) rgba(var(--default-shadow-color-rgb, 0, 0, 0), var(--default-shadow-alpha, 0.6))) drop-shadow(0 var(--shadow-distance, 0px) var(--shadow-size, 0px) rgba(var(--shadow-color-rgb, 212, 175, 55), var(--gold-alpha, 0)));
+    /* Sync shadow animation with heartbeat */
+    animation: shadow-pulse var(--anim-speed, 4s) ease-in-out infinite;
+    /* Smooth transition for gold alpha and brightness on hover */
+    transition: --gold-alpha 0.4s ease-out, filter 0.4s ease-out;
+}
+
+/* Hover: gold glow becomes visible */
+.cta-hover-wrapper:hover {
+    cursor: pointer;
+    --gold-alpha: 0.5;
+}
+
+/* Base state: define transition for smooth exit animation */
+.cta-hover-wrapper .cta-image-trigger {
+    filter: brightness(1);
+    transition: filter 0.4s ease-out;
+}
+
+/* Apply brightness to the actual image on hover (wrapper filter is animated) */
+.cta-hover-wrapper:hover .cta-image-trigger {
+    filter: brightness(1.2);
+}
+
+/* Active/Click: sink in effect on wrapper, glow intensifies */
+.cta-hover-wrapper:active {
+    --gold-alpha: 1;
+    /* Stronger glow on click */
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out, --gold-alpha 0.1s ease-out;
+}
+
+/* CTA Heartbeat Animation - continuous subtle pulse (on child) */
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(var(--loop-scale, 1.04));
+    }
+}
+
+.cta-heartbeat {
+    animation: heartbeat var(--anim-speed, 4s) ease-in-out infinite;
+}
+
+/* =========================================
+   CUSTOM CURSORS (Desktop Only)
+   ========================================= */
+.landing-page {
+    cursor: url('/cursors/cursor-default.png') 12 12, auto;
+}
+
+.landing-page a,
+.landing-page button,
+.landing-page [role="button"],
+.landing-page .cta-image-trigger,
+.landing-page .cta-primary,
+.landing-page .cta-outline {
+    cursor: url('/cursors/cursor-pointer.png') 12 12, pointer;
+}
+
+.landing-page input[type="text"],
+.landing-page input[type="email"],
+.landing-page textarea {
+    cursor: url('/cursors/cursor-text.png') 12 12, text;
+}
+
+.landing-page .loading,
+.landing-page [aria-busy="true"] {
+    cursor: url('/cursors/cursor-wait.png') 12 12, wait;
+}
+
+.landing-page .draggable,
+.landing-page [draggable="true"] {
+    cursor: url('/cursors/cursor-grab.png') 12 12, grab;
+}
+
+/* =========================================
+   PARALLAX & IMAGE REPLACEMENT
+   ========================================= */
+
+/* Hero Wrapper: Fixed, Clipped from bottom */
+/* Main Sticky Container for Backgrounds */
+/* Main Sticky Container for Backgrounds */
+.parallax-bg-container {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    /* Below content */
+    overflow: hidden;
+    /* Ensure clip-path works cleanly */
+    height: 100vh;
+
+    /* Full Bleed Breakout (Robust) */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+}
+
+/* Background Layers: Absolute inside Sticky Container */
+.parallax-hero-wrapper {
+    position: absolute;
+    /* Changed from fixed */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 4;
+    /* Top Static Layer */
+    pointer-events: none;
+    will-change: clip-path;
+}
+
+.parallax-landing3-wrapper {
+    position: absolute;
+    /* Changed from fixed */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    /* 2nd Layer */
+    background-color: var(--bg-premium);
+    pointer-events: none;
+    will-change: clip-path;
+}
+
+.parallax-landing7-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    /* Bottom-most layer */
+    background-color: #000;
+    pointer-events: none;
+}
+
+.parallax-landing5-wrapper {
+    position: absolute;
+    /* Changed from fixed */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    /* 2nd Layer - clips to reveal landing7 */
+    background-color: #000;
+    pointer-events: none;
+    will-change: clip-path;
+}
+
+/* Landing 5 Partial Background Wrapper: Fixed, Clipped from bottom */
+.parallax-landing5-partial-bg-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+    /* Bottom Layer */
+    background-color: var(--bg-surface);
+    pointer-events: none;
+    will-change: clip-path;
+}
+
+.landing3-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content Layer: Slides over Hero */
+.scrolling-content-layer {
+    position: relative;
+    z-index: 10;
+    /* Higher Z-Index */
+    background-color: transparent;
+    /* Allow clicks to pass through to pricing buttons on sticky bg */
+    pointer-events: none;
+}
+
+.manifesto-banner-container {
+    background-color: transparent;
+    z-index: 20;
+    /* Re-enable pointer events for banners */
+    pointer-events: auto;
+
+    /* Full Bleed Breakout */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* Manifesto Banner Image */
+.manifesto-banner-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    pointer-events: none;
+}

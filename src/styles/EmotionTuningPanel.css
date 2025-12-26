@@ -1,0 +1,323 @@
+/* Emotion Tuning Panel - Glassmorphism Style */
+
+.tuning-toggle-btn {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(30, 30, 40, 0.8);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.tuning-toggle-btn:hover {
+    background: rgba(50, 50, 70, 0.9);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.emotion-tuning-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 100;
+    width: 280px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    background: rgba(20, 20, 30, 0.92);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.tuning-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tuning-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.reset-btn,
+.close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 6px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reset-btn:hover,
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* VRM Expressions Section */
+.vrm-expressions-section {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.expression-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.expression-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.expression-label {
+    font-size: 11px;
+    color: #aaa;
+    width: 65px;
+    text-transform: capitalize;
+}
+
+.expression-bar-container {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: visible;
+    position: relative;
+}
+
+.expression-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Raw value marker - thin vertical line */
+.expression-raw-marker {
+    position: absolute;
+    top: -2px;
+    width: 2px;
+    height: 12px;
+    border-radius: 1px;
+    opacity: 0.8;
+    transform: translateX(-1px);
+    transition: left 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Legend styles */
+.legend {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    font-size: 9px;
+}
+
+.legend-raw {
+    color: #888;
+}
+
+.legend-smooth {
+    color: #aaa;
+}
+
+.expression-value {
+    font-size: 10px;
+    color: #888;
+    width: 32px;
+    text-align: right;
+    font-family: monospace;
+}
+
+/* Tuning Sliders Section */
+.tuning-sliders-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-label {
+    font-size: 12px;
+    color: #ddd;
+    font-weight: 500;
+}
+
+.slider-value {
+    font-size: 11px;
+    color: #8B5CF6;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+.tuning-slider {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.tuning-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.15s ease;
+}
+
+.tuning-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.tuning-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.slider-description {
+    font-size: 10px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Scrollbar styling */
+.emotion-tuning-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.emotion-tuning-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.emotion-tuning-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+.emotion-tuning-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Compassion Mode Section */
+.compassion-mode-section {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mode-toggle-group {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 8px 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #888;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #bbb;
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(168, 85, 247, 0.3));
+    border-color: rgba(236, 72, 153, 0.5);
+    color: #fff;
+}
+
+.mode-btn.active svg {
+    color: #EC4899;
+}
+
+/* Compassion Sliders */
+.compassion-slider {
+    margin-top: 8px;
+}
+
+.compassion-value {
+    color: #EC4899 !important;
+}
+
+.compassion-slider-input::-webkit-slider-thumb {
+    background: linear-gradient(135deg, #EC4899, #A855F7) !important;
+}

@@ -1,5 +1,5 @@
 {
-  "name": "lauralaura",
+  "name": "laova",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,15 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@humeai/voice-react": "^0.2.10",
+    "@humeai/voice-react": "^0.2.11",
     "@pixiv/three-vrm": "^3.4.4",
     "@pixiv/three-vrm-animation": "^3.4.4",
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.8",
+    "@stripe/stripe-js": "^8.6.0",
     "@types/three": "^0.181.0",
+    "face-api.js": "^0.22.2",
+    "firebase": "^12.7.0",
     "lucide-react": "^0.554.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.11.0",
+    "stripe": "^20.1.0",
     "three": "^0.181.2",
     "zustand": "^5.0.8"
   },

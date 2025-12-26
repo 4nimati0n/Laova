@@ -1,29 +1,49 @@
-import { useEffect, useState } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useEffect, useState, useMemo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { VRM, VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
 import { useAppStore } from '../store/useAppStore';
 import { MathUtils, Quaternion, Euler, Vector3 } from 'three';
 import { useEmotion } from '../hooks/useEmotion';
 
+// Model paths mapping
+const MODEL_PATHS: Record<'laura' | 'lea', string> = {
+    laura: '/model.vrm',
+    lea: '/Lea.vrm',
+};
+
 export const Avatar = () => {
     const isSpeaking = useAppStore(state => state.isSpeaking);
     const poseControls = useAppStore(state => state.poseControls);
     const triggeredEmotion = useAppStore(state => state.triggeredEmotion);
     const emotionIntensity = useAppStore(state => state.emotionIntensity);
+    const gazeDebugEnabled = useAppStore(state => state.gazeDebugEnabled);
+    const headRotationOverride = useAppStore(state => state.headRotationOverride);
+    const currentModel = useAppStore(state => state.currentModel);
 
     const [vrm, setVrm] = useState<VRM | null>(null);
     const { updateEmotion, setEmotionWithIntensity } = useEmotion();
 
-    // Load VRM Model
-    const gltf = useLoader(GLTFLoader, '/model.vrm', (loader) => {
-        loader.register((parser) => {
-            return new VRMLoaderPlugin(parser);
-        });
-    });
+    // Create loader once
+    const loader = useMemo(() => {
+        const l = new GLTFLoader();
+        l.register((parser) => new VRMLoaderPlugin(parser));
+        return l;
+    }, []);
 
+    // Load VRM Model dynamically when currentModel changes
     useEffect(() => {
-        if (gltf) {
+        const modelPath = MODEL_PATHS[currentModel];
+        console.log(`🔄 Loading model: ${currentModel} from ${modelPath}`);
+
+        // Cleanup previous VRM
+        if (vrm) {
+            vrm.scene.removeFromParent();
+            VRMUtils.deepDispose(vrm.scene);
+            setVrm(null);
+        }
+
+        loader.loadAsync(modelPath).then((gltf) => {
             const vrmInstance = gltf.userData.vrm;
             VRMUtils.removeUnnecessaryVertices(gltf.scene);
             VRMUtils.combineSkeletons(gltf.scene);
@@ -52,6 +72,14 @@ export const Avatar = () => {
                 });
             }
 
+
+            // SpringBoneManager info (brief log only)
+            if (vrmInstance.springBoneManager) {
+                const sbm = vrmInstance.springBoneManager as any;
+                const jointCount = sbm.joints?.size || sbm.joints?.length || 0;
+                console.log(`🦴 SpringBone: ${jointCount} physics joints loaded`);
+            }
+
             // Find the face mesh and add a morph tester
             let faceMesh: any = null;
             vrmInstance.scene.traverse((child: any) => {
@@ -72,8 +100,10 @@ export const Avatar = () => {
             }
 
             setVrm(vrmInstance);
-        }
-    }, [gltf]);
+        }).catch((error) => {
+            console.error(`❌ Failed to load model ${currentModel}:`, error);
+        });
+    }, [currentModel, loader]);
 
     // Apply pose from controls
     useEffect(() => {
@@ -118,6 +148,42 @@ export const Avatar = () => {
 
     useFrame((state, delta) => {
         if (vrm) {
+            // ═══════════════════════════════════════════════════════════════
+            // SPRINGBONE PHYSICS - Natural gravity for hair and clothes
+            // The VRM model has physics bones that simulate secondary motion.
+            // By moving Laura in world space (not the camera), the physics
+            // correctly calculates gravity relative to world-down.
+            // ═══════════════════════════════════════════════════════════════
+            if (vrm.springBoneManager && !(window as any).__springBoneInitialized) {
+                const sbm = vrm.springBoneManager as any;
+
+                // Get all physics joints
+                let joints: any[] = [];
+                if (sbm.joints) {
+                    joints = sbm.joints instanceof Set ? Array.from(sbm.joints) :
+                        Array.isArray(sbm.joints) ? sbm.joints : [];
+                }
+
+                // Configure gravity for natural physics behavior
+                // gravityPower: 0.3 = subtle, natural effect (1.0 is too heavy)
+                // gravityDir: (0, -1, 0) = world-down direction
+                for (const joint of joints) {
+                    if (joint.settings) {
+                        // Enable gravity with natural strength
+                        if (joint.settings.gravityPower !== undefined) {
+                            joint.settings.gravityPower = 0.3;
+                        }
+                        // Ensure direction is world-down
+                        if (joint.settings.gravityDir) {
+                            joint.settings.gravityDir.set(0, -1, 0);
+                        }
+                    }
+                }
+
+                (window as any).__springBoneInitialized = true;
+                console.log(`✨ SpringBone physics initialized: ${joints.length} joints with natural gravity`);
+            }
+
             vrm.update(delta);
             updateEmotion(vrm, delta);
 
@@ -394,73 +460,85 @@ export const Avatar = () => {
             const headMicroTilt = Math.sin(time * 0.29) * 0.004 + Math.sin(time * 0.47) * 0.002;
             (window as any).__headMicroTilt = headMicroTilt;
 
-            // Gaze tracking - head follows camera (viewer)
-            // Uses quaternion lookAt to correctly orient head toward camera regardless of body pose
+            // ═══════════════════════════════════════════════════════════════
+            // GAZE TRACKING - Proper quaternion-based approach
+            // Transforms camera direction to neck's local space
+            // ═══════════════════════════════════════════════════════════════
             const head = vrm.humanoid.getNormalizedBoneNode('head');
-            const neck = vrm.humanoid.getNormalizedBoneNode('neck');
+            // Try neck, then spine, then head's parent as fallback
+            const neck = vrm.humanoid.getNormalizedBoneNode('neck')
+                || vrm.humanoid.getNormalizedBoneNode('spine')
+                || head?.parent;
 
             if (head && neck) {
-                // Get camera position and head world position
+                // Camera position (fixed) and head world position
                 const cameraPos = state.camera.position.clone();
-                const headWorldPos = new Vector3();
-                head.getWorldPosition(headWorldPos);
+                const headWorldPos = head.getWorldPosition(new Vector3());
 
                 // Direction from head to camera in WORLD space
-                const dirToCameraWorld = cameraPos.clone().sub(headWorldPos).normalize();
+                const dirToCamera = cameraPos.clone().sub(headWorldPos).normalize();
 
-                // Get neck's world quaternion (includes all parent transforms)
-                const neckWorldQuat = new Quaternion();
-                neck.getWorldQuaternion(neckWorldQuat);
+                // Get reference bone's world quaternion (includes all parent transforms)
+                const refWorldQuat = new Quaternion();
+                neck.getWorldQuaternion(refWorldQuat);
 
-                // Transform camera direction from WORLD space to NECK's LOCAL space
-                const invNeckQuat = neckWorldQuat.clone().invert();
-                const dirToCameraLocal = dirToCameraWorld.clone().applyQuaternion(invNeckQuat);
+                // Transform world direction to neck's LOCAL space
+                const invNeckQuat = refWorldQuat.clone().invert();
+                const dirLocal = dirToCamera.clone().applyQuaternion(invNeckQuat);
 
-                // VRM scene is rotated 180° on Y - flip direction to match model's perspective
-                const targetDir = new Vector3(-dirToCameraLocal.x, dirToCameraLocal.y, -dirToCameraLocal.z).normalize();
+                // In VRM bone local space: +Y up, +Z back (model faces -Z), +X right
+                // After the 180° rotation, model faces +Z in world, so local +Z is actually forward
+                // Calculate yaw and pitch from local direction
+                const yaw = Math.atan2(-dirLocal.x, -dirLocal.z);  // Negate for VRM convention
+                const pitch = Math.asin(MathUtils.clamp(dirLocal.y, -1, 1));
 
-                // Create quaternion that rotates from forward (+Z) to target direction
-                const forward = new Vector3(0, 0, 1);
-                const lookAtQuat = new Quaternion().setFromUnitVectors(forward, targetDir);
+                // Get body rotation for debug display
+                const bodyWorldQuat = new Quaternion();
+                vrm.scene.getWorldQuaternion(bodyWorldQuat);
+                const bodyEuler = new Euler().setFromQuaternion(bodyWorldQuat, 'YXZ');
 
-                // Extract euler angles (YXZ order matches head bone rotation order)
-                const lookAtEuler = new Euler().setFromQuaternion(lookAtQuat, 'YXZ');
+                // Expose debug data for GazeDebugPanel
+                if (gazeDebugEnabled) {
+                    const lauraWorldPos = new Vector3();
+                    vrm.scene.getWorldPosition(lauraWorldPos);
 
-                // Get raw rotation values (negate pitch for correct direction)
-                const rawYaw = lookAtEuler.y;
-                const rawPitch = -lookAtEuler.x; // NEGATED to fix Y inversion
-
-                // NATURAL HEAD MOVEMENT LIMITS
-                const maxYaw = Math.PI * 0.4;  // ~72° left/right
-                const maxPitch = Math.PI * 0.25; // ~45° up/down
-                const maxCombinedAngle = Math.PI * 0.35; // ~63° total
-
-                // Calculate total angular distance from forward
-                const totalAngle = Math.acos(MathUtils.clamp(targetDir.z, -1, 1));
-
-                let finalYaw: number, finalPitch: number;
-
-                if (totalAngle <= maxCombinedAngle) {
-                    // Within comfortable range
-                    finalYaw = MathUtils.clamp(rawYaw, -maxYaw, maxYaw);
-                    finalPitch = MathUtils.clamp(rawPitch, -maxPitch, maxPitch);
-                } else {
-                    // Scale back proportionally
-                    const scale = maxCombinedAngle / totalAngle;
-                    finalYaw = MathUtils.clamp(rawYaw * scale, -maxYaw, maxYaw);
-                    finalPitch = MathUtils.clamp(rawPitch * scale, -maxPitch, maxPitch);
+                    (window as any).__gazeDebugData = {
+                        lauraPosition: { x: lauraWorldPos.x, y: lauraWorldPos.y, z: lauraWorldPos.z },
+                        bodyRotation: { x: bodyEuler.x, y: bodyEuler.y, z: bodyEuler.z },
+                        headRotation: { x: head.rotation.x, y: head.rotation.y, z: head.rotation.z },
+                        calculatedLocal: { yaw, pitch, dirLocal: { x: dirLocal.x, y: dirLocal.y, z: dirLocal.z } }
+                    };
                 }
 
-                // Natural head roll + idle micro-tilt
-                const headMicroTilt = (window as any).__headMicroTilt || 0;
-                const naturalRoll = finalYaw * 0.08 + headMicroTilt;
+                // Use manual override if set, otherwise use calculated values
+                if (headRotationOverride) {
+                    head.rotation.x = MathUtils.lerp(head.rotation.x, headRotationOverride.x, 0.1);
+                    head.rotation.y = MathUtils.lerp(head.rotation.y, headRotationOverride.y, 0.1);
+                    head.rotation.z = MathUtils.lerp(head.rotation.z, headRotationOverride.z, 0.1);
+                } else {
+                    // Limits for comfortable head movement
+                    const maxYaw = Math.PI * 0.4;    // ~72°
+                    const maxPitch = Math.PI * 0.35; // ~63°
 
-                // Smooth lerp
-                const lerpFactor = 0.06;
+                    // Clamp to comfortable range
+                    const clampedYaw = MathUtils.clamp(yaw, -maxYaw, maxYaw);
+                    const clampedPitch = MathUtils.clamp(pitch, -maxPitch, maxPitch);
 
-                head.rotation.y = MathUtils.lerp(head.rotation.y, finalYaw, lerpFactor);
-                head.rotation.x = MathUtils.lerp(head.rotation.x, finalPitch, lerpFactor);
-                head.rotation.z = MathUtils.lerp(head.rotation.z, naturalRoll, lerpFactor);
+                    // Check if target is in comfortable range
+                    const isInFOV = Math.abs(yaw) < maxYaw && Math.abs(pitch) < maxPitch;
+
+                    if (isInFOV) {
+                        // Full tracking
+                        head.rotation.y = MathUtils.lerp(head.rotation.y, clampedYaw, 0.08);
+                        head.rotation.x = MathUtils.lerp(head.rotation.x, clampedPitch, 0.08);
+                        head.rotation.z = MathUtils.lerp(head.rotation.z, 0, 0.08);
+                    } else {
+                        // Partial tracking - look as far as comfortable
+                        head.rotation.y = MathUtils.lerp(head.rotation.y, clampedYaw * 0.7, 0.05);
+                        head.rotation.x = MathUtils.lerp(head.rotation.x, clampedPitch * 0.7, 0.05);
+                        head.rotation.z = MathUtils.lerp(head.rotation.z, 0, 0.05);
+                    }
+                }
             }
         }
     });

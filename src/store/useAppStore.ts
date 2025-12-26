@@ -100,6 +100,9 @@ interface AppState {
   setShowConversation: (show: boolean) => void;
   showUserEmotions: boolean;
   setShowUserEmotions: (show: boolean) => void;
+  // User's detected emotions from face-api for Resonance System
+  userDetectedEmotions: Array<{ name: string; score: number }>;
+  setUserDetectedEmotions: (emotions: Array<{ name: string; score: number }>) => void;
   lastAudioBuffer: ArrayBuffer | null;
   setLastAudioBuffer: (buffer: ArrayBuffer | null) => void;
   useDeepgram: boolean;
@@ -134,6 +137,20 @@ interface AppState {
   addEnergy: (amount: number, source: string) => void;
   setIsEnergyModalOpen: (open: boolean) => void;
   clearEnergyHistory: () => void;
+
+  // Gaze Debug
+  gazeDebugEnabled: boolean;
+  headRotationOverride: { x: number; y: number; z: number } | null;
+  setGazeDebugEnabled: (enabled: boolean) => void;
+  setHeadRotationOverride: (rotation: { x: number; y: number; z: number } | null) => void;
+
+  // Model Selection
+  currentModel: 'laura' | 'lea';
+  setCurrentModel: (model: 'laura' | 'lea') => void;
+
+  // Page Navigation
+  currentPage: 'home' | 'expression-measurement';
+  setCurrentPage: (page: 'home' | 'expression-measurement') => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -150,7 +167,7 @@ export const useAppStore = create<AppState>((set) => ({
   voiceId: localStorage.getItem('laura_voice_id') || config.elevenLabsVoiceId || 'e68bf5ad-da47-4881-83fa-19307ea1c2f8',
   humeApiKey: localStorage.getItem('laura_hume_api_key') || 'mGl3j4Up57bW9CI8nCwMriEmtrWehurLkcASLL8afOuAaGY2',
   humeSecretKey: localStorage.getItem('laura_hume_secret_key') || 'AZGe4gT9duS6ccYwd4YuiXb4olr1DAsICTnGaPlUoKczU5phn8YM9kOdLR1h3uQg',
-  humeConfigId: localStorage.getItem('laura_hume_config_id') || '392c88d6-ae2b-4d98-8816-4b8da51d03ed',
+  humeConfigId: localStorage.getItem('laura_hume_config_id') || '5dcbae15-3eea-458a-bab3-1b3c30f4a066',
   humeAccessToken: null,
   humeFft: [],
   useHume: localStorage.getItem('laura_use_hume') === 'true',
@@ -181,6 +198,7 @@ export const useAppStore = create<AppState>((set) => ({
   showPoseControls: localStorage.getItem('laura_show_pose_controls') !== 'false',
   showConversation: localStorage.getItem('laura_show_conversation') !== 'false',
   showUserEmotions: localStorage.getItem('laura_show_user_emotions') !== 'false',
+  userDetectedEmotions: [],
 
   // Inner Visualization State
   falApiKey: localStorage.getItem('laura_fal_api_key') || config.falApiKey || '',
@@ -298,6 +316,7 @@ export const useAppStore = create<AppState>((set) => ({
     localStorage.setItem('laura_show_user_emotions', String(showUserEmotions));
     set({ showUserEmotions });
   },
+  setUserDetectedEmotions: (userDetectedEmotions) => set({ userDetectedEmotions }),
   // Inner Visualization Functions
   setFalApiKey: (falApiKey) => {
     localStorage.setItem('laura_fal_api_key', falApiKey);
@@ -370,4 +389,23 @@ export const useAppStore = create<AppState>((set) => ({
     localStorage.removeItem('laura_energy_history');
     set({ energyHistory: [] });
   },
+
+  // Gaze Debug
+  gazeDebugEnabled: false,
+  headRotationOverride: null,
+  setGazeDebugEnabled: (gazeDebugEnabled) => set({ gazeDebugEnabled }),
+  setHeadRotationOverride: (headRotationOverride) => set({ headRotationOverride }),
+
+  // Model Selection
+  currentModel: (localStorage.getItem('laura_current_model') as 'laura' | 'lea') || 'laura',
+  setCurrentModel: (currentModel) => {
+    localStorage.setItem('laura_current_model', currentModel);
+    // Reset SpringBone initialization flag when model changes
+    (window as any).__springBoneInitialized = false;
+    set({ currentModel });
+  },
+
+  // Page Navigation
+  currentPage: 'home',
+  setCurrentPage: (currentPage) => set({ currentPage }),
 }));

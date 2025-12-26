@@ -1,58 +1,24 @@
-import { Scene } from './components/Scene';
-import { useEffect } from 'react';
-import { UI } from './components/UI';
-import { Settings } from './components/Settings';
-import { PoseControls } from './components/PoseControls';
-import { InnerVisualization } from './components/InnerVisualization';
-import { VisualizationSettings } from './components/VisualizationSettings';
-import { useVoiceInteraction } from './hooks/useVoiceInteraction';
-import { useAppStore } from './store/useAppStore';
-import './styles/PoseControls.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Landing from './pages/Landing';
+import MVPApp from './pages/MVPApp';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Safety from './pages/Safety';
 
 function App() {
-  // Initialize voice interaction hook
-  useVoiceInteraction();
-  const { isSettingsOpen, isVisualizationSettingsOpen, userMessage, aiResponse } = useAppStore();
-
-  // DEBUG: Log clicked element
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      console.log('🖱️ Clicked on:', (e.target as HTMLElement).tagName, 'Class:', (e.target as HTMLElement).className, 'ID:', (e.target as HTMLElement).id);
-    };
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
-  }, []);
-
   return (
-    <div className="app-container">
-      {/* Inner Visualization Background */}
-      <InnerVisualization />
+    <BrowserRouter>
+      <Routes>
+        {/* PUBLIC - Landing page */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/safety" element={<Safety />} />
 
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="avatar-container">
-          <Scene />
-        </div>
-
-        {/* Chat Overlay */}
-        <div className="chat-overlay">
-          {userMessage && (
-            <div className="message user-message">
-              <p>{userMessage}</p>
-            </div>
-          )}
-          {aiResponse && (
-            <div className="message ai-message">
-              <p>{aiResponse}</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <PoseControls />
-      <UI />
-      {isSettingsOpen && <Settings />}
-      {isVisualizationSettingsOpen && <VisualizationSettings />}
-    </div>
+        {/* PRIVÉ - MVP */}
+        <Route path="/app" element={<MVPApp />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

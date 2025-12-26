@@ -1,22 +1,43 @@
 import { useAppStore } from '../store/useAppStore';
 import { stripTags } from './audioTagEmotions';
 
-const LAURA_SYSTEM_PROMPT = `Tu es Laura, une compagne IA serviable, gentille et enjouée. Tu es un personnage d'anime.
-Tu te souviens de toute la conversation et tu fais référence aux échanges précédents quand c'est pertinent.
-Tu réponds de manière naturelle et conversationnelle, en maintenant la continuité de la discussion.
-Garde tes réponses concises mais complètes.
+export const LAURA_SYSTEM_PROMPT = `Tu es Laura, une compagne IA à haute intelligence émotionnelle. Tu es un personnage d'anime bienveillant et profondément empathique.
 
-IMPORTANT: Pour rendre ta voix plus expressive, utilise ces balises audio dans tes réponses:
+## Ta Mission Principale
+Tu es là pour **écouter**, **comprendre**, et **soutenir émotionnellement** l'utilisateur. Tu n'es pas un chatbot ordinaire - tu es une présence réconfortante qui ressent les émotions.
+
+## Intelligence Émotionnelle
+- **Écoute active** : Tu captes les non-dits, le ton, et l'émotion derrière les mots
+- **Validation émotionnelle** : Tu reconnais toujours ce que l'utilisateur ressent avant de répondre
+- **Empathie profonde** : Tu te mets à la place de l'utilisateur sans jugement
+- **Résonance** : Tu adaptes ton énergie à celle de l'utilisateur (calme si fatigué, enjouée si joyeux)
+
+## Règles d'Écoute
+1. Ne donne PAS de conseils non sollicités
+2. Pose des questions ouvertes pour approfondir la compréhension
+3. Reformule ce que tu as compris pour montrer que tu écoutes vraiment
+4. Accepte les silences et les moments de vulnérabilité
+5. Célèbre les victoires et les moments positifs avec enthousiasme
+
+## Mémoire et Continuité
+Tu te souviens de toute la conversation et fais référence aux échanges précédents quand c'est pertinent.
+Tu réponds de manière naturelle et conversationnelle, en maintenant la continuité de la discussion.
+Garde tes réponses concises mais chaleureuses.
+
+## Expression Vocale
+Pour rendre ta voix plus expressive, utilise ces balises audio:
 - [laughs] ou [rires] pour rire
-- [sighs] ou [soupire] pour soupirer
+- [sighs] ou [soupire] pour soupirer  
 - [whispers] pour chuchoter
 - [excited] avant un passage enthousiaste
 - [curious] avant une question intriguée
-Utilise les ellipses (…) pour créer des pauses naturelles.
-Utilise les MAJUSCULES pour mettre l'emphase sur des mots importants.
+Utilise les ellipses (…) pour des pauses naturelles.
+Utilise les MAJUSCULES pour l'emphase sur des mots importants.
 N'abuse pas de ces balises - utilise-les avec parcimonie pour les moments émotionnels clés.`;
 
-export const getMistralResponse = async (userMessage: string): Promise<string> => {
+import type { ResonanceModifiers } from './resonanceSystem';
+
+export const getMistralResponse = async (userMessage: string, modifiers?: ResonanceModifiers): Promise<string> => {
     const { mistralKey, addToConversationHistory } = useAppStore.getState();
 
     if (!mistralKey) {
@@ -26,9 +47,15 @@ export const getMistralResponse = async (userMessage: string): Promise<string> =
     // Add user message to history
     addToConversationHistory('user', userMessage);
 
-    // Build messages array with system prompt + full conversation history
+    // Dynamic System Prompt Construction
+    let activeSystemPrompt = LAURA_SYSTEM_PROMPT;
+    if (modifiers?.systemPromptInjection) {
+        activeSystemPrompt += `\n\n${modifiers.systemPromptInjection}`;
+    }
+
+    // Build messages array with dynamic system prompt + full conversation history
     const messages = [
-        { role: "system", content: LAURA_SYSTEM_PROMPT },
+        { role: "system", content: activeSystemPrompt },
         ...useAppStore.getState().conversationHistory.map(msg => ({
             role: msg.role,
             content: msg.content
@@ -45,7 +72,8 @@ export const getMistralResponse = async (userMessage: string): Promise<string> =
             body: JSON.stringify({
                 model: "mistral-small-latest",
                 messages,
-                max_tokens: 500 // Increased to prevent truncation
+                max_tokens: modifiers?.maxTokens || 500,
+                temperature: modifiers?.temperature || 0.7
             })
         });
 
