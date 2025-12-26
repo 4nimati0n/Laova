@@ -61,4 +61,11 @@ export const handler = async (event: any) => {
                 body: JSON.stringify({ error: error.message }),
             };
         }
+    }
+    } catch (error: any) {
+    return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid Request: ' + error.message }),
     };
+}
+};
