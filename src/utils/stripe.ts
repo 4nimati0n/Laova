@@ -20,15 +20,12 @@ export async function createCheckoutSession(priceId?: string, mode: 'subscriptio
 
         const session = await response.json();
 
-        // Cast to any to avoid "Property 'redirectToCheckout' does not exist" error
-        // caused by strict typing in some versions of @stripe/stripe-js
-        const result = await (stripe as any).redirectToCheckout({
-            sessionId: session.id,
-        });
-
-        if (result.error) {
-            console.error(result.error.message);
-            throw new Error(result.error.message);
+        if (session.url) {
+            window.location.href = session.url;
+        } else {
+            // Fallback for older sessions or if URL is missing (should not happen with standard checkout)
+            console.error('No checkout URL found in session response');
+            throw new Error('Could not redirect to checkout');
         }
     } catch (error) {
         console.error("Error creating checkout session:", error);
