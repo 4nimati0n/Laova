@@ -132,7 +132,7 @@ export default function Safety() {
                         <li>Concerns about content or behavior</li>
                     </ul>
                     <p style={{ marginTop: '1rem' }}>
-                        Please contact us immediately at <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a>.
+                        Please contact us immediately at <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a>.
                     </p>
                 </section>
 
@@ -170,7 +170,7 @@ export default function Safety() {
                         For safety concerns or questions about these protocols:
                     </p>
                     <p style={{ marginTop: '0.5rem' }}>
-                        <strong>Email:</strong> <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a>
+                        <strong>Email:</strong> <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a>
                     </p>
                 </section>
             </div>

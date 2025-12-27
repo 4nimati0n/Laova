@@ -20,7 +20,7 @@ export default function Footer() {
                     <Link to="/terms">Terms of Service</Link>
                     <Link to="/safety">Safety Protocols</Link>
                     <a href="https://988lifeline.org" target="_blank" rel="noopener noreferrer">Crisis Resources (988)</a>
-                    <a href="mailto:hello@laova.space">Contact: hello@laova.space</a>
+                    <a href="mailto:laova@un1ty.dev">Contact: laova@un1ty.dev</a>
                 </div>
 
                 <div className="copyright">

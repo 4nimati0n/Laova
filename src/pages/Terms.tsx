@@ -67,7 +67,7 @@ export default function Terms() {
 
                     <h3 style={{ fontSize: '1.1rem', marginTop: '1rem' }}>5.2 Refunds</h3>
                     <p>
-                        Refund requests are handled on a case-by-case basis. Contact us at <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a> within 7 days of purchase if you are unsatisfied with the Service.
+                        Refund requests are handled on a case-by-case basis. Contact us at <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a> within 7 days of purchase if you are unsatisfied with the Service.
                     </p>
 
                     <h3 style={{ fontSize: '1.1rem', marginTop: '1rem' }}>5.3 Cancellation</h3>
@@ -157,7 +157,7 @@ export default function Terms() {
                         For questions about these Terms, please contact us:
                     </p>
                     <p style={{ marginTop: '0.5rem' }}>
-                        <strong>Email:</strong> <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a>
+                        <strong>Email:</strong> <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a>
                     </p>
                 </section>
             </div>

@@ -98,7 +98,7 @@ export default function Privacy() {
                         <li>Withdraw consent at any time</li>
                     </ul>
                     <p style={{ marginTop: '1rem' }}>
-                        To exercise these rights, contact us at <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a>.
+                        To exercise these rights, contact us at <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a>.
                     </p>
                 </section>
 
@@ -129,7 +129,7 @@ export default function Privacy() {
                         If you have questions about this Privacy Policy or our data practices, please contact us:
                     </p>
                     <p style={{ marginTop: '0.5rem' }}>
-                        <strong>Email:</strong> <a href="mailto:hello@laova.space" style={{ color: '#D4AF37' }}>hello@laova.space</a>
+                        <strong>Email:</strong> <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37' }}>laova@un1ty.dev</a>
                     </p>
                 </section>
             </div>
