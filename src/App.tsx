@@ -4,6 +4,7 @@ import MVPApp from './pages/MVPApp';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Safety from './pages/Safety';
+import Success from './pages/Success';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
 
         {/* PRIVÉ - MVP */}
         <Route path="/app" element={<MVPApp />} />
+
+        {/* SUCCESS PAGE */}
+        <Route path="/success" element={<Success />} />
       </Routes>
     </BrowserRouter>
   );
