@@ -14,6 +14,14 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
     useEffect(() => {
+        // Always allow localhost access
+        const isLocalhost = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1';
+        if (isLocalhost) {
+            setIsAuthorized(true);
+            return;
+        }
+
         // Check if key is in URL
         const keyParam = searchParams.get('key');
         if (keyParam === SECRET_KEY) {
