@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 // Define your secret key here. Change this to something only you know!
