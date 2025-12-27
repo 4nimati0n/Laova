@@ -551,239 +551,260 @@ section {
 }
 
 /* Modal */
-/* Modal - Dark Glassmorphism Design */
+/* Modal - Ultra-Premium Glass Design (Nano Banana Match) */
 .modal-overlay {
-    background: rgba(5, 4, 3, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2000;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: modalFadeIn 0.3s ease-out;
-}
-
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    animation: modalFadeIn 0.5s ease-out;
 }
 
 .modal-content {
-    /* Glassmorphism Configuration */
-    background: rgba(20, 16, 14, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    /* Delicate Gold Border & Glow */
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    /* TRUE GLASS EFFECT: Low Opacity Dark + High Blur */
+    background: linear-gradient(160deg, rgba(30, 25, 20, 0.5) 0%, rgba(10, 8, 6, 0.7) 100%);
+    backdrop-filter: blur(30px) saturate(120%);
+    -webkit-backdrop-filter: blur(30px) saturate(120%);
+
+    /* Glowing Rim */
+    border: 1px solid rgba(255, 223, 100, 0.3);
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.8),
+        0 40px 80px rgba(0, 0, 0, 0.8),
+        /* Deep Drop Shadow */
         0 0 0 1px rgba(212, 175, 55, 0.1) inset,
-        0 0 20px rgba(212, 175, 55, 0.1);
-    /* Size & Layout */
+        /* Inner Ring */
+        0 0 30px rgba(212, 175, 55, 0.15);
+    /* Soft Outer Glow */
+
     width: 90%;
-    max-width: 500px;
-    padding: 3.5rem 3rem;
-    border-radius: 16px;
+    max-width: 460px;
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
+    /* Soft Luxury Corners */
     text-align: center;
     position: relative;
-    /* Animation */
     transform: scale(1);
     animation: modalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes modalPopIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95) translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
 .modal-content h2 {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
-    color: var(--gold-light);
-    margin-bottom: 2.5rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+    font-size: 2.5rem;
+    /* Soft Gold Gradient */
+    background: linear-gradient(135deg, #FFF5D0 0%, #D4AF37 50%, #B89640 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.01em;
+    filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.3));
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
 }
 
-/* Custom Checkbox Styling */
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    text-align: left;
-    margin-bottom: 2.5rem;
-}
-
+/* Checkboxes - Integrated Look */
 .checkbox-group label {
-    color: var(--text-secondary);
-    font-size: 1.05rem;
-    cursor: pointer;
+    color: #F8F5EC;
+    /* Bright clean text */
+    font-family: var(--font-heading);
+    /* Serif matches image */
+    font-size: 1.15rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: color 0.2s;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
     user-select: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.2s;
 }
 
 .checkbox-group label:hover {
-    color: var(--text-primary);
+    color: #F3E5AB;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
 
 .checkbox-group label a {
-    color: var(--gold-text);
+    color: #F3E5AB;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid rgba(243, 229, 171, 0.4);
     transition: border-color 0.2s;
 }
 
 .checkbox-group label a:hover {
-    border-bottom-color: var(--gold-text);
+    border-bottom-color: #D4AF37;
 }
 
-/* Hide default checkbox */
+/* Custom Checkbox - Glowing Box */
 .checkbox-group input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--text-muted);
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    display: inline-grid;
-    place-content: center;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #D4AF37;
+    border-radius: 6px;
+    /* Softer square */
+    background: rgba(0, 0, 0, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background: rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    border-color: #F3E5AB;
 }
 
 .checkbox-group input[type="checkbox"]::before {
-    content: "";
-    width: 12px;
-    height: 12px;
+    content: "✓";
+    font-size: 16px;
+    color: #FFF;
+    text-shadow: 0 0 5px #D4AF37;
+    font-weight: bold;
+    font-family: sans-serif;
     transform: scale(0);
-    transition: 0.15s transform ease-in-out;
-    box-shadow: inset 1em 1em var(--bg-premium);
-    /* Checkmark color (inverted) */
-    background-color: var(--bg-premium);
-    transform-origin: center;
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-}
-
-/* Checked State */
-.checkbox-group input[type="checkbox"]:checked {
-    background-color: var(--gold-primary);
-    border-color: var(--gold-primary);
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .checkbox-group input[type="checkbox"]:checked::before {
     transform: scale(1);
-    background-color: #1a1614;
-    /* Checkmark matches dark bg */
 }
 
-
-/* Crisis Warning Note */
+/* Crisis Note - Subtle Integration */
 .crisis-note {
-    background: rgba(80, 20, 20, 0.15);
-    border: 1px solid rgba(139, 0, 0, 0.3);
-    border-left: 3px solid rgba(139, 0, 0, 0.6);
-    color: #e0bcbc;
-    padding: 1rem 1.2rem;
+    background: linear-gradient(90deg, rgba(60, 10, 10, 0.4), rgba(40, 5, 5, 0.4));
+    border: 1px solid rgba(255, 100, 100, 0.15);
+    border-left: 3px solid rgba(200, 50, 50, 0.5);
+    color: #ffdada;
+    padding: 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
     line-height: 1.5;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     text-align: left;
     backdrop-filter: blur(5px);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Modal Buttons */
+/* Primary Button - "Soft Ingot" Design */
 .modal-content .cta-primary {
-    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dim) 100%);
-    color: #1a1614;
-    padding: 1rem 2rem;
-    font-size: 1.05rem;
-    border-radius: 30px;
-    /* Pill shape */
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
-    width: 100%;
-    margin-bottom: 1rem;
+    /* Highly polished gold gradient */
+    background: linear-gradient(180deg,
+            #F8F0C6 0%,
+            /* Highlight Top */
+            #D4AF37 20%,
+            /* Main Gold */
+            #AA8C2C 80%,
+            /* Deep Gold */
+            #886a1a 100%
+            /* Shadow Bottom */
+        );
+    border: 1px solid #FFF5D0;
+    /* Rim light */
+    color: #2a2005;
+    /* Black/Brown text */
+    font-family: var(--font-heading);
     font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
+
+    padding: 1.1rem 0;
+    width: 100%;
+    border-radius: 12px;
+    /* Smooth corners like the reference */
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(212, 175, 55, 0.3) inset;
+    /* Inner glow */
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1.2rem;
     position: relative;
     overflow: hidden;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-.modal-content .cta-primary::after {
+.modal-content .cta-primary::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -100%;
+    width: 50%;
     height: 100%;
-    background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-20deg);
+    animation: btnShine 3s infinite;
+}
+
+@keyframes btnShine {
+    0% {
+        left: -100%;
+    }
+
+    20% {
+        left: 200%;
+    }
+
+    100% {
+        left: 200%;
+    }
 }
 
 .modal-content .cta-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+    filter: brightness(1.1);
+    box-shadow:
+        0 8px 25px rgba(212, 175, 55, 0.4),
+        0 0 30px rgba(212, 175, 55, 0.2) inset;
 }
 
-.modal-content .cta-primary:hover::after {
-    opacity: 1;
+.modal-content .cta-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 }
 
 .modal-content .cta-primary:disabled {
     background: #333;
+    border-color: #444;
     color: #666;
     box-shadow: none;
     cursor: not-allowed;
     transform: none;
 }
 
+/* Secondary Action */
 .modal-content .cta-secondary {
+    color: #D4AF37;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
     background: transparent;
-    color: var(--text-muted);
     border: none;
-    font-family: var(--font-body);
-    font-size: 0.95rem;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
     cursor: pointer;
-    padding: 0.5rem;
-    transition: color 0.2s;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 4px;
+    transition: all 0.2s;
+    text-decoration: none;
 }
 
 .modal-content .cta-secondary:hover {
-    color: var(--text-primary);
-    text-decoration-color: var(--text-muted);
-}
-
-/* Footer */
+    color: #FFF;
+    border-bottom-color: #D4AF37;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}/* Footer */
 .landing-footer {
     background: rgba(13, 11, 10, 0.85);
     backdrop-filter: blur(10px);

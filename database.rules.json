@@ -1,0 +1,13 @@
+{
+    "rules": {
+        "subscribers": {
+            // Only allow the backend (which has full admin access) to write here.
+            // Deny all public reads/writes.
+            ".read": false,
+            ".write": false
+        },
+        // Deny access to everything else by default
+        ".read": false,
+        ".write": false
+    }
+}
