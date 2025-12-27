@@ -111,8 +111,8 @@ export default function Landing() {
 
     return (
         <div className="landing-page" ref={containerRef}>
-            {/* Global Editor */}
-            <HeroEditor config={config} onUpdate={updateConfig} />
+            {/* Global Editor - Only visible in development */}
+            {import.meta.env.DEV && <HeroEditor config={config} onUpdate={updateConfig} />}
 
             {/* ... Sticky BG Container (unchanged lines 65-98) ... */}
             <div className="parallax-bg-container">

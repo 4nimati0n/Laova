@@ -5,6 +5,7 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Safety from './pages/Safety';
 import Success from './pages/Success';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -16,8 +17,12 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/safety" element={<Safety />} />
 
-        {/* PRIVÉ - MVP */}
-        <Route path="/app" element={<MVPApp />} />
+        {/* PRIVÉ - MVP (Protected) */}
+        <Route path="/app" element={
+          <ProtectedRoute>
+            <MVPApp />
+          </ProtectedRoute>
+        } />
 
         {/* SUCCESS PAGE */}
         <Route path="/success" element={<Success />} />

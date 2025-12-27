@@ -1,0 +1,17 @@
+{
+    "name": "Laova",
+    "short_name": "Laova",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0d0b0a",
+    "theme_color": "#0d0b0a",
+    "description": "Laova - Your AI Companion for Emotional Wellbeing",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "sizes": "1024x1024",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

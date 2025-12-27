@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://laova.space/sitemap.xml
+
+# Disallow development/internal paths
+Disallow: /app
