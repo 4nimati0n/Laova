@@ -7,6 +7,10 @@
         "counters": {
             ".read": true,
             ".write": false
+        },
+        "waitlist": {
+            ".read": false,
+            ".write": true
         }
     }
 }

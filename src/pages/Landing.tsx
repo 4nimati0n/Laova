@@ -220,8 +220,8 @@ export default function Landing() {
                             } as React.CSSProperties}
                         >
                             <img
-                                src={spots.explorer <= 0 ? "/images/btn-explorer-soldout.png" : "/images/explorer.png"}
-                                alt={spots.explorer <= 0 ? "Explorer Sold Out" : "Become Explorer"}
+                                src={spots.explorer <= 0 ? "/images/btn-soldout.png" : "/images/explorer.png"}
+                                alt={spots.explorer <= 0 ? "Sold Out" : "Become Explorer"}
                                 onClick={() => {
                                     if (spots.explorer <= 0) {
                                         setWaitlistTier('explorer');
@@ -231,14 +231,13 @@ export default function Landing() {
                                         setIsModalOpen(true);
                                     }
                                 }}
-                                className={`cta-image-trigger ${spots.explorer > 0 ? 'cta-heartbeat' : ''}`}
+                                className="cta-image-trigger cta-heartbeat"
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                     pointerEvents: 'auto',
                                     cursor: 'pointer',
-                                    userSelect: 'none',
-                                    opacity: spots.explorer <= 0 ? 0.7 : 1
+                                    userSelect: 'none'
                                 } as React.CSSProperties}
                                 draggable={false}
                             />
@@ -277,8 +276,8 @@ export default function Landing() {
                             } as React.CSSProperties}
                         >
                             <img
-                                src={spots.visionary <= 0 ? "/images/btn-visionary-soldout.png" : "/images/visionary.png"}
-                                alt={spots.visionary <= 0 ? "Visionary Sold Out" : "Become Visionary"}
+                                src={spots.visionary <= 0 ? "/images/btn-soldout.png" : "/images/visionary.png"}
+                                alt={spots.visionary <= 0 ? "Sold Out" : "Become Visionary"}
                                 onClick={() => {
                                     if (spots.visionary <= 0) {
                                         setWaitlistTier('visionary');
@@ -288,14 +287,13 @@ export default function Landing() {
                                         setIsModalOpen(true);
                                     }
                                 }}
-                                className={`cta-image-trigger ${spots.visionary > 0 ? 'cta-heartbeat' : ''}`}
+                                className="cta-image-trigger cta-heartbeat"
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                     pointerEvents: 'auto',
                                     cursor: 'pointer',
-                                    userSelect: 'none',
-                                    opacity: spots.visionary <= 0 ? 0.7 : 1
+                                    userSelect: 'none'
                                 } as React.CSSProperties}
                                 draggable={false}
                             />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { db } from '../utils/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { rtdb } from '../utils/firebase';
+import { ref, push, serverTimestamp } from 'firebase/database';
 
 interface WaitlistModalProps {
     isOpen: boolean;
@@ -26,8 +26,9 @@ export default function WaitlistModal({ isOpen, onClose, tier }: WaitlistModalPr
         setError(null);
 
         try {
-            if (db) {
-                await addDoc(collection(db, 'waitlist'), {
+            if (rtdb) {
+                const waitlistRef = ref(rtdb, 'waitlist');
+                await push(waitlistRef, {
                     email,
                     tier,
                     createdAt: serverTimestamp()
