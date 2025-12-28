@@ -5,6 +5,9 @@ import Hero, { INITIAL_HERO_CONFIG } from '../landing/Hero';
 // import Pricing from '../landing/Pricing'; // Removed until needed
 import Footer from '../landing/Footer';
 import CheckoutModal from '../landing/CheckoutModal';
+import WaitlistModal from '../landing/WaitlistModal';
+import { rtdb } from '../utils/firebase';
+import { ref, onValue } from 'firebase/database';
 
 // Initial Banner Config (Editable)
 const INITIAL_BANNER_CONFIG: Record<string, HeroElementConfig> = {
@@ -40,11 +43,32 @@ const INITIAL_BANNER_CONFIG: Record<string, HeroElementConfig> = {
 export default function Landing() {
     // ... existing state ...
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+    const [waitlistTier, setWaitlistTier] = useState<'explorer' | 'visionary'>('explorer');
     const [selectedTier, setSelectedTier] = useState<{ priceId?: string; mode: 'subscription' | 'payment' }>({ mode: 'subscription' });
     const [config, setConfig] = useState({ ...INITIAL_HERO_CONFIG, ...INITIAL_BANNER_CONFIG });
     const [heroClipBottom, setHeroClipBottom] = useState(0);
     const [landing3ClipBottom, setLanding3ClipBottom] = useState(0);
     const [landing6ClipBottom, setLanding6ClipBottom] = useState(0);
+
+    // Spot counts for sold-out logic
+    const [spots, setSpots] = useState({ explorer: 34, visionary: 13 });
+
+    // Fetch spots from Firebase
+    useEffect(() => {
+        if (!rtdb) return;
+        const countersRef = ref(rtdb, 'counters/availableSpots');
+        const unsubscribe = onValue(countersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setSpots({
+                    explorer: data.explorer !== undefined ? data.explorer : 34,
+                    visionary: data.visionary !== undefined ? data.visionary : 13
+                });
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 
     // Update Handler for Editor
     const updateConfig = (id: string, updates: Partial<HeroElementConfig>) => {
@@ -196,19 +220,25 @@ export default function Landing() {
                             } as React.CSSProperties}
                         >
                             <img
-                                src="/images/explorer.png"
-                                alt="Become Explorer"
+                                src={spots.explorer <= 0 ? "/images/btn-explorer-soldout.png" : "/images/explorer.png"}
+                                alt={spots.explorer <= 0 ? "Explorer Sold Out" : "Become Explorer"}
                                 onClick={() => {
-                                    setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
-                                    setIsModalOpen(true);
+                                    if (spots.explorer <= 0) {
+                                        setWaitlistTier('explorer');
+                                        setIsWaitlistOpen(true);
+                                    } else {
+                                        setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
+                                        setIsModalOpen(true);
+                                    }
                                 }}
-                                className="cta-image-trigger cta-heartbeat"
+                                className={`cta-image-trigger ${spots.explorer > 0 ? 'cta-heartbeat' : ''}`}
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                     pointerEvents: 'auto',
                                     cursor: 'pointer',
-                                    userSelect: 'none'
+                                    userSelect: 'none',
+                                    opacity: spots.explorer <= 0 ? 0.7 : 1
                                 } as React.CSSProperties}
                                 draggable={false}
                             />
@@ -247,19 +277,25 @@ export default function Landing() {
                             } as React.CSSProperties}
                         >
                             <img
-                                src="/images/visionary.png"
-                                alt="Become Visionary"
+                                src={spots.visionary <= 0 ? "/images/btn-visionary-soldout.png" : "/images/visionary.png"}
+                                alt={spots.visionary <= 0 ? "Visionary Sold Out" : "Become Visionary"}
                                 onClick={() => {
-                                    setSelectedTier({ priceId: 'visionary', mode: 'payment' });
-                                    setIsModalOpen(true);
+                                    if (spots.visionary <= 0) {
+                                        setWaitlistTier('visionary');
+                                        setIsWaitlistOpen(true);
+                                    } else {
+                                        setSelectedTier({ priceId: 'visionary', mode: 'payment' });
+                                        setIsModalOpen(true);
+                                    }
                                 }}
-                                className="cta-image-trigger cta-heartbeat"
+                                className={`cta-image-trigger ${spots.visionary > 0 ? 'cta-heartbeat' : ''}`}
                                 style={{
                                     '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                     pointerEvents: 'auto',
                                     cursor: 'pointer',
-                                    userSelect: 'none'
+                                    userSelect: 'none',
+                                    opacity: spots.visionary <= 0 ? 0.7 : 1
                                 } as React.CSSProperties}
                                 draggable={false}
                             />
@@ -359,6 +395,12 @@ export default function Landing() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 selectedTier={selectedTier}
+            />
+
+            <WaitlistModal
+                isOpen={isWaitlistOpen}
+                onClose={() => setIsWaitlistOpen(false)}
+                tier={waitlistTier}
             />
         </div>
     );
