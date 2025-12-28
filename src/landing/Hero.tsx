@@ -58,7 +58,7 @@ interface HeroProps {
 }
 
 export const Hero = ({ config: externalConfig }: HeroProps) => {
-    const [spotsLeft, setSpotsLeft] = useState(12);
+    const [spotsLeft, setSpotsLeft] = useState(47); // 34 + 13
     // Use external config or fallback (though parent should drive this now)
     const config = externalConfig || INITIAL_HERO_CONFIG;
 
@@ -67,10 +67,15 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
         // If db is not initialized (offline), ignore
         if (!db) return;
 
-        const spotsRef = ref(db, 'spots_left');
-        const unsubscribe = onValue(spotsRef, (snapshot) => {
-            const val = snapshot.val();
-            if (typeof val === 'number') setSpotsLeft(val);
+        const countersRef = ref(db, 'counters/availableSpots');
+        const unsubscribe = onValue(countersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                // Sum explorer and visionary spots
+                const explorer = data.explorer !== undefined ? data.explorer : 34;
+                const visionary = data.visionary !== undefined ? data.visionary : 13;
+                setSpotsLeft(explorer + visionary);
+            }
         });
         return () => unsubscribe();
     }, []);
@@ -163,10 +168,7 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
             {/* 2. Counter */}
             <div style={getStyle('counter')} className="editable">
                 <p className="urgency" style={{ marginTop: 0, pointerEvents: 'auto' }}>
-                    {spotsLeft >= 90
-                        ? "Laova launches when all spots are filled"
-                        : `Only ${spotsLeft} spots left`
-                    }
+                    Only {spotsLeft} spots left
                 </p>
             </div>
 
