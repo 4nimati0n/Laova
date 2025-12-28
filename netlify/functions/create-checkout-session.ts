@@ -16,7 +16,7 @@ export const handler = async (event: any) => {
 
         // Handle aliases
         if (priceId === 'visionary') {
-            finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY || 'price_1SifwBCzq6pJOi14DUbFs9Nr';
+            finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY;
         } else if (priceId === 'explorer') {
             finalPriceId = process.env.STRIPE_PRICE_ID_EXPLORER;
         }
@@ -24,9 +24,9 @@ export const handler = async (event: any) => {
         if (!finalPriceId) {
             // Fallback old logic
             if (event.queryStringParameters?.price === 'visionary') {
-                finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY || 'price_1SifwBCzq6pJOi14DUbFs9Nr';
+                finalPriceId = process.env.STRIPE_PRICE_ID_VISIONARY;
             } else {
-                finalPriceId = process.env.STRIPE_PRICE_ID_FOUNDING || process.env.STRIPE_PRICE_ID_EXPLORER;
+                finalPriceId = process.env.STRIPE_PRICE_ID_EXPLORER;
             }
         }
 
