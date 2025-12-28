@@ -6,6 +6,11 @@
   NODE_VERSION = "22.21.1"
   NPM_FLAGS = "--no-audit"
 
+[functions]
+  # Only include env vars needed by backend functions
+  # This avoids the 4KB AWS Lambda limit
+  included_files = ["netlify/functions/**"]
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
