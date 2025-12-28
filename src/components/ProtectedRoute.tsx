@@ -1,8 +1,8 @@
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-// Define your secret key here. Change this to something only you know!
-const SECRET_KEY = 'laova2025admin';
+// Admin secret key loaded from environment variable
+const SECRET_KEY = import.meta.env.VITE_ADMIN_SECRET_KEY || '';
 const STORAGE_KEY = 'laova_access_granted';
 
 interface ProtectedRouteProps {

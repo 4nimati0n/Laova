@@ -5,6 +5,9 @@ import type { VisualizationStyle } from '../utils/falai';
 import type { EnergyStatus } from '../utils/costTracker';
 import { getEnergyStatus } from '../utils/costTracker';
 
+// Environment variables for API keys
+const env = import.meta.env;
+
 // Energy transaction history entry
 export interface EnergyTransaction {
   id: string;
@@ -163,11 +166,11 @@ export const useAppStore = create<AppState>((set) => ({
   openAiKey: localStorage.getItem('laura_openai_key') || '',
   mistralKey: localStorage.getItem('laura_mistral_key') || config.mistralApiKey || '',
   elevenLabsKey: localStorage.getItem('laura_elevenlabs_key') || config.elevenLabsApiKey || '',
-  deepgramKey: localStorage.getItem('laura_deepgram_key') || '8411cfdb5c0b8cd2d930a5f4608d765c62b0083e',
-  voiceId: localStorage.getItem('laura_voice_id') || config.elevenLabsVoiceId || 'e68bf5ad-da47-4881-83fa-19307ea1c2f8',
-  humeApiKey: localStorage.getItem('laura_hume_api_key') || 'mGl3j4Up57bW9CI8nCwMriEmtrWehurLkcASLL8afOuAaGY2',
-  humeSecretKey: localStorage.getItem('laura_hume_secret_key') || 'AZGe4gT9duS6ccYwd4YuiXb4olr1DAsICTnGaPlUoKczU5phn8YM9kOdLR1h3uQg',
-  humeConfigId: localStorage.getItem('laura_hume_config_id') || '5dcbae15-3eea-458a-bab3-1b3c30f4a066',
+  deepgramKey: localStorage.getItem('laura_deepgram_key') || env.VITE_DEEPGRAM_API_KEY || '',
+  voiceId: localStorage.getItem('laura_voice_id') || config.elevenLabsVoiceId || '',
+  humeApiKey: localStorage.getItem('laura_hume_api_key') || env.VITE_HUME_API_KEY || '',
+  humeSecretKey: localStorage.getItem('laura_hume_secret_key') || env.VITE_HUME_SECRET_KEY || '',
+  humeConfigId: localStorage.getItem('laura_hume_config_id') || env.VITE_HUME_CONFIG_ID || '',
   humeAccessToken: null,
   humeFft: [],
   useHume: localStorage.getItem('laura_use_hume') === 'true',
