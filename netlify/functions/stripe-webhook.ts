@@ -3,6 +3,31 @@ import * as admin from 'firebase-admin';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+// Send Telegram notification
+async function sendTelegramNotification(message: string) {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    if (!token || !chatId) {
+        console.warn('Telegram credentials not configured');
+        return;
+    }
+
+    try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+    } catch (error) {
+        console.error('Failed to send Telegram notification:', error);
+    }
+}
+
 // Initialize Firebase Admin if not already initialized
 if (!admin.apps.length) {
     try {
@@ -48,6 +73,7 @@ export const handler = async (event: any) => {
         const amountTotal = session.amount_total; // in cents
         const currency = session.currency;
         const mode = session.mode;
+        const tierName = mode === 'subscription' ? 'Explorer' : 'Visionary';
 
         console.log(`Processing subscription for: ${customerEmail}`);
 
@@ -71,14 +97,35 @@ export const handler = async (event: any) => {
                 currency: currency,
                 mode: mode, // 'subscription' or 'payment'
                 createdAt: admin.database.ServerValue.TIMESTAMP,
-                tier: mode === 'subscription' ? 'Explorer' : 'Visionary' // Heuristic based on previous logic
+                tier: tierName
             });
 
             // Decrement the available spots counter
-            const counterRef = db.ref(`counters/availableSpots/${mode === 'subscription' ? 'explorer' : 'visionary'}`);
-            await counterRef.transaction((currentValue) => {
+            const tierKey = mode === 'subscription' ? 'explorer' : 'visionary';
+            const counterRef = db.ref(`counters/availableSpots/${tierKey}`);
+            const result = await counterRef.transaction((currentValue) => {
                 return (currentValue || 0) > 0 ? currentValue - 1 : 0;
             });
+
+            // Check if tier is now sold out and send notification
+            const newValue = result.snapshot.val();
+            if (newValue === 0) {
+                await sendTelegramNotification(
+                    `🚨 <b>SOLD OUT!</b>\n\n` +
+                    `Le tier <b>${tierName}</b> est maintenant complet !\n\n` +
+                    `Dernier acheteur: ${customerEmail}\n` +
+                    `Montant: ${(amountTotal || 0) / 100} ${currency?.toUpperCase()}`
+                );
+            }
+
+            // Also notify on each new purchase
+            await sendTelegramNotification(
+                `💰 <b>Nouvelle vente ${tierName}!</b>\n\n` +
+                `Email: ${customerEmail}\n` +
+                `Nom: ${customerName}\n` +
+                `Montant: ${(amountTotal || 0) / 100} ${currency?.toUpperCase()}\n` +
+                `Places restantes: ${newValue}`
+            );
 
             console.log(`Successfully added ${customerEmail} to subscribers list and decremented counter.`);
 
