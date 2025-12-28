@@ -24,7 +24,9 @@ if (firebaseConfig.apiKey && firebaseConfig.projectId) {
         db = getFirestore(app);
         // Use a try-catch for RTDB specifically as it can throw on bad URLs
         try {
+            console.log("Initializing RTDB with URL:", firebaseConfig.databaseURL);
             rtdb = getDatabase(app);
+            console.log("RTDB initialized successfully");
         } catch (e) {
             console.warn("Firebase RTDB init failed (likely URL)", e);
         }

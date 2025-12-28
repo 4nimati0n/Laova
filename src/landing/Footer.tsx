@@ -9,17 +9,25 @@ export default function Footer() {
     const [spots, setSpots] = useState({ explorer: 34, visionary: 13 });
 
     useEffect(() => {
-        if (!rtdb) return;
+        if (!rtdb) {
+            console.warn("Footer: RTDB not initialized");
+            return;
+        }
 
         const countersRef = ref(rtdb, 'counters/availableSpots');
+        console.log("Footer: Listening to counters at", countersRef.toString());
+
         const unsubscribe = onValue(countersRef, (snapshot) => {
             const data = snapshot.val();
+            console.log("Footer: Received data:", data);
             if (data) {
                 setSpots({
                     explorer: data.explorer !== undefined ? data.explorer : 34,
                     visionary: data.visionary !== undefined ? data.visionary : 13
                 });
             }
+        }, (error) => {
+            console.error("Footer: Firebase Read Error:", error);
         });
 
         return () => unsubscribe();
