@@ -1,70 +1,100 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LegalModal from './LegalModal';
 import { PrivacyContent, TermsContent, SafetyContent } from './LegalContent';
+import { rtdb } from '../utils/firebase';
+import { ref, onValue } from 'firebase/database';
 
 export default function Footer() {
     const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | 'safety' | null>(null);
+    const [spots, setSpots] = useState({ explorer: 34, visionary: 13 });
+
+    useEffect(() => {
+        if (!rtdb) return;
+
+        const countersRef = ref(rtdb, 'counters/availableSpots');
+        const unsubscribe = onValue(countersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setSpots({
+                    explorer: data.explorer !== undefined ? data.explorer : 34,
+                    visionary: data.visionary !== undefined ? data.visionary : 13
+                });
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
 
     return (
         <>
-            <footer className="landing-footer">
-                <div className="footer-content">
-                    <div className="legal-disclaimer">
-                        <p>
-                            Laova is an AI companion designed to support emotional wellbeing.
-                            Laova is not a medical device, healthcare provider, or mental health service.
-                            Not a substitute for professional care. If you're experiencing a crisis,
-                            please contact 988 (Suicide & Crisis Lifeline) or visit your local emergency room.
-                        </p>
-                        <p>18+ only. By continuing, you confirm you are 18 years or older.</p>
+            <footer className="landing-footer" style={{ padding: '2rem 1rem', marginTop: 'auto' }}>
+                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', justifyContent: 'center', minHeight: '200px' }}>
+
+                    {/* Live Spot Counters */}
+                    <div style={{
+                        display: 'flex',
+                        gap: '1.5rem',
+                        fontFamily: 'Playfair Display, serif',
+                        color: '#D4AF37',
+                        fontSize: '1.1rem',
+                        marginBottom: '0.5rem'
+                    }}>
+                        <span>Explorer: {spots.explorer} spots left</span>
+                        <span style={{ color: '#554a40' }}>|</span>
+                        <span>Visionary: {spots.visionary} spots left</span>
                     </div>
 
-                    <div className="footer-links">
+                    {/* Minimalist Link/Button Row */}
+                    <div className="footer-links" style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '1.5rem',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                         <button
                             onClick={() => setActiveModal('privacy')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'inherit',
-                                font: 'inherit',
-                                cursor: 'pointer',
-                                padding: 0
-                            }}
+                            style={{ background: 'transparent', border: 'none', color: '#756a5d', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#756a5d'}
                         >
-                            Privacy Policy
+                            Privacy
                         </button>
+                        <span style={{ color: '#332a22' }}>|</span>
                         <button
                             onClick={() => setActiveModal('terms')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'inherit',
-                                font: 'inherit',
-                                cursor: 'pointer',
-                                padding: 0
-                            }}
+                            style={{ background: 'transparent', border: 'none', color: '#756a5d', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#756a5d'}
                         >
-                            Terms of Service
+                            Terms
                         </button>
+                        <span style={{ color: '#332a22' }}>|</span>
                         <button
                             onClick={() => setActiveModal('safety')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'inherit',
-                                font: 'inherit',
-                                cursor: 'pointer',
-                                padding: 0
-                            }}
+                            style={{ background: 'transparent', border: 'none', color: '#756a5d', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#756a5d'}
                         >
-                            Safety Protocols
+                            Safety
                         </button>
-                        <a href="https://988lifeline.org" target="_blank" rel="noopener noreferrer">Crisis Resources (988)</a>
-                        <a href="mailto:laova@un1ty.dev">Contact: laova@un1ty.dev</a>
+                        <span style={{ color: '#332a22' }}>|</span>
+                        <a
+                            href="https://988lifeline.org"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: '#AA8C2C', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#AA8C2C'}
+                        >
+                            Crisis (988)
+                        </a>
                     </div>
 
-                    <div className="copyright">
-                        © {new Date().getFullYear()} Laova. All rights reserved.
+                    <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: '#554a40' }}>
+                        <a href="mailto:laova@un1ty.dev" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'} onMouseLeave={(e) => e.currentTarget.style.color = '#554a40'}>laova@un1ty.dev</a>
+                        <span>© {new Date().getFullYear()} Laova</span>
                     </div>
                 </div>
             </footer>

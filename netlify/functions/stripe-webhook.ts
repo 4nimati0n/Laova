@@ -74,7 +74,13 @@ export const handler = async (event: any) => {
                 tier: mode === 'subscription' ? 'Explorer' : 'Visionary' // Heuristic based on previous logic
             });
 
-            console.log(`Successfully added ${customerEmail} to subscribers list.`);
+            // Decrement the available spots counter
+            const counterRef = db.ref(`counters/availableSpots/${mode === 'subscription' ? 'explorer' : 'visionary'}`);
+            await counterRef.transaction((currentValue) => {
+                return (currentValue || 0) > 0 ? currentValue - 1 : 0;
+            });
+
+            console.log(`Successfully added ${customerEmail} to subscribers list and decremented counter.`);
 
         } catch (dbError) {
             console.error('Error saving to Firebase:', dbError);

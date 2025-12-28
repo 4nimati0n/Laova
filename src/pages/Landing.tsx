@@ -117,11 +117,24 @@ export default function Landing() {
             {/* ... Sticky BG Container (unchanged lines 65-98) ... */}
             <div className="parallax-bg-container">
                 {/* Layer 0 (Bottom-most): Landing 7 */}
-                <div className="parallax-landing7-wrapper">
+                <div className="parallax-landing7-wrapper" style={{ position: 'relative' }}>
                     <img
                         src="/images/landing7.jpeg"
                         alt="Final"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <img
+                        src="/images/Laova.png"
+                        alt="Laova Logo"
+                        style={{
+                            position: 'absolute',
+                            bottom: '2rem',
+                            right: '2rem',
+                            width: '120px',
+                            height: 'auto',
+                            zIndex: 10,
+                            opacity: 0.8
+                        }}
                     />
                 </div>
 
