@@ -36,8 +36,8 @@ export default function Footer() {
 
     return (
         <>
-            <footer className="landing-footer" style={{ padding: '2rem 1rem', marginTop: 'auto', width: '100%', boxSizing: 'border-box' }}>
-                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', width: '100%', height: '100%', textAlign: 'center' }}>
+            <footer className="landing-footer" style={{ padding: '2rem 1rem', width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', textAlign: 'center' }}>
 
                     {/* Live Spot Counters */}
                     <div style={{
@@ -45,11 +45,10 @@ export default function Footer() {
                         gap: '1.5rem',
                         fontFamily: 'Playfair Display, serif',
                         color: '#D4AF37',
-                        fontSize: '1.1rem',
-                        marginBottom: '0.5rem'
+                        fontSize: '1.1rem'
                     }}>
                         <span>Explorer: {spots.explorer} spots left</span>
-                        <span style={{ color: '#554a40' }}>|</span>
+                        <span style={{ opacity: 0.5 }}>|</span>
                         <span>Visionary: {spots.visionary} spots left</span>
                     </div>
 
