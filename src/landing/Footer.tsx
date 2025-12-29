@@ -47,9 +47,9 @@ export default function Footer() {
                         color: '#D4AF37',
                         fontSize: '1.1rem'
                     }}>
-                        <span>Explorer: {spots.explorer} spots left</span>
-                        <span style={{ opacity: 0.5 }}>|</span>
-                        <span>Visionary: {spots.visionary} spots left</span>
+                        <span style={{ color: '#D4AF37' }}>Explorer: {spots.explorer} spots left</span>
+                        <span style={{ opacity: 0.5, color: '#D4AF37' }}>|</span>
+                        <span style={{ color: '#D4AF37' }}>Visionary: {spots.visionary} spots left</span>
                     </div>
 
                     {/* Minimalist Link/Button Row */}
