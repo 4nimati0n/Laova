@@ -348,52 +348,58 @@ export default function Landing() {
                 <div
                     className="manifesto-banner-container"
                     ref={bannerRef}
-                    style={{ marginTop: `${(config.landing2?.offset ?? 100) - 100}vh` }}
+                    style={{ marginTop: `${(config.landing2?.offset ?? 100) - 100}vh`, backgroundColor: '#0b0a09' }}
                 >
-                    <img
-                        src={orientation === 'portrait' ? '/images/landing2-mobile.png' : '/images/landing2.png'}
-                        alt="Transformation"
-                        className="manifesto-banner-img"
-                    />
+                    <ResponsiveFiller>
+                        <img
+                            src={orientation === 'portrait' ? '/images/landing2-mobile.png' : '/images/landing2.png'}
+                            alt="Transformation"
+                            className="manifesto-banner-img"
+                        />
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Spacer 2: Controls delay before L4 */}
                 <div style={{ height: `${config.landing4?.offset ?? 100}vh`, pointerEvents: 'none' }}></div>
 
                 {/* Landing 4 (Wiper 2) */}
-                <div className="manifesto-banner-container" ref={banner4Ref}>
-                    <img
-                        src={orientation === 'portrait' ? '/images/landing4-mobile.png' : '/images/landing4.png'}
-                        alt="Evolution"
-                        className="manifesto-banner-img"
-                    />
+                <div className="manifesto-banner-container" ref={banner4Ref} style={{ backgroundColor: '#0b0a09' }}>
+                    <ResponsiveFiller>
+                        <img
+                            src={orientation === 'portrait' ? '/images/landing4-mobile.png' : '/images/landing4.png'}
+                            alt="Evolution"
+                            className="manifesto-banner-img"
+                        />
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Spacer 3: Controls delay before L6 */}
                 <div style={{ height: `${config.landing6?.offset ?? 5}vh`, pointerEvents: 'none' }}></div>
 
                 {/* Landing 6 (Wiper 3 - reveals Landing 7) */}
-                <div className="manifesto-banner-container" ref={banner6Ref} style={{ position: 'relative' }}>
-                    <img
-                        src={orientation === 'portrait' ? '/images/landing6-mobile.png' : '/images/landing6.png'}
-                        alt="Final Vision"
-                        className="manifesto-banner-img"
-                    />
-                    {/* Footer Integrated into Landing 6 Block - Centered */}
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 10,
-                        display: 'flex',
-                        flexDirection: 'column', // Ensure vertical stacking if multiple elements
-                        alignItems: 'center',    // Horizontal Center
-                        justifyContent: 'center' // Vertical Center
-                    }}>
-                        <Footer />
-                    </div>
+                <div className="manifesto-banner-container" ref={banner6Ref} style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
+                    <ResponsiveFiller>
+                        <img
+                            src={orientation === 'portrait' ? '/images/landing6-mobile.png' : '/images/landing6.png'}
+                            alt="Final Vision"
+                            className="manifesto-banner-img"
+                        />
+                        {/* Footer Integrated into Landing 6 Block - Centered */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 10,
+                            display: 'flex',
+                            flexDirection: 'column', // Ensure vertical stacking if multiple elements
+                            alignItems: 'center',    // Horizontal Center
+                            justifyContent: 'center' // Vertical Center
+                        }}>
+                            <Footer />
+                        </div>
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Spacer AFTER L6 */}
