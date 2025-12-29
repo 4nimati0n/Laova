@@ -172,8 +172,8 @@ export default function Landing() {
                             alt="Laova Logo"
                             style={{
                                 position: 'absolute',
-                                bottom: '2rem',
-                                right: '2rem',
+                                bottom: '15px',
+                                right: '15px',
                                 width: '120px',
                                 height: 'auto',
                                 zIndex: 10,
