@@ -11,6 +11,10 @@
         "waitlist": {
             ".read": false,
             ".write": true
+        },
+        "analytics": {
+            ".read": true,
+            ".write": true
         }
     }
 }
