@@ -355,6 +355,7 @@ export default function Landing() {
                             src={orientation === 'portrait' ? '/images/landing2-mobile.png' : '/images/landing2.png'}
                             alt="Transformation"
                             className="manifesto-banner-img"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                     </ResponsiveFiller>
                 </div>
@@ -369,6 +370,7 @@ export default function Landing() {
                             src={orientation === 'portrait' ? '/images/landing4-mobile.png' : '/images/landing4.png'}
                             alt="Evolution"
                             className="manifesto-banner-img"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                     </ResponsiveFiller>
                 </div>
@@ -383,6 +385,7 @@ export default function Landing() {
                             src={orientation === 'portrait' ? '/images/landing6-mobile.png' : '/images/landing6.png'}
                             alt="Final Vision"
                             className="manifesto-banner-img"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                         {/* Footer Integrated into Landing 6 Block - Centered */}
                         <div style={{
@@ -393,9 +396,9 @@ export default function Landing() {
                             height: '100%',
                             zIndex: 10,
                             display: 'flex',
-                            flexDirection: 'column', // Ensure vertical stacking if multiple elements
-                            alignItems: 'center',    // Horizontal Center
-                            justifyContent: 'center' // Vertical Center
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}>
                             <Footer />
                         </div>
