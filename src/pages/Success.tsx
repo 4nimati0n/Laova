@@ -49,7 +49,7 @@ const Success = () => {
                     </div>
                 </div>
 
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Bienvenue !</h2>
+                <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Welcome!</h2>
 
                 <p style={{
                     color: '#e0e0e0',
@@ -57,7 +57,7 @@ const Success = () => {
                     marginBottom: '1rem',
                     lineHeight: '1.6'
                 }}>
-                    Votre paiement a été validé avec succès.
+                    Your payment has been successfully processed.
                 </p>
 
                 <p style={{
@@ -66,8 +66,8 @@ const Success = () => {
                     marginBottom: '2.5rem',
                     lineHeight: '1.6'
                 }}>
-                    Vous faites désormais partie de nos soutiens. Vous recevrez bientôt un email de confirmation,
-                    et nous vous tiendrons informé du lancement officiel de Laova.
+                    You are now one of our early supporters. You will receive a confirmation email shortly,
+                    and we will keep you informed about Laova's official launch.
                 </p>
 
                 <button
@@ -81,7 +81,7 @@ const Success = () => {
                     }}
                 >
                     <ArrowLeft size={20} />
-                    Retour à l'accueil
+                    Back to home
                 </button>
             </div>
         </div>
