@@ -8,6 +8,7 @@ import CheckoutModal from '../landing/CheckoutModal';
 import WaitlistModal from '../landing/WaitlistModal';
 import FillerFrame from '../landing/FillerFrame';
 import { useOrientation } from '../hooks/useOrientation';
+import { useContainerScale } from '../hooks/useContainerScale';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
 
@@ -55,6 +56,9 @@ export default function Landing() {
 
     // Orientation detection for image switching
     const orientation = useOrientation();
+
+    // Proportional scaling based on 1410x831 reference
+    const scale = useContainerScale();
 
     // Spot counts for sold-out logic
     const [spots, setSpots] = useState({ explorer: 34, visionary: 13 });
@@ -190,19 +194,19 @@ export default function Landing() {
                             position: 'absolute',
                             top: `${config.pricing_buttons?.top ?? 75}%`,
                             left: '50%',
-                            transform: `translate(-50%, -50%) scale(${config.pricing_buttons?.scale ?? 0.1})`,
+                            transform: `translate(-50%, -50%) scale(${(config.pricing_buttons?.scale ?? 0.1) * scale.uniform})`,
                             transformOrigin: 'center center',
                             display: 'flex',
                             flexDirection: 'row',
-                            gap: `${config.pricing_buttons?.offset ?? 40}px`,
+                            gap: `${(config.pricing_buttons?.offset ?? 40) * scale.uniform}px`,
                             zIndex: 10
                         }}>
                             <div
                                 className="cta-hover-wrapper"
                                 style={{
-                                    // Default shadow (dark) - LOW state
-                                    '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                                    '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                                    // Default shadow (dark) - LOW state (scaled)
+                                    '--default-shadow-size': `${(config.cta_animation?.defaultShadowSize ?? 9) * scale.uniform}px`,
+                                    '--default-shadow-distance': `${(config.cta_animation?.defaultShadowDistance ?? 2) * scale.uniform}px`,
                                     '--default-shadow-color-rgb': ((hex: string) => {
                                         const r = parseInt(hex.slice(1, 3), 16);
                                         const g = parseInt(hex.slice(3, 5), 16);
@@ -210,12 +214,12 @@ export default function Landing() {
                                         return `${r}, ${g}, ${b}`;
                                     })(config.cta_animation?.defaultShadowColor ?? '#000000'),
                                     '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                                    // Default shadow HIGH state
-                                    '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                                    '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                                    // Gold glow - LOW state
-                                    '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
-                                    '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                                    // Default shadow HIGH state (scaled)
+                                    '--default-shadow-size-high': `${(config.cta_animation?.defaultShadowSizeHigh ?? 62) * scale.uniform}px`,
+                                    '--default-shadow-distance-high': `${(config.cta_animation?.defaultShadowDistanceHigh ?? 28) * scale.uniform}px`,
+                                    // Gold glow - LOW state (scaled)
+                                    '--shadow-size': `${(config.cta_animation?.shadowSize ?? 200) * scale.uniform}px`,
+                                    '--shadow-distance': `${(config.cta_animation?.shadowDistance ?? 0) * scale.uniform}px`,
                                     '--shadow-color-rgb': ((hex: string) => {
                                         const r = parseInt(hex.slice(1, 3), 16);
                                         const g = parseInt(hex.slice(3, 5), 16);
@@ -223,9 +227,9 @@ export default function Landing() {
                                         return `${r}, ${g}, ${b}`;
                                     })(config.cta_animation?.shadowColor ?? '#D4AF37'),
                                     '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
-                                    // Gold glow HIGH state
-                                    '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
-                                    '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                                    // Gold glow HIGH state (scaled)
+                                    '--shadow-size-high': `${(config.cta_animation?.shadowSizeHigh ?? 86) * scale.uniform}px`,
+                                    '--shadow-distance-high': `${(config.cta_animation?.shadowDistanceHigh ?? 0) * scale.uniform}px`,
                                     // Animation
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                 } as React.CSSProperties}
@@ -256,9 +260,9 @@ export default function Landing() {
                             <div
                                 className="cta-hover-wrapper"
                                 style={{
-                                    // Default shadow (dark) - LOW state
-                                    '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                                    '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                                    // Default shadow (dark) - LOW state (scaled)
+                                    '--default-shadow-size': `${(config.cta_animation?.defaultShadowSize ?? 9) * scale.uniform}px`,
+                                    '--default-shadow-distance': `${(config.cta_animation?.defaultShadowDistance ?? 2) * scale.uniform}px`,
                                     '--default-shadow-color-rgb': ((hex: string) => {
                                         const r = parseInt(hex.slice(1, 3), 16);
                                         const g = parseInt(hex.slice(3, 5), 16);
@@ -266,12 +270,12 @@ export default function Landing() {
                                         return `${r}, ${g}, ${b}`;
                                     })(config.cta_animation?.defaultShadowColor ?? '#000000'),
                                     '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                                    // Default shadow HIGH state
-                                    '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                                    '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                                    // Gold glow - LOW state
-                                    '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
-                                    '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                                    // Default shadow HIGH state (scaled)
+                                    '--default-shadow-size-high': `${(config.cta_animation?.defaultShadowSizeHigh ?? 62) * scale.uniform}px`,
+                                    '--default-shadow-distance-high': `${(config.cta_animation?.defaultShadowDistanceHigh ?? 28) * scale.uniform}px`,
+                                    // Gold glow - LOW state (scaled)
+                                    '--shadow-size': `${(config.cta_animation?.shadowSize ?? 200) * scale.uniform}px`,
+                                    '--shadow-distance': `${(config.cta_animation?.shadowDistance ?? 0) * scale.uniform}px`,
                                     '--shadow-color-rgb': ((hex: string) => {
                                         const r = parseInt(hex.slice(1, 3), 16);
                                         const g = parseInt(hex.slice(3, 5), 16);
@@ -279,9 +283,9 @@ export default function Landing() {
                                         return `${r}, ${g}, ${b}`;
                                     })(config.cta_animation?.shadowColor ?? '#D4AF37'),
                                     '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
-                                    // Gold glow HIGH state
-                                    '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
-                                    '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                                    // Gold glow HIGH state (scaled)
+                                    '--shadow-size-high': `${(config.cta_animation?.shadowSizeHigh ?? 86) * scale.uniform}px`,
+                                    '--shadow-distance-high': `${(config.cta_animation?.shadowDistanceHigh ?? 0) * scale.uniform}px`,
                                     // Animation
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                                 } as React.CSSProperties}

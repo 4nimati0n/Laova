@@ -6,6 +6,7 @@ import { type HeroElementConfig } from './HeroEditor';
 import GoldParticles from './GoldParticles';
 import GoldShimmer from './GoldShimmer';
 import { useOrientation } from '../hooks/useOrientation';
+import { useContainerScale } from '../hooks/useContainerScale';
 import './landing.css';
 
 // User defined default config
@@ -61,6 +62,7 @@ interface HeroProps {
 export const Hero = ({ config: externalConfig }: HeroProps) => {
     const [spotsLeft, setSpotsLeft] = useState(47); // 34 + 13
     const orientation = useOrientation();
+    const scale = useContainerScale(); // Proportional scaling based on 1410x831 reference
     // Use external config or fallback (though parent should drive this now)
     const config = externalConfig || INITIAL_HERO_CONFIG;
 
@@ -83,15 +85,19 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
     }, []);
 
     // Helper for absolute positioning of editable elements (CTA, Counter)
+    // Applies proportional scaling based on container size vs reference (1410x831)
     const getStyle = (id: string) => {
         const item = config[id];
         if (!item) return {};
 
+        // Scale the scale value proportionally
+        const scaledScale = (item.scale ?? 1) * scale.uniform;
+
         return {
             position: 'absolute' as const,
-            top: `${item.top}%`,
+            top: `${item.top}%`, // Percentage stays the same
             left: '50%',
-            transform: `translate(-50%, -50%) scale(${item.scale})`,
+            transform: `translate(-50%, -50%) scale(${scaledScale})`,
             zIndex: item.zIndex,
             textAlign: 'center' as const,
             pointerEvents: 'none' as const, // Editor wrapper usually none, children auto
@@ -180,9 +186,9 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                     className="cta-hover-wrapper"
                     style={{
                         pointerEvents: 'auto', // Enable clicks on this wrapper
-                        // Default shadow (dark) - LOW state
-                        '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                        '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                        // Default shadow (dark) - LOW state (scaled)
+                        '--default-shadow-size': `${(config.cta_animation?.defaultShadowSize ?? 9) * scale.uniform}px`,
+                        '--default-shadow-distance': `${(config.cta_animation?.defaultShadowDistance ?? 2) * scale.uniform}px`,
                         '--default-shadow-color-rgb': ((hex: string) => {
                             const r = parseInt(hex.slice(1, 3), 16);
                             const g = parseInt(hex.slice(3, 5), 16);
@@ -190,12 +196,12 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                             return `${r}, ${g}, ${b}`;
                         })(config.cta_animation?.defaultShadowColor ?? '#000000'),
                         '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                        // Default shadow HIGH state
-                        '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                        '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                        // Gold glow - LOW state
-                        '--shadow-size': `${config.cta_animation?.shadowSize ?? 0}px`,
-                        '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                        // Default shadow HIGH state (scaled)
+                        '--default-shadow-size-high': `${(config.cta_animation?.defaultShadowSizeHigh ?? 62) * scale.uniform}px`,
+                        '--default-shadow-distance-high': `${(config.cta_animation?.defaultShadowDistanceHigh ?? 28) * scale.uniform}px`,
+                        // Gold glow - LOW state (scaled)
+                        '--shadow-size': `${(config.cta_animation?.shadowSize ?? 0) * scale.uniform}px`,
+                        '--shadow-distance': `${(config.cta_animation?.shadowDistance ?? 0) * scale.uniform}px`,
                         '--shadow-color-rgb': ((hex: string) => {
                             const r = parseInt(hex.slice(1, 3), 16);
                             const g = parseInt(hex.slice(3, 5), 16);
@@ -203,9 +209,9 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                             return `${r}, ${g}, ${b}`;
                         })(config.cta_animation?.shadowColor ?? '#D4AF37'),
                         '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 0) / 100,
-                        // Gold glow HIGH state
-                        '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 148}px`,
-                        '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                        // Gold glow HIGH state (scaled)
+                        '--shadow-size-high': `${(config.cta_animation?.shadowSizeHigh ?? 148) * scale.uniform}px`,
+                        '--shadow-distance-high': `${(config.cta_animation?.shadowDistanceHigh ?? 0) * scale.uniform}px`,
                         // Animation
                         '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                     } as React.CSSProperties}
