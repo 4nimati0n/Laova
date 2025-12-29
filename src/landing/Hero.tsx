@@ -100,10 +100,10 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
 
     // Smooth scroll with ease-in-out curve
     const smoothScrollTo = (targetVh: number, duration: number) => {
-        // Find the scrollable container (.landing-page)
-        const container = document.querySelector('.landing-page');
+        // Find the scrollable container (.filler-frame-content)
+        const container = document.querySelector('.filler-frame-content');
         if (!container) {
-            console.warn('Landing page container not found');
+            console.warn('Scroll container not found');
             return;
         }
 
