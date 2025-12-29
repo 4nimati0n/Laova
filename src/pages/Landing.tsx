@@ -11,6 +11,7 @@ import { useOrientation } from '../hooks/useOrientation';
 import { useContainerScale } from '../hooks/useContainerScale';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
+import { trackVisit } from '../utils/analytics';
 
 // Initial Banner Config (Editable)
 const INITIAL_BANNER_CONFIG: Record<string, HeroElementConfig> = {
@@ -77,6 +78,11 @@ export default function Landing() {
             }
         });
         return () => unsubscribe();
+    }, []);
+
+    // Track visitor on mount
+    useEffect(() => {
+        trackVisit();
     }, []);
 
     // Update Handler for Editor
