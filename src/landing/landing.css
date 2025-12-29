@@ -39,22 +39,29 @@
 }
 
 /* ===========================================
-   FILLER FRAME - Hidden Scrollbar Technique
+   FILLER FRAME - Hidden Scrollbar (Simple)
    =========================================== */
 
 /* 
- * Scrollbar is hidden using wrapper technique:
- * - Outer wrapper (.filler-frame-outer) clips overflow
- * - Inner wrapper (.filler-frame-content) extends beyond to push scrollbar out
- * - Content flows under where scrollbar would be = true overlay effect
+ * Hide scrollbar completely while keeping scroll functional
+ * Works on all modern browsers
  */
+.filler-frame-content {
+    overflow-x: hidden;
+    overflow-y: auto;
 
-.filler-frame-outer {
-    /* CSS custom properties inherited from here */
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE/Edge */
+    -ms-overflow-style: none;
 }
 
-.filler-frame-content {
-    /* Inherits --content-height and --content-width from parent */
+/* WebKit (Chrome, Safari, Edge) */
+.filler-frame-content::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
 }
 
 /* Filler edges should not interfere with interactions */

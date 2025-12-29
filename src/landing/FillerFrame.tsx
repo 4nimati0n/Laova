@@ -269,28 +269,12 @@ export default function FillerFrame({
                 </>
             )}
 
-            {/* Central content area with hidden scrollbar overlay technique */}
-            {/* Outer wrapper clips the scrollbar, inner wrapper scrolls */}
+            {/* Central scrollable content area - scrollbar hidden via CSS */}
             <div
-                className="filler-frame-outer"
-                style={{
-                    ...getContentStyle(),
-                    overflow: 'hidden', // Hide the scrollbar that extends beyond
-                }}
+                className="filler-frame-content"
+                style={getContentStyle()}
             >
-                <div
-                    className="filler-frame-content"
-                    style={{
-                        width: 'calc(100% + 20px)', // Extend width to push scrollbar out
-                        height: '100%',
-                        overflowX: 'hidden',
-                        overflowY: 'scroll',
-                        paddingRight: '20px', // Compensate for the extended width
-                        boxSizing: 'content-box',
-                    }}
-                >
-                    {children}
-                </div>
+                {children}
             </div>
         </div>
     );
