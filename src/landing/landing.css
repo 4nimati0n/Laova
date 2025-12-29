@@ -30,17 +30,54 @@
     background-color: var(--bg-premium);
     line-height: 1.6;
 
-    /* Fix scrolling issue */
-    height: 100vh;
+    /* Content fills available space in FillerFrame */
     width: 100%;
-    /* Content width inside scroll container */
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
+    min-height: 100%;
+    position: relative;
     margin: 0;
     padding: 0;
+}
+
+/* ===========================================
+   FILLER FRAME - Overlay Scrollbar Styles
+   =========================================== */
+
+/* Central content area with overlay scrollbar */
+.filler-frame-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+}
+
+/* Webkit (Chrome, Safari, Edge) overlay scrollbar */
+.filler-frame-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.filler-frame-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.filler-frame-content::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.filler-frame-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.5);
+    background-clip: padding-box;
+}
+
+/* Hide scrollbar when not scrolling (mobile-like behavior) */
+.filler-frame-content::-webkit-scrollbar-thumb:not(:hover) {
+    transition: opacity 0.3s ease;
+}
+
+/* Filler edges should not interfere with interactions */
+.filler-edge {
+    pointer-events: none;
 }
 
 /* Typography Overrides */

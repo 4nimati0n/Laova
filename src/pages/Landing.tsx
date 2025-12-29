@@ -6,7 +6,7 @@ import Hero, { INITIAL_HERO_CONFIG } from '../landing/Hero';
 import Footer from '../landing/Footer';
 import CheckoutModal from '../landing/CheckoutModal';
 import WaitlistModal from '../landing/WaitlistModal';
-import ResponsiveFiller from '../landing/ResponsiveFiller';
+import FillerFrame from '../landing/FillerFrame';
 import { useOrientation } from '../hooks/useOrientation';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
@@ -139,19 +139,19 @@ export default function Landing() {
     }, []);
 
     return (
-        <div className="landing-page" ref={containerRef}>
-            {/* Global Editor - Only visible in development */}
-            {import.meta.env.DEV && <HeroEditor config={config} onUpdate={updateConfig} />}
+        <FillerFrame>
+            <div className="landing-page" ref={containerRef}>
+                {/* Global Editor - Only visible in development */}
+                {import.meta.env.DEV && <HeroEditor config={config} onUpdate={updateConfig} />}
 
-            {/* ... Sticky BG Container (unchanged lines 65-98) ... */}
-            <div className="parallax-bg-container">
-                {/* Layer 0 (Bottom-most): Landing 7 */}
-                <div className="parallax-landing7-wrapper" style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
-                    <ResponsiveFiller>
+                {/* ... Sticky BG Container (unchanged lines 65-98) ... */}
+                <div className="parallax-bg-container">
+                    {/* Layer 0 (Bottom-most): Landing 7 */}
+                    <div className="parallax-landing7-wrapper" style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
                         <img
                             src={orientation === 'portrait' ? '/images/landing7-mobile.jpeg' : '/images/landing7.jpeg'}
                             alt="Final"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                         <img
                             src="/images/Laova.png"
@@ -166,22 +166,20 @@ export default function Landing() {
                                 opacity: 0.8
                             }}
                         />
-                    </ResponsiveFiller>
-                </div>
+                    </div>
 
-                {/* Layer 1: Pricing BG / Landing 5 (clips to reveal landing7) */}
-                <div
-                    className="parallax-landing5-wrapper"
-                    style={{
-                        clipPath: `inset(0 0 ${landing6ClipBottom}% 0)`,
-                        backgroundColor: '#0b0a09'
-                    }}
-                >
-                    <ResponsiveFiller>
+                    {/* Layer 1: Pricing BG / Landing 5 (clips to reveal landing7) */}
+                    <div
+                        className="parallax-landing5-wrapper"
+                        style={{
+                            clipPath: `inset(0 0 ${landing6ClipBottom}% 0)`,
+                            backgroundColor: '#0b0a09'
+                        }}
+                    >
                         <img
                             src={orientation === 'portrait' ? '/images/landing5-mobile.jpeg' : '/images/landing5.jpeg'}
                             alt="Pricing"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                         {/* Interactive Pricing Buttons */}
                         <div style={{
@@ -308,84 +306,73 @@ export default function Landing() {
                                 />
                             </div>
                         </div>
-                    </ResponsiveFiller>
-                </div>
+                    </div>
 
-                {/* Layer 2: Landing 3 (Clipped by L4) */}
-                <div
-                    className="parallax-landing3-wrapper"
-                    style={{
-                        clipPath: `inset(0 0 ${landing3ClipBottom}% 0)`,
-                        backgroundColor: '#0b0a09'
-                    }}
-                >
-                    <ResponsiveFiller>
+                    {/* Layer 2: Landing 3 (Clipped by L4) */}
+                    <div
+                        className="parallax-landing3-wrapper"
+                        style={{
+                            clipPath: `inset(0 0 ${landing3ClipBottom}% 0)`,
+                            backgroundColor: '#0b0a09'
+                        }}
+                    >
                         <img
                             src={orientation === 'portrait' ? '/images/landing3-mobile.jpeg' : '/images/landing3.jpg'}
                             alt="Laova Vision"
                             className="landing3-img"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                    </ResponsiveFiller>
+                    </div>
+
+                    {/* Layer 3 (Top): Hero (Clipped by L2) */}
+                    <div
+                        className="parallax-hero-wrapper"
+                        style={{
+                            clipPath: `inset(0 0 ${heroClipBottom}% 0)`,
+                        }}
+                    >
+                        <Hero onOpenModal={() => setIsModalOpen(true)} config={config} />
+                    </div>
                 </div>
 
-                {/* Layer 3 (Top): Hero (Clipped by L2) */}
-                <div
-                    className="parallax-hero-wrapper"
-                    style={{
-                        clipPath: `inset(0 0 ${heroClipBottom}% 0)`,
-                    }}
-                >
-                    <Hero onOpenModal={() => setIsModalOpen(true)} config={config} />
-                </div>
-            </div>
+                {/* --- SCROLLING CONTENT --- */}
+                <div className="scrolling-content-layer">
 
-            {/* --- SCROLLING CONTENT --- */}
-            <div className="scrolling-content-layer">
-
-                {/* Landing 2 (Wiper 1) */}
-                {/* Offset logic: 100vh = margin 0. 0vh = margin -100vh. */}
-                <div
-                    className="manifesto-banner-container"
-                    ref={bannerRef}
-                    style={{ marginTop: `${(config.landing2?.offset ?? 100) - 100}vh`, backgroundColor: '#0b0a09' }}
-                >
-                    <ResponsiveFiller>
+                    {/* Landing 2 (Wiper 1) */}
+                    {/* Offset logic: 100vh = margin 0. 0vh = margin -100vh. */}
+                    <div
+                        className="manifesto-banner-container"
+                        ref={bannerRef}
+                        style={{ marginTop: `${(config.landing2?.offset ?? 100) - 100}vh` }}
+                    >
                         <img
                             src={orientation === 'portrait' ? '/images/landing2-mobile.png' : '/images/landing2.png'}
                             alt="Transformation"
                             className="manifesto-banner-img"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
-                    </ResponsiveFiller>
-                </div>
+                    </div>
 
-                {/* Spacer 2: Controls delay before L4 */}
-                <div style={{ height: `${config.landing4?.offset ?? 100}vh`, pointerEvents: 'none' }}></div>
+                    {/* Spacer 2: Controls delay before L4 */}
+                    <div style={{ height: `${config.landing4?.offset ?? 100}vh`, pointerEvents: 'none' }}></div>
 
-                {/* Landing 4 (Wiper 2) */}
-                <div className="manifesto-banner-container" ref={banner4Ref} style={{ backgroundColor: '#0b0a09' }}>
-                    <ResponsiveFiller>
+                    {/* Landing 4 (Wiper 2) */}
+                    <div className="manifesto-banner-container" ref={banner4Ref}>
                         <img
                             src={orientation === 'portrait' ? '/images/landing4-mobile.png' : '/images/landing4.png'}
                             alt="Evolution"
                             className="manifesto-banner-img"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
-                    </ResponsiveFiller>
-                </div>
+                    </div>
 
-                {/* Spacer 3: Controls delay before L6 */}
-                <div style={{ height: `${config.landing6?.offset ?? 5}vh`, pointerEvents: 'none' }}></div>
+                    {/* Spacer 3: Controls delay before L6 */}
+                    <div style={{ height: `${config.landing6?.offset ?? 5}vh`, pointerEvents: 'none' }}></div>
 
-                {/* Landing 6 (Wiper 3 - reveals Landing 7) */}
-                <div className="manifesto-banner-container" ref={banner6Ref} style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
-                    <ResponsiveFiller>
+                    {/* Landing 6 (Wiper 3 - reveals Landing 7) */}
+                    <div className="manifesto-banner-container" ref={banner6Ref} style={{ position: 'relative' }}>
                         <img
                             src={orientation === 'portrait' ? '/images/landing6-mobile.png' : '/images/landing6.png'}
                             alt="Final Vision"
                             className="manifesto-banner-img"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                         {/* Footer Integrated into Landing 6 Block - Centered */}
                         <div style={{
@@ -396,33 +383,33 @@ export default function Landing() {
                             height: '100%',
                             zIndex: 10,
                             display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center'
+                            flexDirection: 'column', // Ensure vertical stacking if multiple elements
+                            alignItems: 'center',    // Horizontal Center
+                            justifyContent: 'center' // Vertical Center
                         }}>
                             <Footer />
                         </div>
-                    </ResponsiveFiller>
+                    </div>
+
+                    {/* Spacer AFTER L6 */}
+                    <div style={{
+                        height: (config.landing6_bottom?.offset ?? 20) >= 0 ? `${config.landing6_bottom?.offset ?? 20}vh` : 0,
+                        marginTop: (config.landing6_bottom?.offset ?? 20) < 0 ? `${config.landing6_bottom?.offset}vh` : 0
+                    }}></div>
                 </div>
 
-                {/* Spacer AFTER L6 */}
-                <div style={{
-                    height: (config.landing6_bottom?.offset ?? 20) >= 0 ? `${config.landing6_bottom?.offset ?? 20}vh` : 0,
-                    marginTop: (config.landing6_bottom?.offset ?? 20) < 0 ? `${config.landing6_bottom?.offset}vh` : 0
-                }}></div>
+                <CheckoutModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    selectedTier={selectedTier}
+                />
+
+                <WaitlistModal
+                    isOpen={isWaitlistOpen}
+                    onClose={() => setIsWaitlistOpen(false)}
+                    tier={waitlistTier}
+                />
             </div>
-
-            <CheckoutModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                selectedTier={selectedTier}
-            />
-
-            <WaitlistModal
-                isOpen={isWaitlistOpen}
-                onClose={() => setIsWaitlistOpen(false)}
-                tier={waitlistTier}
-            />
-        </div>
+        </FillerFrame>
     );
 }

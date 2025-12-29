@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { useOrientation, ASPECT_RATIO_LANDSCAPE, ASPECT_RATIO_PORTRAIT } from '../hooks/useOrientation';
 
 interface ResponsiveFillerProps {
