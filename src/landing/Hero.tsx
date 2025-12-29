@@ -143,7 +143,7 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
 
     return (
         <section className="hero" style={{
-            height: '100vh',
+            height: 'var(--content-height, 100vh)',
             position: 'relative',
             overflow: 'hidden',
             backgroundColor: '#0b0a09'

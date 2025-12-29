@@ -252,8 +252,8 @@
     position: relative;
     z-index: 20;
     width: 100%;
-    height: 100vh;
-    /* Full viewport height for centering */
+    height: var(--content-height, 100vh);
+    /* Use content height from FillerFrame */
 
     display: flex;
     /* Flex Center */
@@ -1015,8 +1015,8 @@ section {
     z-index: 1;
     /* Below content */
     overflow: hidden;
-    /* Ensure clip-path works cleanly */
-    height: 100vh;
+    /* Use content height from FillerFrame */
+    height: var(--content-height, 100vh);
 
     /* Fill container width (inside FillerFrame) */
     width: 100%;
@@ -1081,7 +1081,7 @@ section {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: var(--content-height, 100vh);
     width: 100%;
     z-index: 1;
     /* Bottom Layer */

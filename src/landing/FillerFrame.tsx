@@ -59,36 +59,72 @@ export default function FillerFrame({
         return () => window.removeEventListener('resize', calculateLayout);
     }, [contentAspectRatio]);
 
-    // Calculate content area dimensions
-    const getContentStyle = (): React.CSSProperties => {
+    // Calculate content dimensions for CSS custom properties
+    const getContentDimensions = () => {
+        const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+        const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
+
         if (fillMode === 'vertical') {
             return {
+                width: viewportWidth,
+                height: viewportHeight - (fillerSize * 2)
+            };
+        } else if (fillMode === 'horizontal') {
+            return {
+                width: viewportWidth - (fillerSize * 2),
+                height: viewportHeight
+            };
+        }
+        return {
+            width: viewportWidth,
+            height: viewportHeight
+        };
+    };
+
+    const contentDimensions = getContentDimensions();
+
+    // Calculate content area dimensions
+    const getContentStyle = (): React.CSSProperties => {
+        const baseStyle: React.CSSProperties = {
+            // CSS custom properties for child elements to use instead of 100vh/100vw
+            '--content-height': `${contentDimensions.height}px`,
+            '--content-width': `${contentDimensions.width}px`,
+        } as React.CSSProperties;
+
+        if (fillMode === 'vertical') {
+            return {
+                ...baseStyle,
                 position: 'absolute',
                 top: `${fillerSize}px`,
                 left: 0,
                 width: '100%',
-                height: `calc(100% - ${fillerSize * 2}px)`,
-                overflow: 'auto',
+                height: `${contentDimensions.height}px`,
+                overflowX: 'hidden',
+                overflowY: 'auto',
                 zIndex: 10
             };
         } else if (fillMode === 'horizontal') {
             return {
+                ...baseStyle,
                 position: 'absolute',
                 top: 0,
                 left: `${fillerSize}px`,
-                width: `calc(100% - ${fillerSize * 2}px)`,
+                width: `${contentDimensions.width}px`,
                 height: '100%',
-                overflow: 'auto',
+                overflowX: 'hidden',
+                overflowY: 'auto',
                 zIndex: 10
             };
         }
         return {
+            ...baseStyle,
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            overflow: 'auto',
+            overflowX: 'hidden',
+            overflowY: 'auto',
             zIndex: 10
         };
     };
