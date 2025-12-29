@@ -46,7 +46,6 @@ export default function WaitlistModal({ isOpen, onClose, tier }: WaitlistModalPr
 
     if (!isOpen) return null;
 
-    return (
     return createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content waitlist-modal" onClick={(e) => e.stopPropagation()}>
