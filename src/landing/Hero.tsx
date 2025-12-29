@@ -6,6 +6,7 @@ import { type HeroElementConfig } from './HeroEditor';
 import GoldParticles from './GoldParticles';
 import GoldShimmer from './GoldShimmer';
 import ResponsiveFiller from './ResponsiveFiller';
+import { useOrientation } from '../hooks/useOrientation';
 import './landing.css';
 
 // User defined default config
@@ -60,6 +61,7 @@ interface HeroProps {
 
 export const Hero = ({ config: externalConfig }: HeroProps) => {
     const [spotsLeft, setSpotsLeft] = useState(47); // 34 + 13
+    const orientation = useOrientation();
     // Use external config or fallback (though parent should drive this now)
     const config = externalConfig || INITIAL_HERO_CONFIG;
 
@@ -150,9 +152,9 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
             <ResponsiveFiller>
                 {/* Editor moved to parent (Landing.tsx) */}
 
-                {/* 1. Background Image  */}
+                {/* 1. Background Image - switches based on orientation */}
                 <img
-                    src="/images/landing1.jpeg"
+                    src={orientation === 'portrait' ? '/images/landing1-mobile.jpeg' : '/images/landing1.jpeg'}
                     className="hero-responsive-img"
                     style={{
                         zIndex: 1,

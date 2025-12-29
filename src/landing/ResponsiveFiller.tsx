@@ -1,9 +1,11 @@
 import { useState, useEffect, ReactNode } from 'react';
+import { useOrientation, ASPECT_RATIO_LANDSCAPE, ASPECT_RATIO_PORTRAIT } from '../hooks/useOrientation';
 
 interface ResponsiveFillerProps {
     children: ReactNode;
     fillerSrc?: string;
-    contentAspectRatio?: number; // Default 16:9 = 1.777...
+    /** Override content aspect ratio. If not provided, auto-detects based on orientation */
+    contentAspectRatio?: number;
 }
 
 /**
@@ -13,16 +15,22 @@ interface ResponsiveFillerProps {
  * - If viewport is TALLER than content aspect ratio: filler at TOP and BOTTOM
  * - If viewport is WIDER than content aspect ratio: filler at LEFT and RIGHT
  * 
- * The filler images are positioned to show their edges (bottom of top filler, 
- * top of bottom filler, right of left filler, left of right filler).
+ * Automatically detects orientation and uses appropriate aspect ratio:
+ * - Landscape: 16:9 (for desktop images)
+ * - Portrait: 9:16 (for mobile images)
  */
 export default function ResponsiveFiller({
     children,
     fillerSrc = '/images/background_filler.png',
-    contentAspectRatio = 16 / 9
+    contentAspectRatio: overrideAspectRatio
 }: ResponsiveFillerProps) {
+    const orientation = useOrientation();
     const [fillMode, setFillMode] = useState<'vertical' | 'horizontal' | 'none'>('none');
     const [fillerSize, setFillerSize] = useState(0);
+
+    // Auto-detect aspect ratio based on orientation, or use override
+    const contentAspectRatio = overrideAspectRatio ??
+        (orientation === 'portrait' ? ASPECT_RATIO_PORTRAIT : ASPECT_RATIO_LANDSCAPE);
 
     useEffect(() => {
         const calculateFillMode = () => {
@@ -31,15 +39,13 @@ export default function ResponsiveFiller({
             const viewportAspectRatio = viewportWidth / viewportHeight;
 
             if (viewportAspectRatio < contentAspectRatio) {
-                // Viewport is TALLER than 16:9 -> need top/bottom filler
-                // Calculate how much vertical space is empty
+                // Viewport is TALLER than content -> need top/bottom filler
                 const contentHeight = viewportWidth / contentAspectRatio;
                 const emptySpace = viewportHeight - contentHeight;
                 setFillerSize(Math.max(0, emptySpace / 2));
                 setFillMode('vertical');
             } else if (viewportAspectRatio > contentAspectRatio) {
-                // Viewport is WIDER than 16:9 -> need left/right filler
-                // Calculate how much horizontal space is empty
+                // Viewport is WIDER than content -> need left/right filler
                 const contentWidth = viewportHeight * contentAspectRatio;
                 const emptySpace = viewportWidth - contentWidth;
                 setFillerSize(Math.max(0, emptySpace / 2));

@@ -7,6 +7,7 @@ import Footer from '../landing/Footer';
 import CheckoutModal from '../landing/CheckoutModal';
 import WaitlistModal from '../landing/WaitlistModal';
 import ResponsiveFiller from '../landing/ResponsiveFiller';
+import { useOrientation } from '../hooks/useOrientation';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
 
@@ -51,6 +52,9 @@ export default function Landing() {
     const [heroClipBottom, setHeroClipBottom] = useState(0);
     const [landing3ClipBottom, setLanding3ClipBottom] = useState(0);
     const [landing6ClipBottom, setLanding6ClipBottom] = useState(0);
+
+    // Orientation detection for image switching
+    const orientation = useOrientation();
 
     // Spot counts for sold-out logic
     const [spots, setSpots] = useState({ explorer: 34, visionary: 13 });
@@ -145,7 +149,7 @@ export default function Landing() {
                 <div className="parallax-landing7-wrapper" style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
                     <ResponsiveFiller>
                         <img
-                            src="/images/landing7.jpeg"
+                            src={orientation === 'portrait' ? '/images/landing7-mobile.jpeg' : '/images/landing7.jpeg'}
                             alt="Final"
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
@@ -175,7 +179,7 @@ export default function Landing() {
                 >
                     <ResponsiveFiller>
                         <img
-                            src="/images/landing5.jpeg"
+                            src={orientation === 'portrait' ? '/images/landing5-mobile.jpeg' : '/images/landing5.jpeg'}
                             alt="Pricing"
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
@@ -317,7 +321,7 @@ export default function Landing() {
                 >
                     <ResponsiveFiller>
                         <img
-                            src="/images/landing3.jpg"
+                            src={orientation === 'portrait' ? '/images/landing3-mobile.jpeg' : '/images/landing3.jpg'}
                             alt="Laova Vision"
                             className="landing3-img"
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -347,7 +351,7 @@ export default function Landing() {
                     style={{ marginTop: `${(config.landing2?.offset ?? 100) - 100}vh` }}
                 >
                     <img
-                        src="/images/landing2.png"
+                        src={orientation === 'portrait' ? '/images/landing2-mobile.png' : '/images/landing2.png'}
                         alt="Transformation"
                         className="manifesto-banner-img"
                     />
@@ -359,7 +363,7 @@ export default function Landing() {
                 {/* Landing 4 (Wiper 2) */}
                 <div className="manifesto-banner-container" ref={banner4Ref}>
                     <img
-                        src="/images/landing4.png"
+                        src={orientation === 'portrait' ? '/images/landing4-mobile.png' : '/images/landing4.png'}
                         alt="Evolution"
                         className="manifesto-banner-img"
                     />
@@ -371,7 +375,7 @@ export default function Landing() {
                 {/* Landing 6 (Wiper 3 - reveals Landing 7) */}
                 <div className="manifesto-banner-container" ref={banner6Ref} style={{ position: 'relative' }}>
                     <img
-                        src="/images/landing6.png"
+                        src={orientation === 'portrait' ? '/images/landing6-mobile.png' : '/images/landing6.png'}
                         alt="Final Vision"
                         className="manifesto-banner-img"
                     />
