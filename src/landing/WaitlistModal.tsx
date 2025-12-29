@@ -114,5 +114,4 @@ export default function WaitlistModal({ isOpen, onClose, tier }: WaitlistModalPr
         </div>,
         document.body
     );
-    );
 }
