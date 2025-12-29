@@ -94,6 +94,10 @@ export default function Landing() {
         const container = containerRef.current;
         if (!container) return;
 
+        // Find the actual scroll container (filler-frame-content is the parent)
+        const scrollContainer = container.closest('.filler-frame-content') || container.parentElement;
+        if (!scrollContainer) return;
+
         const handleScroll = () => {
             const viewportHeight = window.innerHeight;
 
@@ -128,12 +132,12 @@ export default function Landing() {
             }
         };
 
-        container.addEventListener('scroll', handleScroll);
+        scrollContainer.addEventListener('scroll', handleScroll);
         window.addEventListener('resize', handleScroll);
         handleScroll();
 
         return () => {
-            container.removeEventListener('scroll', handleScroll);
+            scrollContainer.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', handleScroll);
         };
     }, []);
