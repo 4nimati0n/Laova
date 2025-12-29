@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 interface LegalModalProps {
     isOpen: boolean;
@@ -10,7 +11,7 @@ interface LegalModalProps {
 export default function LegalModal({ isOpen, onClose, title, children }: LegalModalProps) {
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div
                 className="legal-modal-content"
@@ -80,6 +81,7 @@ export default function LegalModal({ isOpen, onClose, title, children }: LegalMo
                     {children}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

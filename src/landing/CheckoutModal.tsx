@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { createCheckoutSession } from '../utils/stripe';
 
 interface CheckoutModalProps {
@@ -32,7 +33,7 @@ export default function CheckoutModal({ isOpen, onClose, selectedTier }: Checkou
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <h2>Before You Continue</h2>
@@ -71,6 +72,7 @@ export default function CheckoutModal({ isOpen, onClose, selectedTier }: Checkou
                     Cancel
                 </button>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

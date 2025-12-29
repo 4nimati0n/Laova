@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { rtdb } from '../utils/firebase';
 import { ref, push, serverTimestamp } from 'firebase/database';
 
@@ -46,6 +47,7 @@ export default function WaitlistModal({ isOpen, onClose, tier }: WaitlistModalPr
     if (!isOpen) return null;
 
     return (
+    return createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content waitlist-modal" onClick={(e) => e.stopPropagation()}>
                 {submitted ? (
@@ -109,6 +111,8 @@ export default function WaitlistModal({ isOpen, onClose, tier }: WaitlistModalPr
                     </>
                 )}
             </div>
-        </div>
+        </div>,
+        document.body
+    );
     );
 }

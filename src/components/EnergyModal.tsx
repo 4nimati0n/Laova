@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { useAppStore } from '../store/useAppStore';
 import {
     getEstimatedTimeRemaining,
@@ -54,7 +55,7 @@ export const EnergyModal = () => {
         }
     };
 
-    return (
+    return createPortal(
         <div className="energy-modal-overlay" onClick={() => setIsEnergyModalOpen(false)}>
             <div className="energy-modal" onClick={(e) => e.stopPropagation()}>
                 <button
@@ -136,6 +137,7 @@ export const EnergyModal = () => {
                     ))}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
