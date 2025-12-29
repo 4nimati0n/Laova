@@ -61,36 +61,36 @@ export default function Footer() {
                     }}>
                         <button
                             onClick={() => setActiveModal('privacy')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s', textShadow: 'inherit' }}
                             onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
                             onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Privacy
                         </button>
-                        <span style={{ color: '#D4AF37', opacity: 0.5 }}>|</span>
+                        <span style={{ color: '#D4AF37', opacity: 0.5, textShadow: 'inherit' }}>|</span>
                         <button
                             onClick={() => setActiveModal('terms')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s', textShadow: 'inherit' }}
                             onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
                             onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Terms
                         </button>
-                        <span style={{ color: '#D4AF37', opacity: 0.5 }}>|</span>
+                        <span style={{ color: '#D4AF37', opacity: 0.5, textShadow: 'inherit' }}>|</span>
                         <button
                             onClick={() => setActiveModal('safety')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s', textShadow: 'inherit' }}
                             onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
                             onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Safety
                         </button>
-                        <span style={{ color: '#D4AF37', opacity: 0.5 }}>|</span>
+                        <span style={{ color: '#D4AF37', opacity: 0.5, textShadow: 'inherit' }}>|</span>
                         <a
                             href="https://988lifeline.org"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.2s', textShadow: 'inherit' }}
                             onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
                             onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
