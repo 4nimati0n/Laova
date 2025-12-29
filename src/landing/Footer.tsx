@@ -37,7 +37,7 @@ export default function Footer() {
     return (
         <>
             <footer className="landing-footer" style={{ padding: '2rem 1rem', width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', textAlign: 'center' }}>
+                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
 
                     {/* Live Spot Counters */}
                     <div style={{
