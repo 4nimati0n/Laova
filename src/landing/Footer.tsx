@@ -99,9 +99,9 @@ export default function Footer() {
                         </a>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: '#D4AF37' }}>
+                    <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: '#D4AF37', fontFamily: 'Playfair Display, serif' }}>
                         <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37', textDecoration: 'none', transition: 'opacity 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'} onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>laova@un1ty.dev</a>
-                        <span>© {new Date().getFullYear()} Laova</span>
+                        <span style={{ color: '#D4AF37' }}>© {new Date().getFullYear()} Laova</span>
                     </div>
                 </div>
             </footer>
