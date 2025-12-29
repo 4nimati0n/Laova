@@ -239,8 +239,10 @@
     position: relative;
     z-index: 20;
     width: 100%;
-    height: var(--content-height, 100vh);
-    /* Use content height from FillerFrame */
+    height: auto;
+    /* Fit to image height */
+    min-height: auto;
+    /* removing any min-height constraints */
 
     display: flex;
     /* Flex Center */
@@ -251,9 +253,12 @@
 
 .manifesto-banner-img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    /* Maintain aspect ratio */
     object-fit: contain !important;
     max-width: none;
+    display: block;
+    /* Remove bottom gap */
 }
 
 /* Image-based CTA Button (Restored) */

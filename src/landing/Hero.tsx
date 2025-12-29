@@ -91,7 +91,9 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
         if (!item) return {};
 
         // Scale the scale value proportionally
-        const scaledScale = (item.scale ?? 1) * scale.uniform;
+        // Apply 3.0x multiplier on mobile (portrait)
+        const mobileMultiplier = orientation === 'portrait' ? 3.0 : 1.0;
+        const scaledScale = (item.scale ?? 1) * scale.uniform * mobileMultiplier;
 
         return {
             position: 'absolute' as const,
@@ -104,47 +106,36 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
         };
     };
 
-    // Smooth scroll with ease-in-out curve
-    const smoothScrollTo = (targetVh: number, duration: number) => {
-        // Find the scrollable container (.filler-frame-content)
-        const container = document.querySelector('.filler-frame-content');
-        if (!container) {
-            console.warn('Scroll container not found');
-            return;
-        }
+    // Handle CTA click - scroll to pricing
+    const handleCtaClick = () => {
+        const scrollToY = (config.cta_animation?.scrollTarget ?? 335) * (window.innerHeight / 100);
 
-        const targetY = (targetVh / 100) * window.innerHeight;
-        const startY = container.scrollTop;
-        const distance = targetY - startY;
+        // Custom smooth scroll implementation
+        const startY = document.querySelector('.filler-frame-content')?.scrollTop || 0;
+        const distance = scrollToY - startY;
+        const duration = config.cta_animation?.scrollDuration ?? 2000; // ms
         const startTime = performance.now();
 
-        // Ease-in-out cubic
-        const easeInOutCubic = (t: number) => {
-            return t < 0.5
-                ? 4 * t * t * t
-                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const easeInOutQuad = (t: number) => {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
         };
 
         const animateScroll = (currentTime: number) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easedProgress = easeInOutCubic(progress);
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const ease = easeInOutQuad(progress);
 
-            container.scrollTop = startY + distance * easedProgress;
+            const container = document.querySelector('.filler-frame-content');
+            if (container) {
+                container.scrollTop = startY + (distance * ease);
+            }
 
-            if (progress < 1) {
+            if (timeElapsed < duration) {
                 requestAnimationFrame(animateScroll);
             }
         };
 
         requestAnimationFrame(animateScroll);
-    };
-
-    // Handle CTA click - scroll to pricing
-    const handleCtaClick = () => {
-        const duration = config.cta_animation?.scrollDuration ?? 1500;
-        const target = config.cta_animation?.scrollTarget ?? 420;
-        smoothScrollTo(target, duration);
     };
 
     return (
@@ -187,8 +178,8 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                     style={{
                         pointerEvents: 'auto', // Enable clicks on this wrapper
                         // Default shadow (dark) - LOW state (scaled)
-                        '--default-shadow-size': `${(config.cta_animation?.defaultShadowSize ?? 9) * scale.uniform}px`,
-                        '--default-shadow-distance': `${(config.cta_animation?.defaultShadowDistance ?? 2) * scale.uniform}px`,
+                        '--default-shadow-size': `${(config.cta_animation?.defaultShadowSize ?? 9) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
+                        '--default-shadow-distance': `${(config.cta_animation?.defaultShadowDistance ?? 2) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
                         '--default-shadow-color-rgb': ((hex: string) => {
                             const r = parseInt(hex.slice(1, 3), 16);
                             const g = parseInt(hex.slice(3, 5), 16);
@@ -197,11 +188,11 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                         })(config.cta_animation?.defaultShadowColor ?? '#000000'),
                         '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
                         // Default shadow HIGH state (scaled)
-                        '--default-shadow-size-high': `${(config.cta_animation?.defaultShadowSizeHigh ?? 62) * scale.uniform}px`,
-                        '--default-shadow-distance-high': `${(config.cta_animation?.defaultShadowDistanceHigh ?? 28) * scale.uniform}px`,
+                        '--default-shadow-size-high': `${(config.cta_animation?.defaultShadowSizeHigh ?? 62) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
+                        '--default-shadow-distance-high': `${(config.cta_animation?.defaultShadowDistanceHigh ?? 28) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
                         // Gold glow - LOW state (scaled)
-                        '--shadow-size': `${(config.cta_animation?.shadowSize ?? 0) * scale.uniform}px`,
-                        '--shadow-distance': `${(config.cta_animation?.shadowDistance ?? 0) * scale.uniform}px`,
+                        '--shadow-size': `${(config.cta_animation?.shadowSize ?? 0) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
+                        '--shadow-distance': `${(config.cta_animation?.shadowDistance ?? 0) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
                         '--shadow-color-rgb': ((hex: string) => {
                             const r = parseInt(hex.slice(1, 3), 16);
                             const g = parseInt(hex.slice(3, 5), 16);
@@ -210,8 +201,8 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
                         })(config.cta_animation?.shadowColor ?? '#D4AF37'),
                         '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 0) / 100,
                         // Gold glow HIGH state (scaled)
-                        '--shadow-size-high': `${(config.cta_animation?.shadowSizeHigh ?? 148) * scale.uniform}px`,
-                        '--shadow-distance-high': `${(config.cta_animation?.shadowDistanceHigh ?? 0) * scale.uniform}px`,
+                        '--shadow-size-high': `${(config.cta_animation?.shadowSizeHigh ?? 148) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
+                        '--shadow-distance-high': `${(config.cta_animation?.shadowDistanceHigh ?? 0) * scale.uniform * (orientation === 'portrait' ? 3.0 : 1.0)}px`,
                         // Animation
                         '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
                     } as React.CSSProperties}
