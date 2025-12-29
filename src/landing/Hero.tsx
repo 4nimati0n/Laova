@@ -5,6 +5,7 @@ import { ref, onValue } from 'firebase/database';
 import { type HeroElementConfig } from './HeroEditor';
 import GoldParticles from './GoldParticles';
 import GoldShimmer from './GoldShimmer';
+import ResponsiveFiller from './ResponsiveFiller';
 import './landing.css';
 
 // User defined default config
@@ -144,91 +145,93 @@ export const Hero = ({ config: externalConfig }: HeroProps) => {
             height: '100vh',
             position: 'relative',
             overflow: 'hidden',
-            backgroundColor: '#000'
+            backgroundColor: '#0b0a09'
         }}>
-            {/* Editor moved to parent (Landing.tsx) */}
+            <ResponsiveFiller>
+                {/* Editor moved to parent (Landing.tsx) */}
 
-            {/* 1. Background Image  */}
-            <img
-                src="/images/landing1.jpeg"
-                className="hero-responsive-img"
-                style={{
-                    zIndex: 1,
-                    pointerEvents: 'none'
-                }}
-                alt="Laova Search"
-            />
-
-            {/* Gold Shimmer Overlay - amplifies gold tones */}
-            <GoldShimmer />
-
-            {/* Animated Gold Particles */}
-            <GoldParticles />
-
-            {/* 2. Counter */}
-            <div style={getStyle('counter')} className="editable">
-                <p className="urgency" style={{ marginTop: 0, pointerEvents: 'auto' }}>
-                    Only {spotsLeft} spots left
-                </p>
-            </div>
-
-            {/* 3. CTA Image Button */}
-            <div style={getStyle('cta')} className="editable">
-                <div
-                    className="cta-hover-wrapper"
+                {/* 1. Background Image  */}
+                <img
+                    src="/images/landing1.jpeg"
+                    className="hero-responsive-img"
                     style={{
-                        pointerEvents: 'auto', // Enable clicks on this wrapper
-                        // Default shadow (dark) - LOW state
-                        '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                        '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
-                        '--default-shadow-color-rgb': ((hex: string) => {
-                            const r = parseInt(hex.slice(1, 3), 16);
-                            const g = parseInt(hex.slice(3, 5), 16);
-                            const b = parseInt(hex.slice(5, 7), 16);
-                            return `${r}, ${g}, ${b}`;
-                        })(config.cta_animation?.defaultShadowColor ?? '#000000'),
-                        '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                        // Default shadow HIGH state
-                        '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                        '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                        // Gold glow - LOW state
-                        '--shadow-size': `${config.cta_animation?.shadowSize ?? 0}px`,
-                        '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
-                        '--shadow-color-rgb': ((hex: string) => {
-                            const r = parseInt(hex.slice(1, 3), 16);
-                            const g = parseInt(hex.slice(3, 5), 16);
-                            const b = parseInt(hex.slice(5, 7), 16);
-                            return `${r}, ${g}, ${b}`;
-                        })(config.cta_animation?.shadowColor ?? '#D4AF37'),
-                        '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 0) / 100,
-                        // Gold glow HIGH state
-                        '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 148}px`,
-                        '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
-                        // Animation
-                        '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                    } as React.CSSProperties}
-                >
-                    <img
-                        src="/btn-join-founding.png"
-                        alt="Join the Founding 100"
-                        onClick={handleCtaClick}
-                        className="cta-image-trigger cta-heartbeat"
-                        style={{
-                            '--loop-scale': config.cta_animation?.loopScale ?? 1.03,
-                            '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                            pointerEvents: 'auto',
-                            cursor: 'pointer',
-                            display: 'block',
-                            width: 'auto',
-                            height: 'auto',
-                            margin: 0,
-                            padding: 0,
-                            userSelect: 'none'
-                        } as React.CSSProperties}
-                        draggable={false}
-                    />
+                        zIndex: 1,
+                        pointerEvents: 'none'
+                    }}
+                    alt="Laova Search"
+                />
+
+                {/* Gold Shimmer Overlay - amplifies gold tones */}
+                <GoldShimmer />
+
+                {/* Animated Gold Particles */}
+                <GoldParticles />
+
+                {/* 2. Counter */}
+                <div style={getStyle('counter')} className="editable">
+                    <p className="urgency" style={{ marginTop: 0, pointerEvents: 'auto' }}>
+                        Only {spotsLeft} spots left
+                    </p>
                 </div>
-            </div>
+
+                {/* 3. CTA Image Button */}
+                <div style={getStyle('cta')} className="editable">
+                    <div
+                        className="cta-hover-wrapper"
+                        style={{
+                            pointerEvents: 'auto', // Enable clicks on this wrapper
+                            // Default shadow (dark) - LOW state
+                            '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
+                            '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                            '--default-shadow-color-rgb': ((hex: string) => {
+                                const r = parseInt(hex.slice(1, 3), 16);
+                                const g = parseInt(hex.slice(3, 5), 16);
+                                const b = parseInt(hex.slice(5, 7), 16);
+                                return `${r}, ${g}, ${b}`;
+                            })(config.cta_animation?.defaultShadowColor ?? '#000000'),
+                            '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
+                            // Default shadow HIGH state
+                            '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
+                            '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
+                            // Gold glow - LOW state
+                            '--shadow-size': `${config.cta_animation?.shadowSize ?? 0}px`,
+                            '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                            '--shadow-color-rgb': ((hex: string) => {
+                                const r = parseInt(hex.slice(1, 3), 16);
+                                const g = parseInt(hex.slice(3, 5), 16);
+                                const b = parseInt(hex.slice(5, 7), 16);
+                                return `${r}, ${g}, ${b}`;
+                            })(config.cta_animation?.shadowColor ?? '#D4AF37'),
+                            '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 0) / 100,
+                            // Gold glow HIGH state
+                            '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 148}px`,
+                            '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                            // Animation
+                            '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
+                        } as React.CSSProperties}
+                    >
+                        <img
+                            src="/btn-join-founding.png"
+                            alt="Join the Founding 100"
+                            onClick={handleCtaClick}
+                            className="cta-image-trigger cta-heartbeat"
+                            style={{
+                                '--loop-scale': config.cta_animation?.loopScale ?? 1.03,
+                                '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
+                                pointerEvents: 'auto',
+                                cursor: 'pointer',
+                                display: 'block',
+                                width: 'auto',
+                                height: 'auto',
+                                margin: 0,
+                                padding: 0,
+                                userSelect: 'none'
+                            } as React.CSSProperties}
+                            draggable={false}
+                        />
+                    </div>
+                </div>
+            </ResponsiveFiller>
         </section>
     );
 };

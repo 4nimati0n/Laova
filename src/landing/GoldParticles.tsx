@@ -10,6 +10,9 @@ interface Particle {
 }
 
 export default function GoldParticles() {
+    // DISABLED: Return null to disable particles effect without removing code
+    return null;
+
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particlesRef = useRef<Particle[]>([]);
     const animationRef = useRef<number>();

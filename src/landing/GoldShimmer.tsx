@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 export default function GoldShimmer() {
+    // DISABLED: Return null to disable shimmer effect without removing code
+    return null;
+
     const shimmerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

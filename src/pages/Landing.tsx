@@ -6,6 +6,7 @@ import Hero, { INITIAL_HERO_CONFIG } from '../landing/Hero';
 import Footer from '../landing/Footer';
 import CheckoutModal from '../landing/CheckoutModal';
 import WaitlistModal from '../landing/WaitlistModal';
+import ResponsiveFiller from '../landing/ResponsiveFiller';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
 
@@ -141,164 +142,169 @@ export default function Landing() {
             {/* ... Sticky BG Container (unchanged lines 65-98) ... */}
             <div className="parallax-bg-container">
                 {/* Layer 0 (Bottom-most): Landing 7 */}
-                <div className="parallax-landing7-wrapper" style={{ position: 'relative' }}>
-                    <img
-                        src="/images/landing7.jpeg"
-                        alt="Final"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <img
-                        src="/images/Laova.png"
-                        alt="Laova Logo"
-                        style={{
-                            position: 'absolute',
-                            bottom: '2rem',
-                            right: '2rem',
-                            width: '120px',
-                            height: 'auto',
-                            zIndex: 10,
-                            opacity: 0.8
-                        }}
-                    />
+                <div className="parallax-landing7-wrapper" style={{ position: 'relative', backgroundColor: '#0b0a09' }}>
+                    <ResponsiveFiller>
+                        <img
+                            src="/images/landing7.jpeg"
+                            alt="Final"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                        <img
+                            src="/images/Laova.png"
+                            alt="Laova Logo"
+                            style={{
+                                position: 'absolute',
+                                bottom: '2rem',
+                                right: '2rem',
+                                width: '120px',
+                                height: 'auto',
+                                zIndex: 10,
+                                opacity: 0.8
+                            }}
+                        />
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Layer 1: Pricing BG / Landing 5 (clips to reveal landing7) */}
                 <div
                     className="parallax-landing5-wrapper"
                     style={{
-                        clipPath: `inset(0 0 ${landing6ClipBottom}% 0)`
+                        clipPath: `inset(0 0 ${landing6ClipBottom}% 0)`,
+                        backgroundColor: '#0b0a09'
                     }}
                 >
-                    <img
-                        src="/images/landing5.jpeg"
-                        alt="Pricing"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    {/* Interactive Pricing Buttons */}
-                    <div style={{
-                        position: 'absolute',
-                        top: `${config.pricing_buttons?.top ?? 75}%`,
-                        left: '50%',
-                        transform: `translate(-50%, -50%) scale(${config.pricing_buttons?.scale ?? 0.1})`,
-                        transformOrigin: 'center center',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: `${config.pricing_buttons?.offset ?? 40}px`,
-                        zIndex: 10
-                    }}>
-                        <div
-                            className="cta-hover-wrapper"
-                            style={{
-                                // Default shadow (dark) - LOW state
-                                '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                                '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
-                                '--default-shadow-color-rgb': ((hex: string) => {
-                                    const r = parseInt(hex.slice(1, 3), 16);
-                                    const g = parseInt(hex.slice(3, 5), 16);
-                                    const b = parseInt(hex.slice(5, 7), 16);
-                                    return `${r}, ${g}, ${b}`;
-                                })(config.cta_animation?.defaultShadowColor ?? '#000000'),
-                                '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                                // Default shadow HIGH state
-                                '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                                '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                                // Gold glow - LOW state
-                                '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
-                                '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
-                                '--shadow-color-rgb': ((hex: string) => {
-                                    const r = parseInt(hex.slice(1, 3), 16);
-                                    const g = parseInt(hex.slice(3, 5), 16);
-                                    const b = parseInt(hex.slice(5, 7), 16);
-                                    return `${r}, ${g}, ${b}`;
-                                })(config.cta_animation?.shadowColor ?? '#D4AF37'),
-                                '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
-                                // Gold glow HIGH state
-                                '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
-                                '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
-                                // Animation
-                                '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                            } as React.CSSProperties}
-                        >
-                            <img
-                                src={spots.explorer <= 0 ? "/images/btn-soldout.png" : "/images/explorer.png"}
-                                alt={spots.explorer <= 0 ? "Sold Out" : "Become Explorer"}
-                                onClick={() => {
-                                    if (spots.explorer <= 0) {
-                                        setWaitlistTier('explorer');
-                                        setIsWaitlistOpen(true);
-                                    } else {
-                                        setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
-                                        setIsModalOpen(true);
-                                    }
-                                }}
-                                className="cta-image-trigger cta-heartbeat"
+                    <ResponsiveFiller>
+                        <img
+                            src="/images/landing5.jpeg"
+                            alt="Pricing"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                        {/* Interactive Pricing Buttons */}
+                        <div style={{
+                            position: 'absolute',
+                            top: `${config.pricing_buttons?.top ?? 75}%`,
+                            left: '50%',
+                            transform: `translate(-50%, -50%) scale(${config.pricing_buttons?.scale ?? 0.1})`,
+                            transformOrigin: 'center center',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: `${config.pricing_buttons?.offset ?? 40}px`,
+                            zIndex: 10
+                        }}>
+                            <div
+                                className="cta-hover-wrapper"
                                 style={{
-                                    '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
+                                    // Default shadow (dark) - LOW state
+                                    '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
+                                    '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                                    '--default-shadow-color-rgb': ((hex: string) => {
+                                        const r = parseInt(hex.slice(1, 3), 16);
+                                        const g = parseInt(hex.slice(3, 5), 16);
+                                        const b = parseInt(hex.slice(5, 7), 16);
+                                        return `${r}, ${g}, ${b}`;
+                                    })(config.cta_animation?.defaultShadowColor ?? '#000000'),
+                                    '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
+                                    // Default shadow HIGH state
+                                    '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
+                                    '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
+                                    // Gold glow - LOW state
+                                    '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
+                                    '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                                    '--shadow-color-rgb': ((hex: string) => {
+                                        const r = parseInt(hex.slice(1, 3), 16);
+                                        const g = parseInt(hex.slice(3, 5), 16);
+                                        const b = parseInt(hex.slice(5, 7), 16);
+                                        return `${r}, ${g}, ${b}`;
+                                    })(config.cta_animation?.shadowColor ?? '#D4AF37'),
+                                    '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
+                                    // Gold glow HIGH state
+                                    '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
+                                    '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                                    // Animation
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                                    pointerEvents: 'auto',
-                                    cursor: 'pointer',
-                                    userSelect: 'none'
                                 } as React.CSSProperties}
-                                draggable={false}
-                            />
-                        </div>
-                        <div
-                            className="cta-hover-wrapper"
-                            style={{
-                                // Default shadow (dark) - LOW state
-                                '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
-                                '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
-                                '--default-shadow-color-rgb': ((hex: string) => {
-                                    const r = parseInt(hex.slice(1, 3), 16);
-                                    const g = parseInt(hex.slice(3, 5), 16);
-                                    const b = parseInt(hex.slice(5, 7), 16);
-                                    return `${r}, ${g}, ${b}`;
-                                })(config.cta_animation?.defaultShadowColor ?? '#000000'),
-                                '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
-                                // Default shadow HIGH state
-                                '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
-                                '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
-                                // Gold glow - LOW state
-                                '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
-                                '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
-                                '--shadow-color-rgb': ((hex: string) => {
-                                    const r = parseInt(hex.slice(1, 3), 16);
-                                    const g = parseInt(hex.slice(3, 5), 16);
-                                    const b = parseInt(hex.slice(5, 7), 16);
-                                    return `${r}, ${g}, ${b}`;
-                                })(config.cta_animation?.shadowColor ?? '#D4AF37'),
-                                '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
-                                // Gold glow HIGH state
-                                '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
-                                '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
-                                // Animation
-                                '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                            } as React.CSSProperties}
-                        >
-                            <img
-                                src={spots.visionary <= 0 ? "/images/btn-soldout.png" : "/images/visionary.png"}
-                                alt={spots.visionary <= 0 ? "Sold Out" : "Become Visionary"}
-                                onClick={() => {
-                                    if (spots.visionary <= 0) {
-                                        setWaitlistTier('visionary');
-                                        setIsWaitlistOpen(true);
-                                    } else {
-                                        setSelectedTier({ priceId: 'visionary', mode: 'payment' });
-                                        setIsModalOpen(true);
-                                    }
-                                }}
-                                className="cta-image-trigger cta-heartbeat"
+                            >
+                                <img
+                                    src={spots.explorer <= 0 ? "/images/btn-soldout.png" : "/images/explorer.png"}
+                                    alt={spots.explorer <= 0 ? "Sold Out" : "Become Explorer"}
+                                    onClick={() => {
+                                        if (spots.explorer <= 0) {
+                                            setWaitlistTier('explorer');
+                                            setIsWaitlistOpen(true);
+                                        } else {
+                                            setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
+                                            setIsModalOpen(true);
+                                        }
+                                    }}
+                                    className="cta-image-trigger cta-heartbeat"
+                                    style={{
+                                        '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
+                                        '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
+                                        pointerEvents: 'auto',
+                                        cursor: 'pointer',
+                                        userSelect: 'none'
+                                    } as React.CSSProperties}
+                                    draggable={false}
+                                />
+                            </div>
+                            <div
+                                className="cta-hover-wrapper"
                                 style={{
-                                    '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
+                                    // Default shadow (dark) - LOW state
+                                    '--default-shadow-size': `${config.cta_animation?.defaultShadowSize ?? 9}px`,
+                                    '--default-shadow-distance': `${config.cta_animation?.defaultShadowDistance ?? 2}px`,
+                                    '--default-shadow-color-rgb': ((hex: string) => {
+                                        const r = parseInt(hex.slice(1, 3), 16);
+                                        const g = parseInt(hex.slice(3, 5), 16);
+                                        const b = parseInt(hex.slice(5, 7), 16);
+                                        return `${r}, ${g}, ${b}`;
+                                    })(config.cta_animation?.defaultShadowColor ?? '#000000'),
+                                    '--default-shadow-alpha': (config.cta_animation?.defaultShadowAlpha ?? 60) / 100,
+                                    // Default shadow HIGH state
+                                    '--default-shadow-size-high': `${config.cta_animation?.defaultShadowSizeHigh ?? 62}px`,
+                                    '--default-shadow-distance-high': `${config.cta_animation?.defaultShadowDistanceHigh ?? 28}px`,
+                                    // Gold glow - LOW state
+                                    '--shadow-size': `${config.cta_animation?.shadowSize ?? 200}px`,
+                                    '--shadow-distance': `${config.cta_animation?.shadowDistance ?? 0}px`,
+                                    '--shadow-color-rgb': ((hex: string) => {
+                                        const r = parseInt(hex.slice(1, 3), 16);
+                                        const g = parseInt(hex.slice(3, 5), 16);
+                                        const b = parseInt(hex.slice(5, 7), 16);
+                                        return `${r}, ${g}, ${b}`;
+                                    })(config.cta_animation?.shadowColor ?? '#D4AF37'),
+                                    '--shadow-alpha': (config.cta_animation?.shadowAlpha ?? 100) / 100,
+                                    // Gold glow HIGH state
+                                    '--shadow-size-high': `${config.cta_animation?.shadowSizeHigh ?? 86}px`,
+                                    '--shadow-distance-high': `${config.cta_animation?.shadowDistanceHigh ?? 0}px`,
+                                    // Animation
                                     '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
-                                    pointerEvents: 'auto',
-                                    cursor: 'pointer',
-                                    userSelect: 'none'
                                 } as React.CSSProperties}
-                                draggable={false}
-                            />
+                            >
+                                <img
+                                    src={spots.visionary <= 0 ? "/images/btn-soldout.png" : "/images/visionary.png"}
+                                    alt={spots.visionary <= 0 ? "Sold Out" : "Become Visionary"}
+                                    onClick={() => {
+                                        if (spots.visionary <= 0) {
+                                            setWaitlistTier('visionary');
+                                            setIsWaitlistOpen(true);
+                                        } else {
+                                            setSelectedTier({ priceId: 'visionary', mode: 'payment' });
+                                            setIsModalOpen(true);
+                                        }
+                                    }}
+                                    className="cta-image-trigger cta-heartbeat"
+                                    style={{
+                                        '--loop-scale': config.cta_animation?.loopScale ?? 1.04,
+                                        '--anim-speed': `${config.cta_animation?.animSpeed ?? 4}s`,
+                                        pointerEvents: 'auto',
+                                        cursor: 'pointer',
+                                        userSelect: 'none'
+                                    } as React.CSSProperties}
+                                    draggable={false}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Layer 2: Landing 3 (Clipped by L4) */}
@@ -306,13 +312,17 @@ export default function Landing() {
                     className="parallax-landing3-wrapper"
                     style={{
                         clipPath: `inset(0 0 ${landing3ClipBottom}% 0)`,
+                        backgroundColor: '#0b0a09'
                     }}
                 >
-                    <img
-                        src="/images/landing3.jpg"
-                        alt="Laova Vision"
-                        className="landing3-img"
-                    />
+                    <ResponsiveFiller>
+                        <img
+                            src="/images/landing3.jpg"
+                            alt="Laova Vision"
+                            className="landing3-img"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                    </ResponsiveFiller>
                 </div>
 
                 {/* Layer 3 (Top): Hero (Clipped by L2) */}

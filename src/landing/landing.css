@@ -151,50 +151,95 @@
 
 /* Hero Footer Nav */
 /* Main Hero Image Responsive Logic */
+/* Main Hero Image Responsive Logic */
 .hero-responsive-img {
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
+    /* Centered */
     z-index: 10;
     /* Lower than particles (50) and shimmer (45) */
     pointer-events: none;
     /* Allow clicks to pass through */
+
+    /* Responsive Contain Logic */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-width: none;
+}
+
+/* Texture Background for Letterboxing */
+.responsive-letterbox-bg {
+    background-image: url('/images/background_filler.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0b0a09;
+    /* Fallback */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 @media (min-width: 769px) {
     .hero-responsive-img {
         width: 100%;
-        /* Changed from 100vw to fit container */
-        height: auto;
-        min-height: 100vh;
-        /* Ensure it covers if wide */
-        object-fit: cover;
+        height: 100%;
+        object-fit: contain;
+        /* Changed from cover to contain for consistency */
     }
 }
 
 /* ... existing code ... */
 
-.manifesto-banner-container {
-    background-color: transparent;
-    position: relative;
-    z-index: 20;
-    /* Force full viewport width to cover scrollbar gap */
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .hero-responsive-img {
+        height: 100%;
+        /* Fill container */
+        width: 100%;
+        object-fit: contain;
+        /* No cropping */
+        object-position: center;
+    }
 }
 
-/* Image-based CTA Button */
+/* --- Restored & Updated Styles for Letterboxing --- */
+
+.manifesto-banner-container {
+    position: relative;
+    z-index: 20;
+    width: 100vw;
+    height: 100vh;
+    /* Full viewport height for centering */
+    margin-left: calc(50% - 50vw);
+
+    display: flex;
+    /* Flex Center */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.manifesto-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    max-width: none;
+}
+
+/* Image-based CTA Button (Restored) */
 .cta-image-btn {
     background: url('/btn-join-founding.png') no-repeat center center;
     background-size: contain;
     width: 300px;
-    /* Adjust based on actual image ratio */
     height: 80px;
     border: none;
     cursor: pointer;
     transition: transform 0.2s;
-    /* Remove default button styles */
     color: transparent;
 }
 
@@ -202,19 +247,8 @@
     transform: scale(1.05);
 }
 
-/* Hide text inside since we use image */
 .cta-image-btn span {
     display: none;
-}
-
-@media (max-width: 768px) {
-    .hero-responsive-img {
-        height: 75vh;
-        width: auto;
-        max-width: none;
-        /* Allow horizontal bleed */
-        object-position: top center;
-    }
 }
 
 .hero-nav {
