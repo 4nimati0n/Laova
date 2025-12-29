@@ -37,7 +37,7 @@ export default function Footer() {
     return (
         <>
             <footer className="landing-footer" style={{ padding: '2rem 1rem', width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                <div className="footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', textAlign: 'center', textShadow: '0 1px 2px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.6)' }}>
 
                     {/* Live Spot Counters */}
                     <div style={{
@@ -61,27 +61,27 @@ export default function Footer() {
                     }}>
                         <button
                             onClick={() => setActiveModal('privacy')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'opacity 0.2s' }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Privacy
                         </button>
                         <span style={{ color: '#D4AF37', opacity: 0.5 }}>|</span>
                         <button
                             onClick={() => setActiveModal('terms')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'opacity 0.2s' }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Terms
                         </button>
                         <span style={{ color: '#D4AF37', opacity: 0.5 }}>|</span>
                         <button
                             onClick={() => setActiveModal('safety')}
-                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'opacity 0.2s' }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                            style={{ background: 'transparent', border: 'none', color: '#D4AF37', font: 'inherit', cursor: 'pointer', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Safety
                         </button>
@@ -90,16 +90,16 @@ export default function Footer() {
                             href="https://988lifeline.org"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '0.9rem', transition: 'opacity 0.2s' }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                            style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.2s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}
                         >
                             Crisis (988)
                         </a>
                     </div>
 
                     <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: '#D4AF37', fontFamily: 'Playfair Display, serif' }}>
-                        <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37', textDecoration: 'none', transition: 'opacity 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'} onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>laova@un1ty.dev</a>
+                        <a href="mailto:laova@un1ty.dev" style={{ color: '#D4AF37', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#FFFFFF'} onMouseLeave={(e) => e.currentTarget.style.color = '#D4AF37'}>laova@un1ty.dev</a>
                         <span style={{ color: '#D4AF37' }}>© {new Date().getFullYear()} Laova</span>
                     </div>
                 </div>
