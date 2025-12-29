@@ -207,8 +207,8 @@ export default function Landing() {
                             transformOrigin: 'center center',
                             display: 'flex',
                             flexDirection: 'row',
-                            // Fixed 50px gap on mobile, proportional on desktop
-                            gap: orientation === 'portrait' ? '50px' : `${(config.pricing_buttons?.offset ?? 40) * scale.uniform}px`,
+                            // Fixed 70px gap on mobile, proportional on desktop
+                            gap: orientation === 'portrait' ? '70px' : `${(config.pricing_buttons?.offset ?? 40) * scale.uniform}px`,
                             zIndex: 10
                         }}>
                             <div
