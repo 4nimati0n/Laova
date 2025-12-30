@@ -26,6 +26,13 @@
                     "page",
                     "sessionId"
                 ]
+            },
+            "conversionEvents": {
+                ".indexOn": [
+                    "timestamp",
+                    "sessionId",
+                    "eventType"
+                ]
             }
         }
     }
