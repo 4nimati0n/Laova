@@ -55,7 +55,7 @@ export const INITIAL_HERO_CONFIG: Record<string, HeroElementConfig> = {
     "hero": {
         "id": "hero",
         "name": "Hero Settings",
-        "fillerScale": 1.0  // Default: no scaling (1.0 = 100%)
+        "fillerScale": 1.018  // Default: slight scaling (1.018 = 1.8% larger)
     }
 };
 

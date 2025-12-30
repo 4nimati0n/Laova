@@ -9,6 +9,8 @@ import WaitlistModal from '../landing/WaitlistModal';
 import FillerFrame from '../landing/FillerFrame';
 import { useOrientation } from '../hooks/useOrientation';
 import { useContainerScale } from '../hooks/useContainerScale';
+import { useAnalytics } from '../hooks/useAnalytics';
+import { useScrollTracking, trackConversionEvent } from '../hooks/useConversionTracking';
 import { rtdb } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
 import { trackVisit } from '../utils/analytics';
@@ -295,6 +297,7 @@ export default function Landing() {
                             <img
                                 src={orientation === 'portrait' ? '/images/landing5-mobile.jpeg' : '/images/landing5.jpeg'}
                                 alt="Pricing"
+                                id="pricing-section"
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                             {/* Interactive Pricing Buttons */}
@@ -354,6 +357,7 @@ export default function Landing() {
                                                 setWaitlistTier('explorer');
                                                 setIsWaitlistOpen(true);
                                             } else {
+                                                trackConversionEvent('cta_click', { tier: 'explorer' });
                                                 setSelectedTier({ priceId: 'explorer', mode: 'subscription' });
                                                 setIsModalOpen(true);
                                             }
@@ -410,6 +414,7 @@ export default function Landing() {
                                                 setWaitlistTier('visionary');
                                                 setIsWaitlistOpen(true);
                                             } else {
+                                                trackConversionEvent('cta_click', { tier: 'visionary' });
                                                 setSelectedTier({ priceId: 'visionary', mode: 'payment' });
                                                 setIsModalOpen(true);
                                             }

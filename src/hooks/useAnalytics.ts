@@ -49,12 +49,13 @@ async function getGeolocation(): Promise<{ country?: string; city?: string } | n
     }
 
     try {
-        const response = await fetch('https://ipapi.co/json/');
+        // Using ip-api.com (unlimited free, no auth required)
+        const response = await fetch('http://ip-api.com/json/');
         if (!response.ok) return null;
 
         const data = await response.json();
         const geo = {
-            country: data.country_name || undefined,
+            country: data.country || undefined,
             city: data.city || undefined,
         };
 

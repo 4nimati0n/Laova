@@ -24,13 +24,40 @@ export default function FillerFrame({
     fillerScale = 1.0
 }: FillerFrameProps) {
     const orientation = useOrientation();
-    const [fillMode, setFillMode] = useState<'vertical' | 'horizontal' | 'none'>('none');
-    const [fillerSize, setFillerSize] = useState(0);
 
     // Determine content aspect ratio based on orientation
     const contentAspectRatio = orientation === 'portrait'
         ? ASPECT_RATIO_PORTRAIT
         : ASPECT_RATIO_LANDSCAPE;
+
+    // Calculate initial layout to avoid flash
+    const calculateInitialLayout = () => {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const viewportAspectRatio = viewportWidth / viewportHeight;
+
+        if (viewportAspectRatio < contentAspectRatio) {
+            // Viewport is TALLER than content -> need top/bottom filler
+            const contentHeight = viewportWidth / contentAspectRatio;
+            const emptySpace = viewportHeight - contentHeight;
+            return {
+                mode: 'vertical' as const,
+                size: Math.max(0, emptySpace / 2)
+            };
+        } else if (viewportAspectRatio > contentAspectRatio) {
+            // Viewport is WIDER than content -> need left/right filler
+            const contentWidth = viewportHeight * contentAspectRatio;
+            const emptySpace = viewportWidth - contentWidth;
+            return {
+                mode: 'horizontal' as const,
+                size: Math.max(0, emptySpace / 2)
+            };
+        }
+        return { mode: 'none' as const, size: 0 };
+    };
+
+    const [fillMode, setFillMode] = useState<'vertical' | 'horizontal' | 'none'>(() => calculateInitialLayout().mode);
+    const [fillerSize, setFillerSize] = useState(() => calculateInitialLayout().size);
 
     useEffect(() => {
         const calculateLayout = () => {
@@ -60,6 +87,25 @@ export default function FillerFrame({
         window.addEventListener('resize', calculateLayout);
         return () => window.removeEventListener('resize', calculateLayout);
     }, [contentAspectRatio]);
+
+    // Redirect scroll events from fillers to content container
+    useEffect(() => {
+        const fillerFrame = document.querySelector('.filler-frame');
+        const scrollContent = document.querySelector('.filler-frame-content');
+
+        if (!fillerFrame || !scrollContent) return;
+
+        const handleWheel = (e: WheelEvent) => {
+            // Redirect wheel events to the scrollable content
+            scrollContent.scrollBy({
+                top: e.deltaY,
+                behavior: 'auto'
+            });
+        };
+
+        fillerFrame.addEventListener('wheel', handleWheel as EventListener);
+        return () => fillerFrame.removeEventListener('wheel', handleWheel as EventListener);
+    }, []);
 
     // Calculate content dimensions for CSS custom properties
     const getContentDimensions = () => {
@@ -154,7 +200,8 @@ export default function FillerFrame({
                             width: '100%',
                             height: `${fillerSize}px`,
                             overflow: 'visible',
-                            zIndex: 100
+                            zIndex: 100,
+                            pointerEvents: 'none'
                         }}
                     >
                         <img
@@ -185,7 +232,8 @@ export default function FillerFrame({
                             width: '100%',
                             height: `${fillerSize}px`,
                             overflow: 'visible',
-                            zIndex: 100
+                            zIndex: 100,
+                            pointerEvents: 'none'
                         }}
                     >
                         <img
@@ -221,7 +269,8 @@ export default function FillerFrame({
                             width: `${fillerSize}px`,
                             height: '100%',
                             overflow: 'visible',
-                            zIndex: 100
+                            zIndex: 100,
+                            pointerEvents: 'none'
                         }}
                     >
                         <img
@@ -252,7 +301,8 @@ export default function FillerFrame({
                             width: `${fillerSize}px`,
                             height: '100%',
                             overflow: 'visible',
-                            zIndex: 100
+                            zIndex: 100,
+                            pointerEvents: 'none'
                         }}
                     >
                         <img

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { createCheckoutSession } from '../utils/stripe';
+import { trackConversionEvent } from '../hooks/useConversionTracking';
 
 interface CheckoutModalProps {
     isOpen: boolean;
@@ -13,6 +14,13 @@ export default function CheckoutModal({ isOpen, onClose, selectedTier }: Checkou
     const [agreedAI, setAgreedAI] = useState(false);
     const [agreedTerms, setAgreedTerms] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    // Track modal opens
+    useEffect(() => {
+        if (isOpen) {
+            trackConversionEvent('modal_open');
+        }
+    }, [isOpen]);
 
     const handleCheckout = async () => {
         if (!agreed18 || !agreedAI || !agreedTerms) {

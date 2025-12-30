@@ -189,10 +189,10 @@
     pointer-events: none;
     /* Allow clicks to pass through */
 
-    /* Responsive Contain Logic */
+    /* Responsive Cover Logic - fills entire space like other sections */
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     max-width: none;
 }
 
@@ -214,8 +214,8 @@
     .hero-responsive-img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        /* Changed from cover to contain for consistency */
+        object-fit: cover;
+        /* Changed from contain to cover - fills space like other sections */
     }
 }
 
@@ -227,7 +227,7 @@
         height: 100%;
         /* Fill container */
         width: 100%;
-        object-fit: contain;
+        object-fit: cover;
         /* No cropping */
         object-position: center;
     }
