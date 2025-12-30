@@ -94,6 +94,12 @@ export default function Landing() {
         trackVisit();
     }, []);
 
+    // Track analytics
+    useAnalytics('landing');
+
+    // Track scroll to pricing section
+    useScrollTracking('pricing-section', 'scroll_to_pricing');
+
     // Update Handler for Editor
     const updateConfig = (id: string, updates: Partial<HeroElementConfig>) => {
         setConfig(prev => ({
