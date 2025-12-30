@@ -153,8 +153,8 @@ export default function FillerFrame({
                             left: 0,
                             width: '100%',
                             height: `${fillerSize}px`,
-                            overflow: 'hidden',
-                            zIndex: 20
+                            overflow: 'visible',
+                            zIndex: 100
                         }}
                     >
                         <img
@@ -184,8 +184,8 @@ export default function FillerFrame({
                             left: 0,
                             width: '100%',
                             height: `${fillerSize}px`,
-                            overflow: 'hidden',
-                            zIndex: 20
+                            overflow: 'visible',
+                            zIndex: 100
                         }}
                     >
                         <img
@@ -220,8 +220,8 @@ export default function FillerFrame({
                             left: 0,
                             width: `${fillerSize}px`,
                             height: '100%',
-                            overflow: 'hidden',
-                            zIndex: 20
+                            overflow: 'visible',
+                            zIndex: 100
                         }}
                     >
                         <img
@@ -251,8 +251,8 @@ export default function FillerFrame({
                             right: 0,
                             width: `${fillerSize}px`,
                             height: '100%',
-                            overflow: 'hidden',
-                            zIndex: 20
+                            overflow: 'visible',
+                            zIndex: 100
                         }}
                     >
                         <img
