@@ -90,7 +90,6 @@ export default function Analytics() {
     // Calculate metrics
     const pageViewsArray = Object.values(data.pageViews);
     const sessionsArray = Object.values(data.sessions);
-    const visitorsArray = Object.values(data.visitors || {});
 
     // Use existing global metrics if available, otherwise calculate from new format
     const totalPageViews = data.totalPageViews || pageViewsArray.length;
@@ -123,6 +122,27 @@ export default function Analytics() {
     // Active visitors (in last 5 minutes)
     const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     const activeVisitors = sessionsArray.filter(s => s.lastSeen > fiveMinutesAgo).length;
+
+    // Countries breakdown
+    const countryCount: Record<string, number> = {};
+    [...pageViewsArray, ...sessionsArray].forEach((item: any) => {
+        if (item.geo?.country) {
+            countryCount[item.geo.country] = (countryCount[item.geo.country] || 0) + 1;
+        }
+    });
+    const topCountries = Object.entries(countryCount)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10);
+
+    // Device types breakdown
+    const deviceCount: Record<string, number> = {};
+    [...pageViewsArray, ...sessionsArray].forEach((item: any) => {
+        if (item.deviceType) {
+            deviceCount[item.deviceType] = (deviceCount[item.deviceType] || 0) + 1;
+        }
+    });
+    const deviceStats = Object.entries(deviceCount)
+        .sort(([, a], [, b]) => b - a);
 
     return (
         <div className="analytics-page">
@@ -183,12 +203,15 @@ export default function Analytics() {
                                 </thead>
                                 <tbody>
                                     {topPages.length > 0 ? (
-                                        topPages.map(([page, count]) => (
-                                            <tr key={page}>
-                                                <td>{page}</td>
-                                                <td>{count}</td>
-                                            </tr>
-                                        ))
+                                        topPages.map(([page, count]) => {
+                                            const percentage = totalPageViews > 0 ? Math.round((count / totalPageViews) * 100) : 0;
+                                            return (
+                                                <tr key={page}>
+                                                    <td>{page}</td>
+                                                    <td>{count} ({percentage}%)</td>
+                                                </tr>
+                                            );
+                                        })
                                     ) : (
                                         <tr>
                                             <td colSpan={2}>No data yet</td>
@@ -218,6 +241,58 @@ export default function Analytics() {
                                     ) : (
                                         <tr>
                                             <td colSpan={2}>No data yet</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="table-container">
+                            <h2>🌍 Countries</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Country</th>
+                                        <th>Sessions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {topCountries.length > 0 ? (
+                                        topCountries.map(([country, count]) => (
+                                            <tr key={country}>
+                                                <td>{country}</td>
+                                                <td>{count}</td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={2}>No geo data yet</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="table-container">
+                            <h2>📱 Devices</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Sessions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {deviceStats.length > 0 ? (
+                                        deviceStats.map(([device, count]) => (
+                                            <tr key={device}>
+                                                <td style={{ textTransform: 'capitalize' }}>{device}</td>
+                                                <td>{count}</td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={2}>No device data yet</td>
                                         </tr>
                                     )}
                                 </tbody>
