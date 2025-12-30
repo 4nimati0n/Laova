@@ -153,7 +153,7 @@ export default function Landing() {
     }, []);
 
     return (
-        <FillerFrame>
+        <FillerFrame fillerScale={config.hero?.fillerScale ?? 1.0}>
             <div className="landing-page" ref={containerRef}>
                 {/* Global Editor - Only visible in development */}
                 {import.meta.env.DEV && <HeroEditor config={config} onUpdate={updateConfig} />}

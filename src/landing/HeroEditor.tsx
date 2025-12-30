@@ -37,6 +37,8 @@ export interface HeroElementConfig {
     // CTA Scroll config
     scrollDuration?: number;        // Scroll animation duration in ms
     scrollTarget?: number;          // Target scroll position in vh
+    // Filler scale
+    fillerScale?: number;           // Scale multiplier for filler images (e.g., 1.05 = 5% larger)
 }
 
 interface HeroEditorProps {
@@ -174,6 +176,8 @@ export default function HeroEditor({ config, onUpdate }: HeroEditorProps) {
                                 // Scroll controls
                                 { label: 'Sc.Dur', key: 'scrollDuration', min: 500, max: 5000, step: 100, conditional: true },
                                 { label: 'Sc.Tgt', key: 'scrollTarget', min: 300, max: 400, step: 1, conditional: true },
+                                // Filler scale
+                                { label: 'Fill.Scl', key: 'fillerScale', min: 1.0, max: 1.5, step: 0.01, conditional: true },
                                 // Conditional fields
                                 { label: 'Width %', key: 'width', min: 10, max: 200, step: 1, conditional: true },
                                 { label: 'Height %', key: 'height', min: 10, max: 200, step: 1, conditional: true },

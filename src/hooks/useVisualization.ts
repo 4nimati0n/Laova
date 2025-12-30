@@ -38,8 +38,12 @@ export const useVisualization = () => {
         try {
             setIsGeneratingVisualization(true);
 
-            // Get visual prompt from Mistral
-            let visualPrompt = await getVisualizationPrompt(text);
+            // Get conversation history for narrative continuity
+            const conversationHistory = useAppStore.getState().conversationHistory;
+            console.log('🎨 Using conversation context:', conversationHistory.length, 'messages');
+
+            // Get visual prompt from Mistral with conversational context and emotions
+            let visualPrompt = await getVisualizationPrompt(text, conversationHistory, emotions);
 
             // Enhance with emotional context if available
             if (emotions && emotions.length > 0) {

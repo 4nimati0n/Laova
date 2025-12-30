@@ -51,6 +51,11 @@ export const INITIAL_HERO_CONFIG: Record<string, HeroElementConfig> = {
         // Scroll config
         "scrollDuration": 2000,  // ms
         "scrollTarget": 335      // vh
+    },
+    "hero": {
+        "id": "hero",
+        "name": "Hero Settings",
+        "fillerScale": 1.0  // Default: no scaling (1.0 = 100%)
     }
 };
 

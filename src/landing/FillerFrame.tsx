@@ -4,6 +4,7 @@ import { useOrientation, ASPECT_RATIO_LANDSCAPE, ASPECT_RATIO_PORTRAIT } from '.
 interface FillerFrameProps {
     children: ReactNode;
     fillerSrc?: string;
+    fillerScale?: number; // Scale multiplier for filler images (default: 1.0)
 }
 
 /**
@@ -19,7 +20,8 @@ interface FillerFrameProps {
  */
 export default function FillerFrame({
     children,
-    fillerSrc = '/images/background_filler.png'
+    fillerSrc = '/images/background_filler.png',
+    fillerScale = 1.0
 }: FillerFrameProps) {
     const orientation = useOrientation();
     const [fillMode, setFillMode] = useState<'vertical' | 'horizontal' | 'none'>('none');
@@ -162,7 +164,8 @@ export default function FillerFrame({
                                 position: 'absolute',
                                 bottom: 0,
                                 left: '50%',
-                                transform: 'translateX(-50%)',
+                                transform: `translateX(-50%) scale(${fillerScale})`,
+                                transformOrigin: 'center',
                                 width: '100%',
                                 height: 'auto',
                                 minHeight: '100%',
@@ -192,7 +195,8 @@ export default function FillerFrame({
                                 position: 'absolute',
                                 top: 0,
                                 left: '50%',
-                                transform: 'translateX(-50%)',
+                                transform: `translateX(-50%) scale(${fillerScale})`,
+                                transformOrigin: 'center',
                                 width: '100%',
                                 height: 'auto',
                                 minHeight: '100%',
@@ -227,7 +231,8 @@ export default function FillerFrame({
                                 position: 'absolute',
                                 right: 0,
                                 top: '50%',
-                                transform: 'translateY(-50%)',
+                                transform: `translateY(-50%) scale(${fillerScale})`,
+                                transformOrigin: 'center',
                                 height: '100%',
                                 width: 'auto',
                                 minWidth: '100%',
@@ -257,7 +262,8 @@ export default function FillerFrame({
                                 position: 'absolute',
                                 left: 0,
                                 top: '50%',
-                                transform: 'translateY(-50%)',
+                                transform: `translateY(-50%) scale(${fillerScale})`,
+                                transformOrigin: 'center',
                                 height: '100%',
                                 width: 'auto',
                                 minWidth: '100%',

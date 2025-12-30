@@ -18,6 +18,16 @@ export interface EnergyTransaction {
   balanceAfter: number;
 }
 
+// Visual memory for narrative continuity
+export interface VisualConcept {
+  keywords: string[];      // Visual elements: ["cats", "garden", "sunlight"]
+  mood: string;            // Overall mood: "peaceful and warm"
+  palette: string[];       // Color palette: ["soft pink", "golden"]
+  setting: string;         // Scene setting: "outdoor garden"
+  lastPrompt: string;      // Last generated prompt
+  timestamp: Date;         // When this was created
+}
+
 interface PoseRotation {
   x: number;
   y: number;
@@ -54,6 +64,8 @@ interface AppState {
   humeAccessToken: string | null;
   humeFft: number[];
   useHume: boolean;
+  chatGroupId: string | null;
+  isHumePaused: boolean;
   isSettingsOpen: boolean;
   poseControls: PoseControls;
   eyeControls: EyeControls;
@@ -71,6 +83,11 @@ interface AppState {
   setKeys: (openAiKey: string, mistralKey: string, elevenLabsKey: string, deepgramKey: string, humeApiKey: string, humeSecretKey: string) => void;
   setVoiceId: (voiceId: string) => void;
   setUseHume: (useHume: boolean) => void;
+  setChatGroupId: (id: string | null) => void;
+  setIsHumePaused: (isPaused: boolean) => void;
+  pauseConversation: () => void;
+  resumeConversation: () => void;
+  stopConversation: () => void;
   setHumeAccessToken: (token: string | null) => void;
   setHumeFft: (fft: number[]) => void;
   setHumeConfigId: (id: string) => void;
@@ -128,6 +145,9 @@ interface AppState {
   visualizationScale: number;
   setVisualizationPosition: (pos: { x: number; y: number }) => void;
   setVisualizationScale: (scale: number) => void;
+  // Visual Memory for narrative continuity
+  visualMemoryConcepts: VisualConcept | null;
+  setVisualMemoryConcepts: (concepts: VisualConcept | null) => void;
 
   // Energy System
   energy: number;
@@ -174,6 +194,8 @@ export const useAppStore = create<AppState>((set) => ({
   humeAccessToken: null,
   humeFft: [],
   useHume: localStorage.getItem('laura_use_hume') === 'true',
+  chatGroupId: localStorage.getItem('laura_chat_group_id') || null,
+  isHumePaused: false,
   isSettingsOpen: false,
   useElevenLabsAgent: localStorage.getItem('laura_use_agent') === 'true',
   triggeredEmotion: null,
@@ -212,6 +234,7 @@ export const useAppStore = create<AppState>((set) => ({
   isVisualizationSettingsOpen: false,
   visualizationPosition: { x: 50, y: 5 }, // Default: Percentage (above head)
   visualizationScale: 1,
+  visualMemoryConcepts: null,
 
   // Energy System State
   energy: parseInt(localStorage.getItem('laura_energy') || '1000'),
@@ -254,6 +277,22 @@ export const useAppStore = create<AppState>((set) => ({
   setUseHume: (useHume) => {
     localStorage.setItem('laura_use_hume', String(useHume));
     set({ useHume });
+  },
+  setChatGroupId: (chatGroupId) => {
+    if (chatGroupId) {
+      localStorage.setItem('laura_chat_group_id', chatGroupId);
+      localStorage.setItem('laura_session_timestamp', new Date().toISOString());
+    } else {
+      localStorage.removeItem('laura_chat_group_id');
+      localStorage.removeItem('laura_session_timestamp');
+    }
+    set({ chatGroupId });
+  },
+  setIsHumePaused: (isHumePaused) => set({ isHumePaused }),
+  pauseConversation: () => set({ isHumePaused: true }),
+  resumeConversation: () => set({ isHumePaused: false }),
+  stopConversation: () => {
+    set({ isPlaying: false, isHumePaused: false });
   },
   setHumeAccessToken: (humeAccessToken) => set({ humeAccessToken }),
   setHumeFft: (humeFft) => set({ humeFft }),
@@ -339,6 +378,7 @@ export const useAppStore = create<AppState>((set) => ({
   setIsVisualizationSettingsOpen: (isVisualizationSettingsOpen) => set({ isVisualizationSettingsOpen }),
   setVisualizationPosition: (visualizationPosition) => set({ visualizationPosition }),
   setVisualizationScale: (visualizationScale) => set({ visualizationScale }),
+  setVisualMemoryConcepts: (visualMemoryConcepts) => set({ visualMemoryConcepts }),
 
   // Energy System Actions
   setEnergy: (energy) => {

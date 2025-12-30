@@ -7,6 +7,7 @@ import { extractTags, tagToEmotion, stripTags, getEmotionIntensity } from '../ut
 import { useVisualization } from './useVisualization';
 import { calculateResonanceState, getResonanceModifiers } from '../utils/resonanceSystem';
 import type { ResonanceModifiers } from '../utils/resonanceSystem';
+import { getChatGroupIdForResume } from '../utils/conversationSession';
 
 export const useVoiceInteraction = () => {
     const {
@@ -24,6 +25,11 @@ export const useVoiceInteraction = () => {
         useHume,
         humeAccessToken,
         humeConfigId,
+        chatGroupId,
+        setChatGroupId,
+        isHumePaused,
+        pauseConversation,
+        resumeConversation,
         setHumeFft,
         triggerEmotion,
         setEmotionIntensity
@@ -98,6 +104,12 @@ export const useVoiceInteraction = () => {
             // === AUREA INTEGRATION: Log Resonance State (for debugging) ===
             const resonanceState = calculateResonanceState(topEmotions || []);
             console.log('🔮 AUREA Resonance State:', resonanceState);
+
+            // === VISUALIZATION: Trigger image generation for user's message ===
+            // Generate visualization of what Laura imagines from the user's words
+            triggerVisualization(lastMessage.message.content, topEmotions);
+            console.log('🎨 Hume: Triggered visualization for user message');
+
             // Note: Hume STS handles the AI response, no need to call Mistral
 
         } else if (lastMessage.type === 'assistant_message' && lastMessage.message.content) {
@@ -105,31 +117,57 @@ export const useVoiceInteraction = () => {
             console.log('💬 Hume Assistant Response:', lastMessage.message.content);
             setAiResponse(lastMessage.message.content);
             useAppStore.getState().addToConversationHistory('assistant', lastMessage.message.content);
-        }
-    }, [useHume, humeMessages, setUserMessage, setAiResponse]);
 
-    // Hume Connection Management - Pass systemPrompt via sessionSettings
+            // === VISUALIZATION: Trigger image generation for Laura's response ===
+            // Generate visualization of Laura's inner thoughts while responding
+            triggerVisualization(lastMessage.message.content);
+            console.log('🎨 Hume: Triggered visualization for assistant response');
+        } else if (lastMessage.type === 'chat_metadata') {
+            // Capture Chat Group ID for conversation continuity
+            const newChatGroupId = (lastMessage as any).chat_group_id;
+            if (newChatGroupId && newChatGroupId !== chatGroupId) {
+                console.log('📚 Captured Chat Group ID:', newChatGroupId);
+                setChatGroupId(newChatGroupId);
+            }
+        }
+    }, [useHume, humeMessages, setUserMessage, setAiResponse, triggerVisualization, chatGroupId, setChatGroupId]);
+
+    // Hume Connection Management - Pass systemPrompt and resumedChatGroupId
     useEffect(() => {
         if (useHume) {
-            if (isPlaying && humeAccessToken && humeReadyState === 'idle') {
+            // Allow connection from both 'idle' and 'closed' states to support pause/resume
+            if (isPlaying && humeAccessToken && (humeReadyState === 'idle' || humeReadyState === 'closed')) {
                 // Build the complete system prompt with emotional intelligence
                 const fullSystemPrompt = LAURA_SYSTEM_PROMPT;
 
-                console.log('🚀 Connecting to Hume EVI with custom systemPrompt...');
+                // Check if we should resume a previous conversation
+                const resumeChatGroupId = getChatGroupIdForResume();
 
-                connectHume(
-                    {
-                        auth: { type: 'accessToken', value: humeAccessToken },
-                        configId: humeConfigId,
-                        systemPrompt: fullSystemPrompt
-                    } as any
-                ).then(() => {
+                console.log('🚀 Connecting to Hume EVI with custom systemPrompt...', {
+                    currentState: humeReadyState,
+                    resumingChatGroup: resumeChatGroupId
+                });
+
+                const connectionConfig: any = {
+                    auth: { type: 'accessToken', value: humeAccessToken },
+                    configId: humeConfigId,
+                    systemPrompt: fullSystemPrompt
+                };
+
+                // Add resumedChatGroupId if available (for conversation continuity)
+                if (resumeChatGroupId) {
+                    connectionConfig.resumedChatGroupId = resumeChatGroupId;
+                    console.log('📚 Resuming conversation with Chat Group:', resumeChatGroupId);
+                }
+
+                connectHume(connectionConfig).then(() => {
                     console.log('✅ Hume EVI connected with Laura\'s personality!');
                 }).catch(e => {
                     console.error("Hume Connection Failed:", e);
                     setError("Failed to connect to Hume AI");
                 });
             } else if (!isPlaying && (humeReadyState === 'open' || humeReadyState === 'connecting')) {
+                console.log('🔌 Disconnecting Hume EVI...', { currentState: humeReadyState });
                 disconnectHume();
             }
         }
@@ -146,6 +184,31 @@ export const useVoiceInteraction = () => {
             }
         }
     }, [useHume, humeReadyState, setIsListening, setIsSpeaking]);
+
+    // Handle Hume Pause/Resume Actions
+    useEffect(() => {
+        if (!useHume || humeReadyState !== 'open') return;
+
+        const handlePauseResume = () => {
+            const { isHumePaused } = useAppStore.getState();
+
+            if (isHumePaused) {
+                console.log('⏸️ Pausing Hume Assistant...');
+                sendHumeUserInput({ type: 'pause_assistant_message' } as any);
+            } else {
+                console.log('▶️ Resuming Hume Assistant...');
+                sendHumeUserInput({ type: 'resume_assistant_message' } as any);
+            }
+        };
+
+        // Subscribe to pause state changes
+        const unsubscribe = useAppStore.subscribe(
+            (state) => state.isHumePaused,
+            handlePauseResume
+        );
+
+        return unsubscribe;
+    }, [useHume, humeReadyState, sendHumeUserInput]);
 
 
     const recognitionRef = useRef<any>(null);

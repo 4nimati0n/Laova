@@ -301,6 +301,28 @@ body {
   box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
 }
 
+.stop-button {
+  background: rgba(255, 50, 50, 0.1);
+  border: 1px solid rgba(255, 50, 50, 0.3);
+  color: #ff5555;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+}
+
+.stop-button:hover {
+  background: rgba(255, 50, 50, 0.2);
+  border-color: rgba(255, 50, 50, 0.5);
+  transform: scale(1.1);
+}
+
+
 .error-banner {
   background: rgba(255, 50, 50, 0.2);
   border: 1px solid rgba(255, 50, 50, 0.5);

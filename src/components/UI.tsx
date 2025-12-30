@@ -1,4 +1,4 @@
-import { Play, Pause, Settings as SettingsIcon, Maximize, Minimize, Image, Expand, Users, Eye } from 'lucide-react';
+import { Play, Pause, Square, Settings as SettingsIcon, Maximize, Minimize, Image, Expand, Users, Eye } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useState, useEffect } from 'react';
 import { EnergyDisplay } from './EnergyDisplay';
@@ -9,6 +9,11 @@ export const UI = () => {
     const {
         isPlaying,
         setIsPlaying,
+        isHumePaused,
+        pauseConversation,
+        resumeConversation,
+        stopConversation,
+        useHume,
         isListening,
         isSpeaking,
         error,
@@ -196,12 +201,53 @@ export const UI = () => {
                 )}
 
                 <div className="controls">
-                    <button
-                        className={`play-button ${isPlaying ? 'playing' : ''}`}
-                        onClick={() => setIsPlaying(!isPlaying)}
-                    >
-                        {isPlaying ? <Pause size={32} /> : <Play size={32} />}
-                    </button>
+                    {!isPlaying ? (
+                        <button
+                            className="play-button"
+                            onClick={() => setIsPlaying(true)}
+                            title="Démarrer la conversation"
+                        >
+                            <Play size={32} />
+                        </button>
+                    ) : isHumePaused && useHume ? (
+                        <>
+                            <button
+                                className="play-button"
+                                onClick={resumeConversation}
+                                title="Reprendre la conversation"
+                            >
+                                <Play size={32} />
+                            </button>
+                            <button
+                                className="stop-button"
+                                onClick={stopConversation}
+                                title="Arrêter la conversation"
+                                style={{ marginLeft: '10px' }}
+                            >
+                                <Square size={24} />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                className="play-button playing"
+                                onClick={useHume ? pauseConversation : stopConversation}
+                                title={useHume ? "Mettre en pause" : "Arrêter"}
+                            >
+                                <Pause size={32} />
+                            </button>
+                            {useHume && (
+                                <button
+                                    className="stop-button"
+                                    onClick={stopConversation}
+                                    title="Arrêter la conversation"
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    <Square size={24} />
+                                </button>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
 
