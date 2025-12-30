@@ -15,12 +15,15 @@ export function trackConversionEvent(
     const eventsRef = ref(rtdb, 'analytics/conversionEvents');
     const newEventRef = push(eventsRef);
 
-    set(newEventRef, {
+    const eventData: any = {
         sessionId,
         eventType,
         timestamp: serverTimestamp(),
-        metadata: metadata || undefined,
-    }).catch(err => console.error('Conversion event tracking error:', err));
+    };
+
+    if (metadata) eventData.metadata = metadata;
+
+    set(newEventRef, eventData).catch(err => console.error('Conversion event tracking error:', err));
 }
 
 // Hook to track scroll to pricing section

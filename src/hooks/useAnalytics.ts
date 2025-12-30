@@ -27,13 +27,19 @@ function getReferrer(): string {
 }
 
 // Get UTM parameters from URL
-function getUTMParams(): { source?: string; medium?: string; campaign?: string } {
+function getUTMParams(): Record<string, string> {
     const params = new URLSearchParams(window.location.search);
-    return {
-        source: params.get('utm_source') || undefined,
-        medium: params.get('utm_medium') || undefined,
-        campaign: params.get('utm_campaign') || undefined,
-    };
+    const utm: Record<string, string> = {};
+
+    const source = params.get('utm_source');
+    const medium = params.get('utm_medium');
+    const campaign = params.get('utm_campaign');
+
+    if (source) utm.source = source;
+    if (medium) utm.medium = medium;
+    if (campaign) utm.campaign = campaign;
+
+    return utm;
 }
 
 // Get geolocation data (cached in sessionStorage)
@@ -102,27 +108,31 @@ export function useAnalytics(pageName: string) {
             const newPageViewRef = push(pageViewsRef);
             pageViewRef.current = newPageViewRef.key;
 
-            set(newPageViewRef, {
+            const dataToWrite: any = {
                 sessionId,
                 page: pageName,
                 timestamp: serverTimestamp(),
                 referrer,
                 userAgent: navigator.userAgent,
                 deviceType,
-                geo: geo || undefined,
-                utm: Object.keys(utm).length > 0 ? utm : undefined,
-            }).catch(err => console.error('Analytics tracking error:', err));
+            };
 
-            // Update session
-            const sessionRef = ref(rtdb, `analytics/sessions/${sessionId}`);
-            set(sessionRef, {
+            if (geo) dataToWrite.geo = geo;
+            if (Object.keys(utm).length > 0) dataToWrite.utm = utm;
+
+            set(newPageViewRef, dataToWrite).catch(err => console.error('Analytics tracking error:', err));
+
+            const sessionData: any = {
                 lastPage: pageName,
                 lastSeen: serverTimestamp(),
                 referrer,
                 deviceType,
-                geo: geo || undefined,
-                utm: Object.keys(utm).length > 0 ? utm : undefined,
-            }).catch(err => console.error('Session tracking error:', err));
+            };
+
+            if (geo) sessionData.geo = geo;
+            if (Object.keys(utm).length > 0) sessionData.utm = utm;
+
+            set(sessionRef, sessionData).catch(err => console.error('Session tracking error:', err));
         })();
 
         // Cleanup: track duration when leaving page
