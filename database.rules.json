@@ -13,8 +13,20 @@
             ".write": true
         },
         "analytics": {
-            ".read": true,
-            ".write": true
+            ".read": false,
+            ".write": true,
+            "sessions": {
+                ".indexOn": [
+                    "lastSeen"
+                ]
+            },
+            "pageViews": {
+                ".indexOn": [
+                    "timestamp",
+                    "page",
+                    "sessionId"
+                ]
+            }
         }
     }
 }

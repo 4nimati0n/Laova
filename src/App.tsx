@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import MVPApp from './pages/MVPApp';
+import Analytics from './pages/Analytics';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Safety from './pages/Safety';
@@ -21,6 +22,13 @@ function App() {
         <Route path="/app" element={
           <ProtectedRoute>
             <MVPApp />
+          </ProtectedRoute>
+        } />
+
+        {/* PRIVÉ - Analytics Dashboard (Protected) */}
+        <Route path="/analytics" element={
+          <ProtectedRoute>
+            <Analytics />
           </ProtectedRoute>
         } />
 

@@ -1,0 +1,182 @@
+/* Analytics Dashboard Styles */
+.analytics-page {
+    min-height: 100vh;
+    background: var(--bg-premium, #151210);
+    color: var(--text-primary, #F0EAD6);
+    padding: 2rem;
+    font-family: var(--font-body, 'Lato', sans-serif);
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.analytics-header h1 {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 2.5rem;
+    color: var(--gold-text, #E5C580);
+    margin: 0;
+}
+
+.time-range-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.time-range-selector button {
+    padding: 0.5rem 1rem;
+    background: var(--bg-card, #1f1b18);
+    border: 1px solid var(--gold-dim, #AA8C2C);
+    color: var(--text-primary, #F0EAD6);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-range-selector button:hover {
+    background: var(--bg-surface, #26221e);
+    border-color: var(--gold-primary, #D4AF37);
+}
+
+.time-range-selector button.active {
+    background: var(--gold-primary, #D4AF37);
+    color: var(--bg-premium, #151210);
+    font-weight: bold;
+}
+
+.loading {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: var(--text-secondary, #B0A090);
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.metric-card {
+    background: var(--bg-card, #1f1b18);
+    border: 1px solid var(--gold-dim, #AA8C2C);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.metric-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--gold-primary, #D4AF37);
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #B0A090);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Analytics Tables */
+.analytics-tables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.table-container {
+    background: var(--bg-card, #1f1b18);
+    border: 1px solid var(--gold-dim, #AA8C2C);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.table-container h2 {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.5rem;
+    color: var(--gold-text, #E5C580);
+    margin: 0 0 1rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    border-bottom: 2px solid var(--gold-dim, #AA8C2C);
+}
+
+th {
+    padding: 0.75rem;
+    text-align: left;
+    color: var(--gold-text, #E5C580);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+tbody tr {
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: var(--bg-surface, #26221e);
+}
+
+td {
+    padding: 0.75rem;
+    color: var(--text-primary, #F0EAD6);
+}
+
+td:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: var(--gold-primary, #D4AF37);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .analytics-page {
+        padding: 1rem;
+    }
+
+    .analytics-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .analytics-header h1 {
+        font-size: 2rem;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-tables {
+        grid-template-columns: 1fr;
+    }
+}
