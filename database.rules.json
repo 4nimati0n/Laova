@@ -13,7 +13,7 @@
             ".write": true
         },
         "analytics": {
-            ".read": false,
+            ".read": true,
             ".write": true,
             "sessions": {
                 ".indexOn": [

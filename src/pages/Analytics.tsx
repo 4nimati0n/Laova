@@ -20,6 +20,9 @@ interface Session {
 interface AnalyticsData {
     pageViews: Record<string, PageView>;
     sessions: Record<string, Session>;
+    totalPageViews?: number;
+    uniqueVisitors?: number;
+    visitors?: Record<string, { firstVisit: number; lastVisit: number; visitCount: number }>;
 }
 
 const TIME_RANGES = {
@@ -42,19 +45,35 @@ export default function Analytics() {
             const cutoffTime = Date.now() - TIME_RANGES[timeRange];
 
             try {
-                // Fetch page views
+                // Fetch global metrics (existing format)
+                const analyticsRef = ref(rtdb, 'analytics');
+                const analyticsSnapshot = await get(analyticsRef);
+                const analyticsData = analyticsSnapshot.val() || {};
+
+                // Fetch page views (new format)
                 const pageViewsRef = ref(rtdb, 'analytics/pageViews');
                 const pageViewsQuery = query(pageViewsRef, orderByChild('timestamp'), startAt(cutoffTime));
                 const pageViewsSnapshot = await get(pageViewsQuery);
                 const pageViews = pageViewsSnapshot.val() || {};
 
-                // Fetch sessions
+                // Fetch sessions (new format)
                 const sessionsRef = ref(rtdb, 'analytics/sessions');
                 const sessionsQuery = query(sessionsRef, orderByChild('lastSeen'), startAt(cutoffTime));
                 const sessionsSnapshot = await get(sessionsQuery);
                 const sessions = sessionsSnapshot.val() || {};
 
-                setData({ pageViews, sessions });
+                // Fetch visitors (existing format)
+                const visitorsRef = ref(rtdb, 'analytics/visitors');
+                const visitorsSnapshot = await get(visitorsRef);
+                const visitors = visitorsSnapshot.val() || {};
+
+                setData({
+                    pageViews,
+                    sessions,
+                    totalPageViews: analyticsData.totalPageViews || 0,
+                    uniqueVisitors: analyticsData.uniqueVisitors || 0,
+                    visitors
+                });
             } catch (error) {
                 console.error('Error fetching analytics:', error);
             } finally {
@@ -71,9 +90,11 @@ export default function Analytics() {
     // Calculate metrics
     const pageViewsArray = Object.values(data.pageViews);
     const sessionsArray = Object.values(data.sessions);
+    const visitorsArray = Object.values(data.visitors || {});
 
-    const totalPageViews = pageViewsArray.length;
-    const uniqueVisitors = sessionsArray.length;
+    // Use existing global metrics if available, otherwise calculate from new format
+    const totalPageViews = data.totalPageViews || pageViewsArray.length;
+    const uniqueVisitors = data.uniqueVisitors || sessionsArray.length;
 
     // Top pages
     const pageCount: Record<string, number> = {};
