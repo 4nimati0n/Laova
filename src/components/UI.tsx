@@ -249,6 +249,26 @@ export const UI = () => {
                         </>
                     )}
                 </div>
+                {/* Debug Toggle Button (bottom-left) */}
+                <button
+                    onClick={() => setGazeDebugEnabled(!gazeDebugEnabled)}
+                    style={{
+                        position: 'fixed',
+                        bottom: '10px',
+                        left: '10px',
+                        padding: '8px 12px',
+                        background: gazeDebugEnabled ? '#0f0' : 'rgba(0,0,0,0.7)',
+                        color: gazeDebugEnabled ? '#000' : '#fff',
+                        border: '1px solid #333',
+                        borderRadius: '4px',
+                        fontSize: '11px',
+                        cursor: 'pointer',
+                        zIndex: 9998,
+                        fontFamily: 'monospace'
+                    }}
+                >
+                    🎯 {gazeDebugEnabled ? 'Debug ON' : 'Debug'}
+                </button>
             </div>
 
             {/* Energy Modal - rendered outside ui-overlay for proper z-index */}
@@ -256,27 +276,6 @@ export const UI = () => {
 
             {/* Gaze Debug Panel */}
             <GazeDebugPanel />
-
-            {/* Debug Toggle Button (bottom-left) */}
-            <button
-                onClick={() => setGazeDebugEnabled(!gazeDebugEnabled)}
-                style={{
-                    position: 'fixed',
-                    bottom: '10px',
-                    left: '10px',
-                    padding: '8px 12px',
-                    background: gazeDebugEnabled ? '#0f0' : 'rgba(0,0,0,0.7)',
-                    color: gazeDebugEnabled ? '#000' : '#fff',
-                    border: '1px solid #333',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    cursor: 'pointer',
-                    zIndex: 9998,
-                    fontFamily: 'monospace'
-                }}
-            >
-                🎯 {gazeDebugEnabled ? 'Debug ON' : 'Debug'}
-            </button>
         </>
     );
 };
