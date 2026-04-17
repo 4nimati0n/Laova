@@ -43,6 +43,11 @@ export const Avatar = () => {
             setVrm(null);
         }
 
+        // Reset per-model global state so the new model gets full initialization
+        (window as any).__springBoneInitialized = false;
+        (window as any).__breathingState = null;
+        (window as any).__faceMesh = null;
+
         loader.loadAsync(modelPath).then((gltf) => {
             const vrmInstance = gltf.userData.vrm;
             VRMUtils.removeUnnecessaryVertices(gltf.scene);
@@ -97,6 +102,18 @@ export const Avatar = () => {
                 (window as any).__faceMesh = faceMesh;
                 console.log("🎛️ Face mesh stored. Test morphs with: window.__faceMesh.morphTargetInfluences[INDEX] = 1");
                 console.log("   Example: window.__faceMesh.morphTargetInfluences[0] = 1");
+            }
+
+            // Apply default neutral pose so the model looks natural
+            // (some VRM models load in T-pose; this ensures arms-down)
+            if (vrmInstance.humanoid) {
+                const defaultPose = vrmInstance.humanoid.getNormalizedPose();
+                // Set natural arm position (slightly away from body)
+                const armRotation = new Quaternion().setFromEuler(new Euler(0, 0, 0.3)).toArray() as [number, number, number, number];
+                const armRotationR = new Quaternion().setFromEuler(new Euler(0, 0, -0.3)).toArray() as [number, number, number, number];
+                defaultPose.leftUpperArm = { rotation: armRotation };
+                defaultPose.rightUpperArm = { rotation: armRotationR };
+                vrmInstance.humanoid.setNormalizedPose(defaultPose);
             }
 
             setVrm(vrmInstance);
