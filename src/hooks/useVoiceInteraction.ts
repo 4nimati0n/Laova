@@ -63,73 +63,70 @@ export const useVoiceInteraction = () => {
     }, [useHume, humeFftData, setHumeFft, setIsSpeaking]);
 
     // Track processed Hume messages to avoid duplicates
-    const processedHumeMessagesRef = useRef<Set<string>>(new Set());
+    const lastProcessedIndexRef = useRef<number>(-1);
 
     // Handle Hume Messages
     useEffect(() => {
         if (!useHume) return;
+        if (humeMessages.length === 0) return;
 
-        const lastMessage = humeMessages[humeMessages.length - 1];
-        if (!lastMessage) return;
+        // Process only new messages since the last processed index
+        const startIndex = lastProcessedIndexRef.current + 1;
+        if (startIndex >= humeMessages.length) return;
 
-        // Create unique ID for this message
-        const messageId = `${lastMessage.type}-${(lastMessage as any).message?.content?.substring(0, 50) || ''}-${humeMessages.length}`;
+        for (let i = startIndex; i < humeMessages.length; i++) {
+            const msg = humeMessages[i];
 
-        // Skip if already processed
-        if (processedHumeMessagesRef.current.has(messageId)) return;
+            // Skip interim messages (partial transcriptions that will be replaced by final)
+            if ((msg as any).interim) continue;
 
-        // Skip interim messages (they don't have emotion models yet and cause duplicates)
-        if ((lastMessage as any).interim) return;
+            if (msg.type === 'user_message' && msg.message.content) {
+                // Extract top 3 emotions from prosody scores
+                const prosodyScores = (msg as any).models?.prosody?.scores;
+                let topEmotions: Array<{ name: string; score: number }> | undefined;
 
-        processedHumeMessagesRef.current.add(messageId);
+                if (prosodyScores) {
+                    const emotionEntries = Object.entries(prosodyScores) as [string, number][];
+                    topEmotions = emotionEntries
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 3)
+                        .map(([name, score]) => ({ name, score }));
+                }
 
-        if (lastMessage.type === 'user_message' && lastMessage.message.content) {
-            // Extract top 3 emotions from prosody scores
-            const prosodyScores = (lastMessage as any).models?.prosody?.scores;
-            let topEmotions: Array<{ name: string; score: number }> | undefined;
+                setUserMessage(msg.message.content);
+                console.log('🎭 Hume user_message received:', msg.message.content.substring(0, 80) + (msg.message.content.length > 80 ? '...' : ''));
+                console.log('🎭 Hume emotions detected:', topEmotions);
+                useAppStore.getState().addToConversationHistory('user', msg.message.content, topEmotions);
 
-            if (prosodyScores) {
-                const emotionEntries = Object.entries(prosodyScores) as [string, number][];
-                topEmotions = emotionEntries
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3)
-                    .map(([name, score]) => ({ name, score }));
-            }
+                // === AUREA INTEGRATION: Log Resonance State (for debugging) ===
+                const resonanceState = calculateResonanceState(topEmotions || []);
+                console.log('🔮 AUREA Resonance State:', resonanceState);
 
-            setUserMessage(lastMessage.message.content);
-            console.log('🎭 Hume user_message received');
-            console.log('🎭 Hume emotions detected:', topEmotions);
-            useAppStore.getState().addToConversationHistory('user', lastMessage.message.content, topEmotions);
+                // === VISUALIZATION: Trigger image generation for user's message ===
+                triggerVisualization(msg.message.content, topEmotions);
+                console.log('🎨 Hume: Triggered visualization for user message');
 
-            // === AUREA INTEGRATION: Log Resonance State (for debugging) ===
-            const resonanceState = calculateResonanceState(topEmotions || []);
-            console.log('🔮 AUREA Resonance State:', resonanceState);
+            } else if (msg.type === 'assistant_message' && msg.message.content) {
+                // Display Hume's assistant response
+                console.log('💬 Hume Assistant Response:', msg.message.content);
+                setAiResponse(msg.message.content);
+                useAppStore.getState().addToConversationHistory('assistant', msg.message.content);
 
-            // === VISUALIZATION: Trigger image generation for user's message ===
-            // Generate visualization of what Laura imagines from the user's words
-            triggerVisualization(lastMessage.message.content, topEmotions);
-            console.log('🎨 Hume: Triggered visualization for user message');
-
-            // Note: Hume STS handles the AI response, no need to call Mistral
-
-        } else if (lastMessage.type === 'assistant_message' && lastMessage.message.content) {
-            // Display Hume's assistant response
-            console.log('💬 Hume Assistant Response:', lastMessage.message.content);
-            setAiResponse(lastMessage.message.content);
-            useAppStore.getState().addToConversationHistory('assistant', lastMessage.message.content);
-
-            // === VISUALIZATION: Trigger image generation for Laura's response ===
-            // Generate visualization of Laura's inner thoughts while responding
-            triggerVisualization(lastMessage.message.content);
-            console.log('🎨 Hume: Triggered visualization for assistant response');
-        } else if (lastMessage.type === 'chat_metadata') {
-            // Capture Chat Group ID for conversation continuity
-            const newChatGroupId = (lastMessage as any).chat_group_id;
-            if (newChatGroupId && newChatGroupId !== chatGroupId) {
-                console.log('📚 Captured Chat Group ID:', newChatGroupId);
-                setChatGroupId(newChatGroupId);
+                // === VISUALIZATION: Trigger image generation for Laura's response ===
+                triggerVisualization(msg.message.content);
+                console.log('🎨 Hume: Triggered visualization for assistant response');
+            } else if (msg.type === 'chat_metadata') {
+                // Capture Chat Group ID for conversation continuity
+                const newChatGroupId = (msg as any).chat_group_id;
+                if (newChatGroupId && newChatGroupId !== chatGroupId) {
+                    console.log('📚 Captured Chat Group ID:', newChatGroupId);
+                    setChatGroupId(newChatGroupId);
+                }
             }
         }
+
+        // Update the last processed index to the end of the array
+        lastProcessedIndexRef.current = humeMessages.length - 1;
     }, [useHume, humeMessages, setUserMessage, setAiResponse, triggerVisualization, chatGroupId, setChatGroupId]);
 
     // Hume Connection Management - Pass systemPrompt and resumedChatGroupId
